@@ -1,0 +1,7 @@
+{
+  "name": "cas-ce-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
