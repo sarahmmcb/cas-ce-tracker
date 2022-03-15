@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthPage implements OnInit {
 
+  /**
+   * User email.
+   */
+  public email: string;
+
+  /**
+   * User password.
+   */
+  public password: string;
+
   constructor() { }
 
-  ngOnInit() {
+  /**
+   * On Init.
+   */
+  public ngOnInit(): void {
   }
 
 }

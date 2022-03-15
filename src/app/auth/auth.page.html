@@ -6,4 +6,41 @@
 
 <ion-content>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+        <form #f="ngForm">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-label position="floating">Email</ion-label>
+              <ion-input
+                [(ngModel)]="email"
+                required
+                #emailCtrl="ngModel"
+                name="email"
+                type="email"
+              ></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
+              <ion-label>Please enter a valid email address</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label position="floating">Password</ion-label>
+              <ion-input
+                [(ngModel)]="password"
+                required
+                name="password"
+                type="password"
+                #passwordCtrl="ngModel"
+              ></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!passwordCtrl.valid && passwordCtrl.touched" lines="none">
+              <ion-label>Please enter a valid password</ion-label>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
