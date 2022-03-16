@@ -1,46 +1,46 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>auth</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
   <ion-grid>
     <ion-row>
-      <ion-col size-sm="6" offset-sm="3">
-        <form #f="ngForm">
+      <ion-col size-sm="6" offset-sm="3" class="ion-text-center">
+        <img src="/assets/study-icon.jpg" />
+      </ion-col>
+    </ion-row>
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
           <ion-list>
             <ion-item lines="none">
               <ion-label position="floating">Email</ion-label>
-              <ion-input
-                [(ngModel)]="email"
-                required
-                #emailCtrl="ngModel"
-                name="email"
-                type="email"
-              ></ion-input>
+              <ion-input [(ngModel)]="email" required #emailCtrl="ngModel" name="email" type="email"></ion-input>
             </ion-item>
             <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
               <ion-label>Please enter a valid email address</ion-label>
             </ion-item>
             <ion-item lines="none">
               <ion-label position="floating">Password</ion-label>
-              <ion-input
-                [(ngModel)]="password"
-                required
-                name="password"
-                type="password"
-                #passwordCtrl="ngModel"
-              ></ion-input>
+              <ion-input [(ngModel)]="password" required name="password" type="password" minlength="6" #passwordCtrl="ngModel">
+              </ion-input>
             </ion-item>
             <ion-item *ngIf="!passwordCtrl.valid && passwordCtrl.touched" lines="none">
               <ion-label>Please enter a valid password</ion-label>
             </ion-item>
           </ion-list>
-        </form>
-      </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button type="submit" expand="block" class="ion-padding" [disabled]="!f.valid">
+            Log in
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <p class="ion-text-center cas-signup-link">
+            Don't have an account? Click here to sign up.
+          </p>
+        </ion-col>
+      </ion-row>
+    </form>
   </ion-grid>
-
 </ion-content>
