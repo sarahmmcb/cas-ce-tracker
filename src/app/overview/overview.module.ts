@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
+import { ComplianceGraphicComponent } from './compliance-graphic/compliance-graphic.component';
 import { OverviewPageRoutingModule } from './overview-routing.module';
-
 import { OverviewPage } from './overview.page';
 
 @NgModule({
@@ -15,6 +14,6 @@ import { OverviewPage } from './overview.page';
     IonicModule,
     OverviewPageRoutingModule
   ],
-  declarations: [OverviewPage]
+  declarations: [OverviewPage, ComplianceGraphicComponent]
 })
 export class OverviewPageModule {}

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CEData } from '../models/cedata';
+
+import { CEDataService } from '../services/cedata.service';
 
 @Component({
   selector: 'app-overview',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewPage implements OnInit {
 
-  constructor() { }
+  /**
+   * CEData object.
+   */
+  public ceData: CEData;
+
+  constructor(private ceDataService: CEDataService) { }
 
   ngOnInit() {
+    this.ceData = this.ceDataService.getCEData();
   }
 
 }

@@ -1,13 +1,13 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size-sm="6" offset-sm="3" class="ion-text-center">
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
         <img src="/assets/study-icon.jpg" />
       </ion-col>
     </ion-row>
     <form #f="ngForm" (ngSubmit)="onSubmit(f)">
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col sizeSm="6" offsetSm="3">
           <ion-list>
             <ion-item lines="none">
               <ion-label position="floating">Email</ion-label>
@@ -28,14 +28,14 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col sizeSm="6" offsetSm="3">
           <ion-button type="submit" expand="block" class="ion-padding" [disabled]="!f.valid">
             Log in
           </ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col sizeSm="6" offsetSm="3">
           <p class="ion-text-center cas-signup-link">
             Don't have an account? Click here to sign up.
           </p>

@@ -1,3 +1,36 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="main" menuId="m1" type="reveal">
+    <ion-header>
+      <ion-title>
+        <p>Username</p>
+        <p>Last login or something</p>
+      </ion-title>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item button>
+            Edit Profile
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item button>
+            Feedback
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item button>
+            About
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item (click)="onLogout()" button>
+            <ion-icon slot="start" name="exit" color="primary"></ion-icon>
+            Log Out
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
