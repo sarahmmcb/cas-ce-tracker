@@ -18,7 +18,7 @@ export class OverviewPage implements OnInit {
   constructor(private ceDataService: CEDataService) { }
 
   ngOnInit() {
-    this.ceData = this.ceDataService.getCEData();
+    this.ceData = this.ceDataService.getCEComplianceData();
   }
 
 }

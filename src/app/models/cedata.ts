@@ -33,7 +33,7 @@ export interface CategoryGroup {
  */
 export interface CategoryData {
   displayName: string;
-  min: number;
-  max: number;
-  amount: number;
+  goal: number;
+  amountCompleted: number;
+  percentCompleted: number;
 }

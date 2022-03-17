@@ -1,15 +1,39 @@
 <ion-card>
   <ion-card-title>{{ ceData.title }}</ion-card-title>
   <ion-card-content>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="4">
-          <ion-label>Category Title</ion-label>
-        </ion-col>
-        <ion-col>
-          Div goes here
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div *ngFor="let categoryGroup of ceData.categoryGroups">
+      <ion-grid>
+        <ion-row *ngFor="let category of categoryGroup.categories">
+          <ion-col>
+            <ion-grid class="ion-no-padding">
+              <ion-row>
+                <ion-col>
+                  <ion-label>{{ category.displayName }}</ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <div class="ce-track-bar ce-trackbar-bkgd">
+                  <div class="ce-track-bar" [ngStyle]="{'width': category.percentCompleted + '%' }">
+                  </div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-label> Completed: {{ category.amountCompleted }}</ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label> Required: {{ category.goal }}</ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="ion-text-right div-compliant-message">
+      {{ ceData.complianceStatus }} <ion-icon name="checkmark-circle" color="green"></ion-icon>
+    </div>
   </ion-card-content>
 </ion-card>
