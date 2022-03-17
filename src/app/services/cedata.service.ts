@@ -12,7 +12,7 @@ export class CEDataService {
   /**
    * Return CEData for the CEData graphic.
    */
-  public getCEData(): CEData {
+  public getCEComplianceData(): CEData {
     const ceData: CEData = {
       title: 'Progress for CE Year 2023',
       unitLongName: 'Hours',

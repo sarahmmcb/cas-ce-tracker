@@ -1,3 +1,8 @@
+ion-card-title {
+  margin-top: 13px;
+  text-align: center;
+}
+
 .ce-track-bar {
   background-color: lightblue;
   border-radius: 3px;
@@ -7,4 +12,12 @@
 
 .ce-trackbar-bkgd {
   background-color: lightgray;
+}
+
+.div-compliant-message {
+  font-size: 15px;
+
+  ion-icon {
+    vertical-align: middle;
+  }
 }
