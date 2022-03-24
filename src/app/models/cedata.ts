@@ -22,14 +22,17 @@ export enum ComplianceStatus {
 }
 
 /**
- * Interface for Category Group.
+ * Interface for group of categories on
+ * on the CEData graphic.
+ * Ex. 'General' and 'Specific'.
  */
 export interface CategoryGroup {
   categories: CategoryData[];
 }
 
 /**
- * Interface for Category Data.
+ * Interface for CE data for each
+ * category on the CEData graphic.
  */
 export interface CategoryData {
   displayName: string;

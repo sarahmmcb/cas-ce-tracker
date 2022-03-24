@@ -1,11 +1,58 @@
 import { Injectable } from '@angular/core';
 
+import { CECategory } from '../models/category';
 import { CEData, ComplianceStatus } from '../models/cedata';
+import { CERule } from '../models/rules';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CEDataService {
+
+  /**
+   * Hard coded category list.
+   */
+  public categories: CECategory[] = [
+    {
+      ceCategoryId: 1,
+      parentCategoryId: 0,
+      nationalStandardId: 1,
+      categoryListId: 0,
+      name: 'Total',
+      displayName: 'Total',
+      description: 'Total CE units',
+      startYear: 1990,
+      endYear: 9999,
+      isProgressShown: true,
+      isActive: true
+    },
+    {
+      ceCategoryId: 2,
+      parentCategoryId: 0,
+      nationalStandardId: 2,
+      categoryListId: 0,
+      name: 'Professionalism',
+      displayName: 'Professionalism',
+      description: 'Category for Professionalism',
+      startYear: 1990,
+      endYear: 9999,
+      isProgressShown: true,
+      isActive: true
+    },
+    {
+      ceCategoryId: 3,
+      parentCategoryId: 0,
+      nationalStandardId: 2,
+      categoryListId: 0,
+      name: 'Organized',
+      displayName: 'Organized CE',
+      description: 'Category for organized General CE',
+      startYear: 1990,
+      endYear: 9999,
+      isProgressShown: true,
+      isActive: true
+    }
+  ];
 
   constructor() { }
 

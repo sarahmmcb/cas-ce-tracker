@@ -13,6 +13,9 @@ export class ComplianceGraphicComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  /**
+   * On Init.
+   */
+  public ngOnInit(): void {}
 
 }

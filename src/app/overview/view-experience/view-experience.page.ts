@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CEExperience } from 'src/app/models/experience';
+import { ExperienceService } from 'src/app/services/experience.service';
 
 @Component({
   selector: 'app-view-experience',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewExperiencePage implements OnInit {
 
-  constructor() { }
+  /**
+   * List of ce.
+   */
+  public currentCE: CEExperience[] = [];
 
-  ngOnInit() {
+  constructor(private experienceService: ExperienceService) { }
+
+  /**
+   * On init.
+   */
+  public ngOnInit(): void {
+    this.currentCE = this.experienceService.fetchExperiences(2022);
   }
 
 }
