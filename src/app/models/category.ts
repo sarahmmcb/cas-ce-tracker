@@ -2,7 +2,7 @@
  * Interface for a Category.
  */
 export interface CECategory {
-  cECategoryId: number;
+  ceCategoryId: number;
   parentCategoryId: number;
   nationalStandardId: number;
   categoryListId: number;
@@ -18,3 +18,9 @@ export interface CECategory {
 /**
  * Interface for a category list.
  */
+export interface CategoryList {
+  ceCategoryListId: number;
+  name: string;
+  displayOrder: number;
+  isActive: boolean;
+}

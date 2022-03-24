@@ -1,9 +1,52 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>view-experience</ion-title>
+    <ion-title>View CE</ion-title>
   </ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button></ion-back-button>
+  </ion-buttons>
 </ion-header>
 
 <ion-content>
-
+  <ion-card *ngFor="let ex of currentCE">
+    <button>
+      <ion-icon color="primary" name="create"></ion-icon>
+    </button>
+    <ion-card-header>
+      {{ ex.programTitle }}
+    </ion-card-header>
+    <ion-card-content>
+      <h2 *ngIf="ex.eventName && ex.eventName !== ''">{{ ex.eventName }}</h2>
+      <ion-grid>
+        <ion-row *ngIf="ex.description && ex.description !== ''">
+          <ion-col>
+            {{ ex.description }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <p *ngFor="let am of ex.amounts"> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
+          </ion-col>
+          <ion-col size="6">
+            <ion-label>Location: </ion-label>
+            {{ ex.location }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6">
+            <p>
+              Start Date: {{ ex.startDate }}
+            </p>
+            <p>
+              End Date: {{ ex.endDate }}
+            </p>
+          </ion-col>
+          <ion-col size="6">
+            <p>Categories: </p>
+            <p><ng-container *ngFor="let cat of ex.categories">{{ cat }} <br /></ng-container></p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -17,6 +17,14 @@ const routes: Routes = [
     loadChildren: () => import('./overview/overview.module').then( m => m.OverviewPageModule),
     canLoad: [AuthGuard]
   },
+  {
+    path: 'overview',
+    canLoad: [AuthGuard],
+    children: [{
+      path: 'view-experience',
+      loadChildren: () => import('./overview/view-experience/view-experience.module').then( m => m.ViewExperiencePageModule)
+    }]
+  }
 ];
 
 @NgModule({
