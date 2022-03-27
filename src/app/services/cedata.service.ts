@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { CECategory } from '../models/category';
 import { CEData, ComplianceStatus } from '../models/cedata';
-import { CERule } from '../models/rules';
 
 @Injectable({
   providedIn: 'root'

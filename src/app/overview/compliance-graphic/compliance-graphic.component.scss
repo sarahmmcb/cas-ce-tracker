@@ -3,6 +3,14 @@ ion-card-title {
   text-align: center;
 }
 
+ion-card {
+  --color: var(--app-card-color);
+  margin: auto;
+  margin-bottom: var(--app-card-margin-bottom);
+  margin-top: var(--app-card-margin-top);
+  width: var(--app-card-width);
+}
+
 .ce-track-bar {
   background-color: lightblue;
   border-radius: 3px;

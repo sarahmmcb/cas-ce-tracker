@@ -1,0 +1,42 @@
+<ion-header>
+  <button (click)="onClose()">
+    <ion-icon color="#fff" name="close"></ion-icon>
+  </button>
+  <h2>
+    Add CE
+  </h2>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+  </ion-card>
+  <ion-card>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm)">
+      <p>
+        <ion-label>Date of CE*:</ion-label>
+        <ion-input
+          formControlName="ceDate">
+        </ion-input>
+      </p>
+      <p>
+        <ion-label>Program Title*:</ion-label>
+        <ion-input
+          formControlName="programTitle">
+        </ion-input>
+      </p>
+      <p>
+        <ion-label>Event Name:</ion-label>
+        <ion-input
+          formControlName="eventName">
+        </ion-input>
+      </p>
+      <p>
+        <ion-label>Description:</ion-label>
+        <ion-textarea
+          formControlName="description">
+        </ion-textarea>
+      </p>
+    </form>
+  </ion-card>
+
+</ion-content>

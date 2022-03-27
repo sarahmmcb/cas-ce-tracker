@@ -1,26 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>View CE</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>View CE - {{ year }}</ion-title>
   </ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-back-button></ion-back-button>
-  </ion-buttons>
 </ion-header>
 
 <ion-content>
   <ion-card *ngFor="let ex of currentCE">
-    <button>
+    <button (click)="onEditCE(ex)">
       <ion-icon color="primary" name="create"></ion-icon>
     </button>
     <ion-card-header>
       {{ ex.programTitle }}
     </ion-card-header>
     <ion-card-content>
-      <h2 *ngIf="ex.eventName && ex.eventName !== ''">{{ ex.eventName }}</h2>
+      <h2 *ngIf="ex.eventName && ex.eventName.length > 0">{{ ex.eventName }}</h2>
       <ion-grid>
-        <ion-row *ngIf="ex.description && ex.description !== ''">
+        <ion-row *ngIf="ex.description && ex.description.length > 0">
           <ion-col>
-            {{ ex.description }}
+            {{ ex.description | shortenText }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -44,6 +44,11 @@
           <ion-col size="6">
             <p>Categories: </p>
             <p><ng-container *ngFor="let cat of ex.categories">{{ cat }} <br /></ng-container></p>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="ex.notes && ex.notes.length > 0">
+          <ion-col>
+            {{ ex.notes | shortenText }}
           </ion-col>
         </ion-row>
       </ion-grid>

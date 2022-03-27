@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
+import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
 
 import { ViewExperiencePageRoutingModule } from './view-experience-routing.module';
-
 import { ViewExperiencePage } from './view-experience.page';
 
 @NgModule({
@@ -15,6 +14,6 @@ import { ViewExperiencePage } from './view-experience.page';
     IonicModule,
     ViewExperiencePageRoutingModule
   ],
-  declarations: [ViewExperiencePage]
+  declarations: [ViewExperiencePage, ShortenTextPipe]
 })
 export class ViewExperiencePageModule {}

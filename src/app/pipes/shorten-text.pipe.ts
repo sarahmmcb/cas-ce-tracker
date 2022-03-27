@@ -5,9 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ShortenTextPipe implements PipeTransform {
 
-  transform(text: string): string {
-    if(text.length > 200) {
-      return text.slice(0,200) + '...';
+  transform(text: string, length: number = 200): string {
+    if(text.length > length) {
+      return text.slice(0, length) + '...';
     } else {
       return text;
     }

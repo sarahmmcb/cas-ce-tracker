@@ -20,7 +20,11 @@ export class CEExperience {
  * CE Experience Amounts.
  */
 export class CEExperienceAmount {
-  public amount = 0;
+  public nationalStandardCEUnitId = 0;
+  public parentUnitId = 0;
+  public amount? = 0;
   public unitSingular = '';
   public unitPlural = '';
+  public isEditable = true;
+  public conversionFormula = '';
 }
