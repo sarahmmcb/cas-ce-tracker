@@ -54,7 +54,26 @@
           </ion-input>
         </div>
       </div>
+      <div *ngFor="let catList of categoryLists">
+        <ion-label>{{ catList.displayQuestion }}</ion-label>
+        <ng-container
+          *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: catList.name}">
+        <!-- <ng-container *ngTemplateOutlet="selectTemplate; context: {cat: catList.categories}"> -->
+        </ng-container>
+      </div>
     </form>
   </ion-card>
+
+  <ng-template #selectTemplate let-cat="cat" let-name="controlName">
+    <ion-select formControlName="">
+      <ion-select-option
+        *ngFor="let item in cat">{{ item.displayName }}</ion-select-option>"
+    </ion-select>
+  </ng-template>
+
+  <ng-template #checkboxTemplate let-cat="cat">
+    checkbox Template
+    {{cat[0].name}}
+  </ng-template>
 
 </ion-content>

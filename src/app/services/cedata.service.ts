@@ -23,7 +23,6 @@ export class CEDataService {
       startYear: 1990,
       endYear: 9999,
       isProgressShown: true,
-      isActive: true
     },
     {
       ceCategoryId: 2,
@@ -36,7 +35,6 @@ export class CEDataService {
       startYear: 1990,
       endYear: 9999,
       isProgressShown: true,
-      isActive: true
     },
     {
       ceCategoryId: 3,
@@ -49,7 +47,6 @@ export class CEDataService {
       startYear: 1990,
       endYear: 9999,
       isProgressShown: true,
-      isActive: true
     }
   ];
 
