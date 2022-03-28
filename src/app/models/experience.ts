@@ -1,3 +1,5 @@
+import { CECategory } from './category';
+
 /**
  * Model for a CE Experience.
  */
@@ -12,7 +14,7 @@ export class CEExperience {
   public endDate = '';
   public description? = '';
   public notes? = '';
-  public categories: string[] = [];
+  public categories: CECategory[] = [];
   public amounts: CEExperienceAmount[] = [];
 }
 

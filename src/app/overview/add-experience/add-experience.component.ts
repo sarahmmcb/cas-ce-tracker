@@ -4,6 +4,7 @@ import { InputCustomEvent, ModalController } from '@ionic/angular';
 import { CEExperience, CEExperienceAmount } from 'src/app/models/experience';
 import { ExperienceService } from 'src/app/services/experience.service';
 import * as math from 'mathjs';
+import { CategoryList } from 'src/app/models/category';
 
 @Component({
   selector: 'app-add-experience',
@@ -18,6 +19,11 @@ export class AddExperienceComponent implements OnInit {
    */
   @Input()
   public ceExperience: CEExperience;
+
+  /**
+   * Category lists.
+   */
+  public categoryLists: CategoryList[] = [];
 
   /**
    * Form group property.
@@ -54,6 +60,9 @@ export class AddExperienceComponent implements OnInit {
 
     this.parentAmount = this.ceExperience.amounts.find(p => p.parentUnitId === 0);
     this.childAmount = this.ceExperience.amounts.find(p => p.parentUnitId !== 0);
+
+    // fetch categories by list
+    this.categoryLists = this.experienceService.fetchCategoryLists();
 
     this.addForm = this.fb.group({
       ceDate: this.ceExperience.startDate,

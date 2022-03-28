@@ -8,11 +8,10 @@ export interface CECategory {
   categoryListId: number;
   name: string;
   displayName: string;
-  description: string;
-  startYear: number;
-  endYear: number;
-  isProgressShown: boolean;
-  isActive: boolean;
+  description?: string;
+  startYear?: number;
+  endYear?: number;
+  isProgressShown?: boolean;
 }
 
 /**
@@ -21,6 +20,7 @@ export interface CECategory {
 export interface CategoryList {
   ceCategoryListId: number;
   name: string;
-  displayOrder: number;
-  isActive: boolean;
+  displayQuestion?: string;
+  displayOrder?: number;
+  categories?: CECategory[];
 }
