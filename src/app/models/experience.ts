@@ -25,6 +25,6 @@ export class CEExperienceAmount {
   public amount? = 0;
   public unitSingular = '';
   public unitPlural = '';
-  public isEditable = true;
+  public isDisabled = false;
   public conversionFormula = '';
 }

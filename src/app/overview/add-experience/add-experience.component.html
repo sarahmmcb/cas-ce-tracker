@@ -11,31 +11,49 @@
   <ion-card>
   </ion-card>
   <ion-card>
-    <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm)">
-      <p>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <div>
         <ion-label>Date of CE*:</ion-label>
         <ion-input
           formControlName="ceDate">
         </ion-input>
-      </p>
-      <p>
+      </div>
+      <div>
         <ion-label>Program Title*:</ion-label>
         <ion-input
           formControlName="programTitle">
         </ion-input>
-      </p>
-      <p>
+      </div>
+      <div>
         <ion-label>Event Name:</ion-label>
         <ion-input
           formControlName="eventName">
         </ion-input>
-      </p>
-      <p>
+      </div>
+      <div>
         <ion-label>Description:</ion-label>
         <ion-textarea
+          rows="3"
           formControlName="description">
         </ion-textarea>
-      </p>
+      </div>
+      <div class="div-time-spent">
+        <div>
+          <ion-label>Time Spent (in {{ parentAmount.unitPlural }})*:</ion-label>
+          <ion-input
+            type="number"
+            formControlName="timeSpentParent"
+            (ionBlur)="onAmountEdit($event)">
+          </ion-input>
+        </div>
+        <div>
+          <ion-label>Time Spent (in {{ childAmount.unitPlural }}):</ion-label>
+          <ion-input
+            type="number"
+            formControlName="timeSpentChild">
+          </ion-input>
+        </div>
+      </div>
     </form>
   </ion-card>
 

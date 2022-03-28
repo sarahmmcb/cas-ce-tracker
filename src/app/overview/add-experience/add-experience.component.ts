@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
-import { CEExperience } from 'src/app/models/experience';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { InputCustomEvent, ModalController } from '@ionic/angular';
+import { CEExperience, CEExperienceAmount } from 'src/app/models/experience';
 import { ExperienceService } from 'src/app/services/experience.service';
+import * as math from 'mathjs';
 
 @Component({
   selector: 'app-add-experience',
@@ -23,6 +24,17 @@ export class AddExperienceComponent implements OnInit {
    */
   public addForm: FormGroup;
 
+  /**
+   * Time spent in the unit entered by user.
+   */
+  public parentAmount: CEExperienceAmount;
+
+  /**
+   * Time spent in the standard's accepted unit, as
+   * calculated from the parent unit.
+   */
+  public childAmount: CEExperienceAmount;
+
   constructor(private modalCtrl: ModalController,
               private fb: FormBuilder,
               private experienceService: ExperienceService) { }
@@ -40,11 +52,19 @@ export class AddExperienceComponent implements OnInit {
      this.ceExperience.amounts = this.experienceService.fetchUnitInfo();
     }
 
+    this.parentAmount = this.ceExperience.amounts.find(p => p.parentUnitId === 0);
+    this.childAmount = this.ceExperience.amounts.find(p => p.parentUnitId !== 0);
+
     this.addForm = this.fb.group({
       ceDate: this.ceExperience.startDate,
       programTitle: this.ceExperience.programTitle,
       eventName: this.ceExperience.eventName,
-      description: this.ceExperience.description
+      description: this.ceExperience.description,
+      timeSpentParent: this.parentAmount.amount,
+      timeSpentChild: new FormControl({
+        value: this.childAmount.amount,
+        disabled: this.childAmount.isDisabled
+      }),
     });
   }
 
@@ -55,8 +75,27 @@ export class AddExperienceComponent implements OnInit {
     return await this.modalCtrl.dismiss();
   }
 
-  public onSubmit(addForm: FormGroup): void {
+  /**
+   * Logic to submit form.
+   */
+  public onSubmit(): void {
 
+  }
+
+  /**
+   * Update child amount when parent amount
+   * id edited.
+   *
+   * @param event ion blur event
+   */
+  public onAmountEdit(event: InputCustomEvent): void {
+    if(!event.target.value){
+      return;
+    }
+
+    this.addForm.patchValue({
+      timeSpentChild: math.evaluate(event.target.value.toString() + this.childAmount.conversionFormula)
+    });
   }
 
 }

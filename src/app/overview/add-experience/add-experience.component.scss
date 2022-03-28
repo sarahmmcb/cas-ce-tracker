@@ -19,3 +19,20 @@ ion-icon {
 ion-card {
   padding: 0 20px;
 }
+
+ion-textarea {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 7px;
+  margin-top: 5px;
+}
+
+.div-time-spent {
+  & > div {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  & ion-input {
+    width: 50px;
+  }
+}

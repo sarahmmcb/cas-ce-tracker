@@ -29,7 +29,7 @@ export class ExperienceService {
         amount: 1,
         unitPlural: 'hrs.',
         unitSingular: 'hr.',
-        isEditable: false,
+        isDisabled: true,
         conversionFormula: '/50'
       },
       {
@@ -38,7 +38,7 @@ export class ExperienceService {
         amount: 50,
         unitPlural: 'min.',
         unitSingular: 'min.',
-        isEditable: true,
+        isDisabled: false,
         conversionFormula: ''
       }]
     },
@@ -59,7 +59,7 @@ export class ExperienceService {
         amount: 1.5,
         unitPlural: 'hrs.',
         unitSingular: 'hr.',
-        isEditable: false,
+        isDisabled: true,
         conversionFormula: '/50'
       },
       {
@@ -68,7 +68,7 @@ export class ExperienceService {
         amount: 75,
         unitPlural: 'min.',
         unitSingular: 'min.',
-        isEditable: true,
+        isDisabled: false,
         conversionFormula: ''
       }]
     },
@@ -89,7 +89,7 @@ export class ExperienceService {
           amount: 0.5,
           unitPlural: 'hrs.',
           unitSingular: 'hr.',
-          isEditable: false,
+          isDisabled: true,
           conversionFormula: '/50'
         },
         {
@@ -98,7 +98,7 @@ export class ExperienceService {
           amount: 25,
           unitPlural: 'min.',
           unitSingular: 'min.',
-          isEditable: true,
+          isDisabled: false,
           conversionFormula: ''
         }]
     }];
@@ -116,7 +116,7 @@ export class ExperienceService {
       parentUnitId: 2,
       unitSingular: 'Hr.',
       unitPlural: 'Hrs.',
-      isEditable: false,
+      isDisabled: true,
       conversionFormula: '/50'
     },
     {
@@ -124,7 +124,7 @@ export class ExperienceService {
       parentUnitId: 0,
       unitSingular: 'Min.',
       unitPlural: 'Min.',
-      isEditable: true,
+      isDisabled: false,
       conversionFormula: ''
     }];
   }
