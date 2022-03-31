@@ -29,7 +29,7 @@
           </ion-col>
           <ion-col size="6">
             <ion-label>Location: </ion-label>
-            {{ ex.location }}
+            {{ ex.location.name }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -43,7 +43,7 @@
           </ion-col>
           <ion-col size="6">
             <p>Categories: </p>
-            <p><ng-container *ngFor="let cat of ex.categories">{{ cat }} <br /></ng-container></p>
+            <p><ng-container *ngFor="let cat of ex.categories">{{ cat.displayName }} <br /></ng-container></p>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="ex.notes && ex.notes.length > 0">

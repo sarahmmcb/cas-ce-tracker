@@ -14,66 +14,74 @@
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
       <div>
         <ion-label>Date of CE*:</ion-label>
-        <ion-input
-          formControlName="ceDate">
+        <ion-input formControlName="ceDate">
         </ion-input>
       </div>
       <div>
+        <ion-label>Location:</ion-label>
+        <ion-select formControlName="ceLocation" placeHolder="--Choose One--">
+          <ion-select-option *ngFor="let item of locations" [value]="item.ceLocationId">{{ item.name }}</ion-select-option>
+        </ion-select>
+      </div>
+      <div>
         <ion-label>Program Title*:</ion-label>
-        <ion-input
-          formControlName="programTitle">
+        <ion-input formControlName="programTitle">
         </ion-input>
       </div>
       <div>
         <ion-label>Event Name:</ion-label>
-        <ion-input
-          formControlName="eventName">
+        <ion-input formControlName="eventName">
         </ion-input>
       </div>
       <div>
         <ion-label>Description:</ion-label>
-        <ion-textarea
-          rows="3"
-          formControlName="description">
+        <ion-textarea rows="3" formControlName="description">
         </ion-textarea>
       </div>
       <div class="div-time-spent">
         <div>
           <ion-label>Time Spent (in {{ parentAmount.unitPlural }})*:</ion-label>
-          <ion-input
-            type="number"
-            formControlName="timeSpentParent"
-            (ionBlur)="onAmountEdit($event)">
+          <ion-input type="number" formControlName="timeSpentParent" (ionBlur)="onAmountEdit($event)">
           </ion-input>
         </div>
         <div>
           <ion-label>Time Spent (in {{ childAmount.unitPlural }}):</ion-label>
-          <ion-input
-            type="number"
-            formControlName="timeSpentChild">
+          <ion-input type="number" formControlName="timeSpentChild">
           </ion-input>
         </div>
       </div>
-      <div *ngFor="let catList of categoryLists">
+      <div *ngFor="let catList of categoryLists; index as i">
         <ion-label>{{ catList.displayQuestion }}</ion-label>
         <ng-container
-          *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: catList.name}">
-        <!-- <ng-container *ngTemplateOutlet="selectTemplate; context: {cat: catList.categories}"> -->
+          *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: catListFormControlName + i}">
         </ng-container>
       </div>
+      <div>
+        <ion-label>Additional Notes:</ion-label>
+        <ion-textarea rows="3" formControlName="notes">
+        </ion-textarea>
+      </div>
+      <ion-button type="submit">Submit</ion-button>
     </form>
   </ion-card>
 
-  <ng-template #selectTemplate let-cat="cat" let-name="controlName">
-    <ion-select formControlName="">
-      <ion-select-option
-        *ngFor="let item in cat">{{ item.displayName }}</ion-select-option>"
-    </ion-select>
+  <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
+    <div [formGroup]="addForm">
+      <ion-select [formControlName]="controlName" placeholder="--Choose One--" (ionChange)="selectChange($event)">
+        <ion-select-option *ngFor="let item of cat" [value]="item.ceCategoryId">{{ item.displayName }}</ion-select-option>
+      </ion-select>
+    </div>
   </ng-template>
 
-  <ng-template #checkboxTemplate let-cat="cat">
-    checkbox Template
-    {{cat[0].name}}
+  <ng-template #checkboxTemplate let-cat="cat" let-controlName="controlName">
+    <div [formGroup]="addForm">
+      <ion-radio-group [formControlName]="controlName">
+        <ion-label>Yes</ion-label>
+        <ion-radio [value]="cat[0].ceCategoryId"></ion-radio>
+        <ion-label>No</ion-label>
+        <ion-radio value="0"></ion-radio>
+      </ion-radio-group>
+    </div>
   </ng-template>
 
 </ion-content>

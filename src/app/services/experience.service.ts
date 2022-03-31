@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { CategoryList } from '../models/category';
+import { CECategoryList } from '../models/category';
 import { CEExperience, CEExperienceAmount } from '../models/experience';
+import { CELocation } from '../models/location';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,10 @@ export class ExperienceService {
     const experiences: CEExperience[] = [{
       ceExperienceId: 1,
       userId: 1,
-      location: 'Home',
+      location: {
+        ceLocationId: 1,
+        name: 'Home'
+      },
       carryForward: false,
       programTitle: 'Exam Study',
       startDate: '2022-03-01',
@@ -52,7 +56,10 @@ export class ExperienceService {
     {
       ceExperienceId: 2,
       userId: 1,
-      location: 'Other',
+      location: {
+        ceLocationId: 3,
+        name: 'Other'
+      },
       carryForward: false,
       programTitle: 'Professionalism Seminar',
       eventName: 'Actuary Conference',
@@ -96,7 +103,10 @@ export class ExperienceService {
       {
         ceExperienceId: 3,
         userId: 1,
-        location: 'Work',
+        location: {
+          ceLocationId: 2,
+          name: 'Work'
+        },
         carryForward: false,
         programTitle: 'General Business Round Table',
         startDate: '2022-01-11',
@@ -149,10 +159,10 @@ export class ExperienceService {
   }
 
   /**
-   * Return unit field information for the
+   * Return amount field information for the
    * add CE form.
    */
-  public fetchUnitInfo(): CEExperienceAmount[] {
+  public fetchAmountInfo(): CEExperienceAmount[] {
     return [{
       nationalStandardCEUnitId: 1,
       parentUnitId: 2,
@@ -174,7 +184,7 @@ export class ExperienceService {
   /**
    * Return category lists for input ce form.
    */
-  public fetchCategoryLists(): CategoryList[] {
+  public fetchCategoryLists(): CECategoryList[] {
     return [{
       ceCategoryListId: 7,
       name: 'General Categories',
@@ -228,6 +238,25 @@ export class ExperienceService {
         name: 'Organized',
         displayName: 'Organized'
       }]
+    }];
+  }
+
+  /**
+   * Fetch location info.
+   */
+  public fetchLocations(): CELocation[] {
+    return [{
+      ceLocationId: 1,
+      name: 'Home'
+    },{
+      ceLocationId: 2,
+      name: 'Work'
+    },{
+      ceLocationId: 3,
+      name: 'Online'
+    },{
+      ceLocationId: 4,
+      name: 'Other'
     }];
   }
 }

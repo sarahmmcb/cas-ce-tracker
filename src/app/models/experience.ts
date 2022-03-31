@@ -1,4 +1,5 @@
 import { CECategory } from './category';
+import { CELocation } from './location';
 
 /**
  * Model for a CE Experience.
@@ -6,7 +7,7 @@ import { CECategory } from './category';
 export class CEExperience {
   public ceExperienceId = 0;
   public userId = 0;
-  public location = '';
+  public location: CELocation;
   public carryForward = false;
   public programTitle = '';
   public eventName? = '';

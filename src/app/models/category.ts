@@ -17,7 +17,7 @@ export interface CECategory {
 /**
  * Interface for a category list.
  */
-export interface CategoryList {
+export interface CECategoryList {
   ceCategoryListId: number;
   name: string;
   displayQuestion?: string;
