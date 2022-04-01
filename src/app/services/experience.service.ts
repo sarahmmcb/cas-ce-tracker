@@ -187,7 +187,7 @@ export class ExperienceService {
   public fetchCategoryLists(): CECategoryList[] {
     return [{
       ceCategoryListId: 7,
-      name: 'General Categories',
+      name: 'generalCategories',
       displayQuestion: 'Please indicate the CE Type',
       displayOrder: 1,
       categories: [{
@@ -214,7 +214,7 @@ export class ExperienceService {
       }]
     },{
       ceCategoryListId: 8,
-      name: 'Bias',
+      name: 'bias',
       displayQuestion: 'Does this CE include a Bias topic?',
       displayOrder: 2,
       categories: [{
@@ -227,7 +227,7 @@ export class ExperienceService {
       }]
     },{
       ceCategoryListId: 9,
-      name: 'Organized',
+      name: 'organized',
       displayQuestion: 'Is this CE organized?',
       displayOrder: 3,
       categories: [{

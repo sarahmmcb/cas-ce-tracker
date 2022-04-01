@@ -8,7 +8,7 @@ export class CEExperience {
   public ceExperienceId = 0;
   public userId = 0;
   public location: CELocation;
-  public carryForward = false;
+  public carryForward = true;
   public programTitle = '';
   public eventName? = '';
   public startDate = '';

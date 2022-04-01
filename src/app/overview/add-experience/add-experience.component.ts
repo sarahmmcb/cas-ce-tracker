@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { InputCustomEvent, ModalController } from '@ionic/angular';
+import { DateTime } from 'luxon';
 import * as math from 'mathjs';
 import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount } from 'src/app/models/experience';
@@ -48,6 +49,11 @@ export class AddExperienceComponent implements OnInit {
   public childAmount: CEExperienceAmount;
 
   /**
+   * Year to carry CE forward to.
+   */
+  public carryForwardYear: number;
+
+  /**
    * Base name for dynamically created
    * category list form control.
    */
@@ -76,6 +82,8 @@ export class AddExperienceComponent implements OnInit {
      this.ceExperience.amounts = this.experienceService.fetchAmountInfo();
     }
 
+    this.carryForwardYear = DateTime.fromSQL(this.ceExperience.startDate).plus({years: 1}).year;
+
     this.parentAmount = this.ceExperience.amounts.find(p => p.parentUnitId === 0);
     this.childAmount = this.ceExperience.amounts.find(p => p.parentUnitId !== 0);
 
@@ -90,31 +98,31 @@ export class AddExperienceComponent implements OnInit {
         value: this.childAmount.amount,
         disabled: this.childAmount.isDisabled
       }),
+      carryForward: this.ceExperience.carryForward,
       notes: this.ceExperience.notes
     });
 
     // Add categorylist controls
-    for(let i = 0; i < this.categoryLists.length; i++){
+    for(const catList of this.categoryLists){
       const chosenCategory: CECategory =
-            this.ceExperience.categories.find(c => c.categoryListId === this.categoryLists[i].ceCategoryListId);
+            this.ceExperience.categories.find(c => c.categoryListId === catList.ceCategoryListId);
 
-      if(this.categoryLists[i].categories.length === 1) {
+      if(catList.categories.length === 1) {
         // set the value of the radio button group
         if(chosenCategory) {
-          this.addForm.addControl(this.catListFormControlName + i, new FormControl(chosenCategory.ceCategoryId));
+          this.addForm.addControl(catList.name, new FormControl(chosenCategory.ceCategoryId));
         }
         else{
-          this.addForm.addControl(this.catListFormControlName + i, new FormControl());
+          this.addForm.addControl(catList.name, new FormControl());
         }
-
       }
       else {
         // set the value of the select list
         if (chosenCategory) {
-          this.addForm.addControl(this.catListFormControlName + i, new FormControl(chosenCategory.ceCategoryId));
+          this.addForm.addControl(catList.name, new FormControl(chosenCategory.ceCategoryId));
         }
         else {
-          this.addForm.addControl(this.catListFormControlName + i, new FormControl());
+          this.addForm.addControl(catList.name, new FormControl());
         }
       }
     }
@@ -143,6 +151,10 @@ export class AddExperienceComponent implements OnInit {
 
   public selectChange(event: any){
     console.log(event);
+  }
+
+  public onDateChange(event: InputCustomEvent): void {
+
   }
 
   /**

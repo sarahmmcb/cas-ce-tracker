@@ -1,6 +1,6 @@
 <ion-header>
   <button (click)="onClose()">
-    <ion-icon color="#fff" name="close"></ion-icon>
+    <ion-icon color="primary" name="close"></ion-icon>
   </button>
   <h2>
     Add CE
@@ -9,12 +9,10 @@
 
 <ion-content>
   <ion-card>
-  </ion-card>
-  <ion-card>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
       <div>
         <ion-label>Date of CE*:</ion-label>
-        <ion-input formControlName="ceDate">
+        <ion-input formControlName="ceDate" (ionChange)="onDateChange($event)">
         </ion-input>
       </div>
       <div>
@@ -53,8 +51,14 @@
       <div *ngFor="let catList of categoryLists; index as i">
         <ion-label>{{ catList.displayQuestion }}</ion-label>
         <ng-container
-          *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: catListFormControlName + i}">
+          *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: catList.name}">
         </ng-container>
+      </div>
+      <div class="carry-forward">
+        <ion-label>
+          Carry forward to {{ carryForwardYear }}
+        </ion-label>
+        <input type="checkbox" formControlName="carryForward" />
       </div>
       <div>
         <ion-label>Additional Notes:</ion-label>
