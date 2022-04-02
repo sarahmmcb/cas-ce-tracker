@@ -8,7 +8,7 @@ export class CEExperience {
   public ceExperienceId = 0;
   public userId = 0;
   public location: CELocation = new CELocation();
-  public carryForward = true;
+  public carryForward = false;
   public programTitle = '';
   public eventName? = '';
   public startDate = '';
@@ -46,9 +46,9 @@ export interface CEUnit {
  * or updating a DTO.
  */
 export interface AddExDTO {
-  [key: string]: any;
   ceDate?: string;
   carryForward?: boolean;
+  categoryIds: number[];
   ceLocationId?: number;
   description?: string;
   eventName?: string;

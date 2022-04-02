@@ -263,8 +263,8 @@ public addExperience(addExDTO: AddExDTO): CEExperience {
   ceExperience.carryForward = addExDTO.carryForward || false;
   ceExperience.description = addExDTO.description || '';
   ceExperience.notes = addExDTO.notes || '';
-  ceExperience.startDate = addExDTO.startDate;
-  ceExperience.endDate = addExDTO.startDate;
+  ceExperience.startDate = addExDTO.ceDate;
+  ceExperience.endDate = addExDTO.ceDate;
   ceExperience.programTitle = addExDTO.programTitle;
   ceExperience.eventName = addExDTO.eventName || '';
   ceExperience.location = this.fetchLocations().find(l => l.ceLocationId === addExDTO.ceLocationId) || new CELocation();
@@ -284,7 +284,7 @@ public addExperience(addExDTO: AddExDTO): CEExperience {
  public updateExperience(updateExDTO: AddExDTO, exp: CEExperience): CEExperience {
   const ceExperience: CEExperience =  new CEExperience();
 
-
+  return ceExperience;
  }
 
 }
