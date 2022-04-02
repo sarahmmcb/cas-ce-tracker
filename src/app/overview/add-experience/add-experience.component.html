@@ -17,7 +17,7 @@
       </div>
       <div>
         <ion-label>Location:</ion-label>
-        <ion-select formControlName="ceLocation" placeHolder="--Choose One--">
+        <ion-select formControlName="ceLocationId" placeHolder="--Choose One--">
           <ion-select-option *ngFor="let item of locations" [value]="item.ceLocationId">{{ item.name }}</ion-select-option>
         </ion-select>
       </div>
@@ -38,12 +38,12 @@
       </div>
       <div class="div-time-spent">
         <div>
-          <ion-label>Time Spent (in {{ parentAmount.unitPlural }})*:</ion-label>
+          <ion-label>Time Spent (in {{ parentUnit.unitPlural }})*:</ion-label>
           <ion-input type="number" formControlName="timeSpentParent" (ionBlur)="onAmountEdit($event)">
           </ion-input>
         </div>
         <div>
-          <ion-label>Time Spent (in {{ childAmount.unitPlural }}):</ion-label>
+          <ion-label>Time Spent (in {{ childUnit.unitPlural }}):</ion-label>
           <ion-input type="number" formControlName="timeSpentChild">
           </ion-input>
         </div>

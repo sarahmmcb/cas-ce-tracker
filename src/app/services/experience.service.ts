@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CECategoryList } from '../models/category';
-import { CEExperience, CEExperienceAmount } from '../models/experience';
+import { AddExDTO, CEExperience, CEUnit } from '../models/experience';
 import { CELocation } from '../models/location';
 
 @Injectable({
@@ -35,22 +35,15 @@ export class ExperienceService {
         displayName: 'Other Relevant'
       }],
       amounts: [{
-        nationalStandardCEUnitId: 1,
-        parentUnitId: 2,
-        amount: 1,
-        unitPlural: 'hrs.',
-        unitSingular: 'hr.',
-        isDisabled: true,
-        conversionFormula: '/50'
-      },
-      {
-        nationalStandardCEUnitId: 2,
-        parentUnitId: 0,
-        amount: 50,
-        unitPlural: 'min.',
-        unitSingular: 'min.',
-        isDisabled: false,
-        conversionFormula: ''
+        ceExperienceAmountId: 1,
+        ceExperienceId: 1,
+        ceUnitId: 2,
+        amount: 75
+      },{
+        ceExperienceAmountId: 2,
+        ceExperienceId: 1,
+        ceUnitId: 1,
+        amount: 1.5
       }]
     },
     {
@@ -82,22 +75,15 @@ export class ExperienceService {
         displayName: 'Organized'
       }],
       amounts: [{
-        nationalStandardCEUnitId: 1,
-        parentUnitId: 2,
-        amount: 1.5,
-        unitPlural: 'hrs.',
-        unitSingular: 'hr.',
-        isDisabled: true,
-        conversionFormula: '/50'
-      },
-      {
-        nationalStandardCEUnitId: 2,
-        parentUnitId: 0,
-        amount: 75,
-        unitPlural: 'min.',
-        unitSingular: 'min.',
-        isDisabled: false,
-        conversionFormula: ''
+        ceExperienceAmountId: 3,
+        ceExperienceId: 2,
+        ceUnitId: 2,
+        amount: 50
+      },{
+        ceExperienceAmountId: 4,
+        ceExperienceId: 2,
+        ceUnitId: 1,
+        amount: 1
       }]
     },
       {
@@ -136,22 +122,15 @@ export class ExperienceService {
           displayName: 'Organized'
         }],
         amounts: [{
-          nationalStandardCEUnitId: 1,
-          parentUnitId: 2,
-          amount: 0.5,
-          unitPlural: 'hrs.',
-          unitSingular: 'hr.',
-          isDisabled: true,
-          conversionFormula: '/50'
-        },
-        {
-          nationalStandardCEUnitId: 2,
-          parentUnitId: 0,
-          amount: 25,
-          unitPlural: 'min.',
-          unitSingular: 'min.',
-          isDisabled: false,
-          conversionFormula: ''
+          ceExperienceAmountId: 5,
+          ceExperienceId: 3,
+          ceUnitId: 2,
+          amount: 25
+        },{
+          ceExperienceAmountId: 6,
+          ceExperienceId: 3,
+          ceUnitId: 1,
+          amount: 0.5
         }]
     }];
 
@@ -162,9 +141,9 @@ export class ExperienceService {
    * Return amount field information for the
    * add CE form.
    */
-  public fetchAmountInfo(): CEExperienceAmount[] {
+  public fetchUnitInfo(): CEUnit[] {
     return [{
-      nationalStandardCEUnitId: 1,
+      ceUnitId: 1,
       parentUnitId: 2,
       unitSingular: 'Hr.',
       unitPlural: 'Hrs.',
@@ -172,7 +151,7 @@ export class ExperienceService {
       conversionFormula: '/50'
     },
     {
-      nationalStandardCEUnitId: 2,
+      ceUnitId: 2,
       parentUnitId: 0,
       unitSingular: 'Min.',
       unitPlural: 'Min.',
@@ -259,4 +238,53 @@ export class ExperienceService {
       name: 'Other'
     }];
   }
+
+/**
+ * API call to add an experience.
+ *
+ * @param addExDTO experience DTO object.
+ */
+public addExperience(addExDTO: AddExDTO): CEExperience {
+  const ceExperience: CEExperience =  new CEExperience();
+
+  ceExperience.ceExperienceId = Math.round(Math.random()*20);
+  ceExperience.amounts =  [{
+    ceExperienceAmountId: 0,
+    ceExperienceId: ceExperience.ceExperienceId,
+    ceUnitId: 2,
+    amount: addExDTO.timeSpentParent
+  },{
+    ceExperienceAmountId: 0,
+    ceExperienceId: ceExperience.ceExperienceId,
+    ceUnitId: 1,
+    amount: addExDTO.timeSpentChild
+  }];
+
+  ceExperience.carryForward = addExDTO.carryForward || false;
+  ceExperience.description = addExDTO.description || '';
+  ceExperience.notes = addExDTO.notes || '';
+  ceExperience.startDate = addExDTO.startDate;
+  ceExperience.endDate = addExDTO.startDate;
+  ceExperience.programTitle = addExDTO.programTitle;
+  ceExperience.eventName = addExDTO.eventName || '';
+  ceExperience.location = this.fetchLocations().find(l => l.ceLocationId === addExDTO.ceLocationId) || new CELocation();
+  ceExperience.userId = 1;
+
+  // Add categories
+
+
+  return ceExperience;
+}
+
+/**
+ * API call to update an experience.
+ *
+ * @param updateExDTO experience DTO object.
+ */
+ public updateExperience(updateExDTO: AddExDTO, exp: CEExperience): CEExperience {
+  const ceExperience: CEExperience =  new CEExperience();
+
+
+ }
+
 }

@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { InputCustomEvent, ModalController } from '@ionic/angular';
+import { timeStamp } from 'console';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
 import { CECategory, CECategoryList } from 'src/app/models/category';
-import { CEExperience, CEExperienceAmount } from 'src/app/models/experience';
+import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
 import { ExperienceService } from 'src/app/services/experience.service';
 
@@ -31,6 +32,21 @@ export class AddExperienceComponent implements OnInit {
    * Possible CE locations.
    */
   public locations: CELocation[] = [];
+
+  /**
+   * Possible CE units.
+   */
+  public ceUnits: CEUnit[] = [];
+
+  /**
+   * Parent unit.
+   */
+  public parentUnit: CEUnit;
+
+  /**
+   * Child Unit.
+   */
+  public childUnit: CEUnit;
 
   /**
    * Form group property.
@@ -68,39 +84,41 @@ export class AddExperienceComponent implements OnInit {
    */
   ngOnInit() {
     // TODO: make a DTO object to get all this form info in one call.
+    // Most of this should be loaded on app startup
     // fetch categories by list
     this.categoryLists = this.experienceService.fetchCategoryLists();
     // fetch possible locations
     this.locations = this.experienceService.fetchLocations();
+    // fetch possible units
+    this.ceUnits = this.experienceService.fetchUnitInfo();
+    this.parentUnit = this.ceUnits.find(u => u.parentUnitId === 0);
+    this.childUnit = this.ceUnits.find(u => u.parentUnitId !== 0);
 
     if(!this.ceExperience) {
       this.ceExperience = new CEExperience();
-
-      // fetch unit info
-      // need a user service to get user info
-      // to supply nationalstandard id.
-     this.ceExperience.amounts = this.experienceService.fetchAmountInfo();
     }
 
     this.carryForwardYear = DateTime.fromSQL(this.ceExperience.startDate).plus({years: 1}).year;
 
-    this.parentAmount = this.ceExperience.amounts.find(p => p.parentUnitId === 0);
-    this.childAmount = this.ceExperience.amounts.find(p => p.parentUnitId !== 0);
+    this.parentAmount = this.ceExperience.amounts.find(p => p.ceUnitId === this.parentUnit.ceUnitId);
+    this.childAmount = this.ceExperience.amounts.find(p => p.ceUnitId === this.childUnit.ceUnitId);
 
     this.addForm = this.fb.group({
       ceDate: this.ceExperience.startDate,
-      ceLocation: this.ceExperience.location.ceLocationId || 0,
+      ceLocationId: this.ceExperience.location.ceLocationId,
       programTitle: this.ceExperience.programTitle,
       eventName: this.ceExperience.eventName,
       description: this.ceExperience.description,
       timeSpentParent: this.parentAmount.amount,
-      timeSpentChild: new FormControl({
-        value: this.childAmount.amount,
-        disabled: this.childAmount.isDisabled
-      }),
       carryForward: this.ceExperience.carryForward,
       notes: this.ceExperience.notes
     });
+
+    // Add child amount form control
+    this.addForm.addControl('timeSpentChild', new FormControl({
+      value: this.childAmount.amount,
+      disabled: this.childUnit.isDisabled
+    }));
 
     // Add categorylist controls
     for(const catList of this.categoryLists){
@@ -143,10 +161,18 @@ export class AddExperienceComponent implements OnInit {
    * Logic to submit form.
    */
   public onSubmit(): void {
-    console.log(this.addForm.value);
+    console.log(this.addForm.getRawValue());
 
     // Update experience object with form data
+    // or... send to server and return with updated experience object.
+    if (this.ceExperience.ceExperienceId === 0) {
+      this.experienceService.addExperience(this.addForm.value);
+    }
+    else {
+      this.experienceService.updateExperience(this.addForm.value, this.ceExperience);
+    }
 
+    this.onClose();
   }
 
   public selectChange(event: any){
@@ -169,7 +195,7 @@ export class AddExperienceComponent implements OnInit {
     }
 
     this.addForm.patchValue({
-      timeSpentChild: math.evaluate(event.target.value.toString() + this.childAmount.conversionFormula)
+      timeSpentChild: math.evaluate(event.target.value.toString() + this.childUnit.conversionFormula)
     });
   }
 
