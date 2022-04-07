@@ -3,67 +3,68 @@
     <ion-icon color="primary" name="close"></ion-icon>
   </button>
   <h2>
-    Add CE
+    {{ formTitle }}
   </h2>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-      <div>
+      <div class="div-form-control">
         <ion-label>Date of CE*:</ion-label>
-        <ion-input formControlName="ceDate" (ionChange)="onDateChange($event)">
+        <ion-input type="date" formControlName="ceDate" (ionChange)="onDateChange($event)">
         </ion-input>
       </div>
-      <div>
+      <div class="div-form-control">
         <ion-label>Location:</ion-label>
         <ion-select formControlName="ceLocationId" placeHolder="--Choose One--">
           <ion-select-option *ngFor="let item of locations" [value]="item.ceLocationId">{{ item.name }}
           </ion-select-option>
         </ion-select>
       </div>
-      <div>
+      <div class="div-form-control">
         <ion-label>Program Title*:</ion-label>
         <ion-input formControlName="programTitle">
         </ion-input>
       </div>
-      <div>
+      <div class="div-form-control">
         <ion-label>Event Name:</ion-label>
         <ion-input formControlName="eventName">
         </ion-input>
       </div>
-      <div>
+      <div class="div-form-control">
         <ion-label>Description:</ion-label>
-        <ion-textarea rows="3" formControlName="description">
+        <ion-textarea rows="5" formControlName="description">
         </ion-textarea>
       </div>
-      <div class="div-time-spent">
+      <div class="div-form-control div-time-spent">
         <div>
-          <ion-label>Time Spent (in {{ parentUnit.unitPlural }})*:</ion-label>
-          <ion-input type="number" formControlName="timeSpentParent" (ionBlur)="onAmountEdit($event)">
+          <ion-label>Time Spent ({{ parentUnit.unitPlural }})*:</ion-label>
+          <ion-input type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
           </ion-input>
         </div>
         <div>
-          <ion-label>Time Spent (in {{ childUnit.unitPlural }}):</ion-label>
+          <ion-label>Time Spent ({{ childUnit.unitPlural }}):</ion-label>
           <ion-input type="number" formControlName="timeSpentChild">
           </ion-input>
         </div>
       </div>
-      <div *ngFor="let catList of categoryLists; index as i">
+      <div class="div-form-control" *ngFor="let catList of categoryLists; index as i">
         <ion-label>{{ catList.displayQuestion }}</ion-label>
         <ng-container
           *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: i}">
         </ng-container>
       </div>
-      <div class="carry-forward">
+      <div class="div-form-control carry-forward">
         <ion-label>
           Carry forward to {{ carryForwardYear }}
         </ion-label>
-        <input type="checkbox" formControlName="carryForward" />
+        <!-- <input type="checkbox" formControlName="carryForward" /> -->
+        <ion-toggle formControlName="carryForward" color="primary"></ion-toggle>
       </div>
-      <div>
+      <div class="div-form-control">
         <ion-label>Additional Notes:</ion-label>
-        <ion-textarea rows="3" formControlName="notes">
+        <ion-textarea rows="5" formControlName="notes">
         </ion-textarea>
       </div>
       <ion-button type="submit">Submit</ion-button>
@@ -71,7 +72,7 @@
   </ion-card>
 
   <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
-    <div [formGroup]="addForm">
+    <div [formGroup]="addForm" class="div-single-category">
       <div formArrayName="categories">
           <ion-select [formControlName]="controlName" placeholder="--Choose One--" (ionChange)="selectChange($event)">
             <ion-select-option *ngFor="let item of cat" [value]="item.ceCategoryId">{{ item.displayName }}
@@ -82,7 +83,7 @@
   </ng-template>
 
   <ng-template #checkboxTemplate let-cat="cat" let-controlName="controlName">
-    <div [formGroup]="addForm">
+    <div [formGroup]="addForm" class="div-single-category">
       <div formArrayName="categories">
           <ion-radio-group [formControlName]="controlName">
             <ion-label>Yes</ion-label>

@@ -244,47 +244,9 @@ export class ExperienceService {
  *
  * @param addExDTO experience DTO object.
  */
-public addExperience(addExDTO: AddExDTO): CEExperience {
-  const ceExperience: CEExperience =  new CEExperience();
-
-  ceExperience.ceExperienceId = Math.round(Math.random()*20);
-  ceExperience.amounts =  [{
-    ceExperienceAmountId: 0,
-    ceExperienceId: ceExperience.ceExperienceId,
-    ceUnitId: 2,
-    amount: addExDTO.timeSpentParent
-  },{
-    ceExperienceAmountId: 0,
-    ceExperienceId: ceExperience.ceExperienceId,
-    ceUnitId: 1,
-    amount: addExDTO.timeSpentChild
-  }];
-
-  ceExperience.carryForward = addExDTO.carryForward || false;
-  ceExperience.description = addExDTO.description || '';
-  ceExperience.notes = addExDTO.notes || '';
-  ceExperience.startDate = addExDTO.ceDate;
-  ceExperience.endDate = addExDTO.ceDate;
-  ceExperience.programTitle = addExDTO.programTitle;
-  ceExperience.eventName = addExDTO.eventName || '';
-  ceExperience.location = this.fetchLocations().find(l => l.ceLocationId === addExDTO.ceLocationId) || new CELocation();
-  ceExperience.userId = 1;
-
-  // Add categories
-
-
-  return ceExperience;
+public addExperience(addExDTO: AddExDTO, exp: CEExperience = null): void {
+  // make API call to update database, return updated experience list
+  // and updated ceData object
 }
-
-/**
- * API call to update an experience.
- *
- * @param updateExDTO experience DTO object.
- */
- public updateExperience(updateExDTO: AddExDTO, exp: CEExperience): CEExperience {
-  const ceExperience: CEExperience =  new CEExperience();
-
-  return ceExperience;
- }
 
 }

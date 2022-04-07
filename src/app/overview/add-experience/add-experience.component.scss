@@ -7,6 +7,10 @@ h2 {
   margin-top: 16px;
 }
 
+form {
+  margin: 20px 0;
+}
+
 button {
   background-color: transparent;
   float: right;
@@ -17,26 +21,64 @@ ion-icon {
 }
 
 ion-card {
+  --color: var(--app-card-color);
+  font-size: var(--app-card-font-size);
   padding: 0 20px;
+}
+
+ion-input {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 50px;
+  margin-top: 5px;
+  --padding-start: var(--app-input-padding);
+  --padding-end: var(--app-input-padding);
 }
 
 ion-textarea {
   border: 1px solid var(--ion-color-primary);
   border-radius: 7px;
   margin-top: 5px;
+  --padding-start: var(--app-input-padding);
+  --padding-end: var(--app-input-padding);
+}
+
+.div-form-control {
+  margin-bottom: 15px;
 }
 
 .div-time-spent {
   & > div {
-    display: inline-block;
-    margin-right: 10px;
+    margin-bottom: 15px;
   }
 
   & ion-input {
-    width: 50px;
+    display: inline-block;
+    margin-left: var(--app-form-control-margin);
+    width: 70px;
   }
 }
 
 .carry-forward > * {
   vertical-align: middle;
+}
+
+input[type="checkbox"] {
+  height: 15px;
+  width: 15px;
+}
+
+ion-radio-group > * {
+  vertical-align: middle;
+}
+
+ion-radio {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 50px;
+  height: 20px;
+  width: 20px;
+  margin: 0 var(--app-form-control-margin);
+}
+
+.div-single-category {
+  margin-top: var(--app-form-control-margin);
 }

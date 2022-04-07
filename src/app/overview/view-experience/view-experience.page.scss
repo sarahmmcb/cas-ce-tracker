@@ -14,7 +14,9 @@ ion-card-header {
 
 button {
   background-color: transparent;
-  float: right;
+  position: absolute;
+  top: 5px;
+  right: 3px;
 }
 
 ion-icon {

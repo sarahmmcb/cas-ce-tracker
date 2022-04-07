@@ -23,6 +23,11 @@ export class AddExperienceComponent implements OnInit {
   public ceExperience: CEExperience;
 
   /**
+   * Title of form based on add or update.
+   */
+  public formTitle: string;
+
+  /**
    * Category lists.
    */
   public categoryLists: CECategoryList[] = [];
@@ -85,10 +90,11 @@ export class AddExperienceComponent implements OnInit {
    * On Init.
    */
   public ngOnInit(): void {
-
     this.initializeData();
     this.initializeExperienceData();
     this.initializeFormControls();
+
+    this.formTitle = this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
   }
 
   /**
@@ -108,12 +114,12 @@ export class AddExperienceComponent implements OnInit {
   public onSubmit(): void {
     console.log(this.addForm.getRawValue());
 
-    // Update experience object with form data
+    // Update/add experience object with form data
     // or... send to server and return with updated experience object.
     if (this.ceExperience.ceExperienceId === 0) {
       this.experienceService.addExperience(this.addForm.value);
     } else {
-      this.experienceService.updateExperience(
+      this.experienceService.addExperience(
         this.addForm.value,
         this.ceExperience
       );

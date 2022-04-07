@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
-import { CEExperience } from 'src/app/models/experience';
+import { e } from 'mathjs';
+import { CEExperience, CEUnit } from 'src/app/models/experience';
 import { ExperienceService } from 'src/app/services/experience.service';
 
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
@@ -19,6 +20,11 @@ export class ViewExperiencePage implements OnInit {
   public currentCE: CEExperience[] = [];
 
   /**
+   * CE Unit info.
+   */
+  public ceUnits: CEUnit[] = [];
+
+  /**
    * Year to show CE for.
    */
   public year: number;
@@ -27,11 +33,13 @@ export class ViewExperiencePage implements OnInit {
               private modalCtrl: ModalController) { }
 
   /**
-   * On init.
+   * On Init.
    */
   public ngOnInit(): void {
     this.year = DateTime.now().year;
+    this.ceUnits = this.experienceService.fetchUnitInfo();
     this.currentCE = this.experienceService.fetchExperiences(this.year);
+    this.assignUnits();
   }
 
   /**
@@ -46,6 +54,19 @@ export class ViewExperiencePage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  /**
+   * Assign unit labels to experience amounts.
+   */
+  private assignUnits(): void {
+    for(const exp of this.currentCE) {
+      for(const am of exp.amounts) {
+        const unit = this.ceUnits.find(u => u.ceUnitId === am.ceUnitId);
+        am.unitPlural = unit.unitPlural;
+        am.unitSingular = unit.unitSingular;
+      }
+    }
   }
 
 }

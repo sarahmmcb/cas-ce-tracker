@@ -27,6 +27,8 @@ export class CEExperienceAmount {
   public ceExperienceId = 0;
   public ceUnitId = 0;
   public amount = 0.0;
+  public unitSingular? = '';
+  public unitPlural? = '';
 }
 
 /**
@@ -48,7 +50,7 @@ export interface CEUnit {
 export interface AddExDTO {
   ceDate?: string;
   carryForward?: boolean;
-  categoryIds: number[];
+  categories: number[];
   ceLocationId?: number;
   description?: string;
   eventName?: string;
