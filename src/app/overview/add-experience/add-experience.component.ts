@@ -108,6 +108,11 @@ export class AddExperienceComponent implements OnInit {
     return await this.modalCtrl.dismiss();
   }
 
+  public onCancel(): void {
+    // show confirmation
+    this.onClose();
+  }
+
   /**
    * Logic to submit form.
    */
@@ -131,8 +136,6 @@ export class AddExperienceComponent implements OnInit {
   public selectChange(event: any) {
     console.log(event);
   }
-
-  public onDateChange(event: InputCustomEvent): void {}
 
   /**
    * Update child amount when parent amount

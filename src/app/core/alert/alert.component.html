@@ -1,0 +1,8 @@
+<ng-container *ngIf="alert">
+  <div class="alert-backdrop"></div>
+  <header class="alert-title">{{ alert.title }}</header>
+  <div class="alert-content">{{ alert.message }}</div>
+  <footer class="alert-footer">
+    <button *ngFor="let button of alert.buttons" (click)="button.handler(button.role)" id="button.id">{{ action.text }}</button>
+  </footer>
+</ng-container>

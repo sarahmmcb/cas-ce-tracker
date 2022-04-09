@@ -11,7 +11,7 @@
   <ion-card>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
       <div class="div-form-control">
-        <ion-label>Date of CE*:</ion-label>
+        <ion-label>Date of CE:*</ion-label>
         <ion-input type="date" formControlName="ceDate" (ionChange)="onDateChange($event)">
         </ion-input>
       </div>
@@ -23,7 +23,7 @@
         </ion-select>
       </div>
       <div class="div-form-control">
-        <ion-label>Program Title*:</ion-label>
+        <ion-label>Program Title:*</ion-label>
         <ion-input formControlName="programTitle">
         </ion-input>
       </div>
@@ -39,7 +39,7 @@
       </div>
       <div class="div-form-control div-time-spent">
         <div>
-          <ion-label>Time Spent ({{ parentUnit.unitPlural }})*:</ion-label>
+          <ion-label>Time Spent ({{ parentUnit.unitPlural }}):*</ion-label>
           <ion-input type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
           </ion-input>
         </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="div-form-control" *ngFor="let catList of categoryLists; index as i">
-        <ion-label>{{ catList.displayQuestion }}</ion-label>
+        <ion-label>{{ catList.displayQuestion }}:*</ion-label>
         <ng-container
           *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: i}">
         </ng-container>
@@ -67,7 +67,8 @@
         <ion-textarea rows="5" formControlName="notes">
         </ion-textarea>
       </div>
-      <ion-button type="submit">Submit</ion-button>
+      <ion-button type="submit">{{ formTitle }}</ion-button>
+      <ion-button type="button" class="cancel-button" fill="outline" (click)="onCancel()">Cancel</ion-button>
     </form>
   </ion-card>
 
@@ -94,5 +95,4 @@
         </div>
     </div>
   </ng-template>
-
 </ion-content>
