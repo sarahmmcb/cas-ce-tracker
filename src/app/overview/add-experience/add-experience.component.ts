@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Form, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { InputCustomEvent, ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
+import { CEAlertService } from 'src/app/core/alert.service';
 import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
@@ -76,7 +78,9 @@ export class AddExperienceComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private fb: FormBuilder,
-    private experienceService: ExperienceService
+    private experienceService: ExperienceService,
+    private alertService: CEAlertService,
+    private router: Router
   ) {}
 
   /**
@@ -100,17 +104,29 @@ export class AddExperienceComponent implements OnInit {
   /**
    * Close the modal.
    */
-  public async onClose(): Promise<boolean> {
+  public onClose(): Promise<boolean> | void {
+    // present confirmation modal
     if (this.addForm.dirty) {
-      // check if user really wants to close
+      // define alert here and add modalCtrl.dismiss() to button handler
+      this.alertService.showAlert({
+        title: 'Confirm',
+        content: 'Are you you want to quit? Your changes will not be saved.',
+        type: 'confirm',
+        buttons: [{
+          text: 'OK',
+          role: 'confirm',
+          id: 'confirmButton',
+          action: () => this.modalCtrl.dismiss()
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          id: 'cancelButton',
+          action: () => {}
+        }]
+      });
+    } else {
+      this.modalCtrl.dismiss();
     }
-
-    return await this.modalCtrl.dismiss();
-  }
-
-  public onCancel(): void {
-    // show confirmation
-    this.onClose();
   }
 
   /**

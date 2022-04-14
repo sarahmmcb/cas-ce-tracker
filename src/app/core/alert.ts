@@ -5,7 +5,8 @@ export interface CEAlert {
   title: string;
   content: string;
   buttons: CEAlertButton[];
-  type: CEAlertType;
+  type: string;
+  routeOnClose?: string;
 }
 
 /**
@@ -26,4 +27,13 @@ export interface CEAlertButton {
   role: string;
   id: string;
   handler?: (input?: any) => any;
+  action?: (input?: any) => any;
+}
+
+/**
+ * Possible alert button roles.
+ */
+export enum CEAlertButtonRole {
+  confirm = 'confirm',
+  cancel = 'cancel'
 }
