@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputCustomEvent, ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
@@ -60,6 +60,11 @@ export class AddExperienceComponent implements OnInit {
   public addForm: FormGroup;
 
   /**
+   * Flag indicated whether or not form has been submitted.
+   */
+  public submitted = false;
+
+  /**
    * Time spent in the unit entered by user.
    */
   public parentAmount: CEExperienceAmount;
@@ -102,9 +107,9 @@ export class AddExperienceComponent implements OnInit {
   }
 
   /**
-   * Close the modal.
+   * Logic executed when cancel button is pressed.
    */
-  public onClose(): Promise<boolean> | void {
+  public onCancel(): Promise<boolean> | void {
     // present confirmation modal
     if (this.addForm.dirty) {
       // define alert here and add modalCtrl.dismiss() to button handler
@@ -134,6 +139,10 @@ export class AddExperienceComponent implements OnInit {
    */
   public onSubmit(): void {
     console.log(this.addForm.getRawValue());
+    this.submitted = true;
+    if (!this.addForm.valid) {
+      return;
+    }
 
     // Update/add experience object with form data
     // or... send to server and return with updated experience object.
@@ -146,7 +155,7 @@ export class AddExperienceComponent implements OnInit {
       );
     }
 
-    this.onClose();
+    this.modalCtrl.dismiss();
   }
 
   public selectChange(event: any) {
@@ -213,12 +222,12 @@ export class AddExperienceComponent implements OnInit {
    */
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
-      ceDate: this.ceExperience.startDate,
+      ceDate: [this.ceExperience.startDate, Validators.required],
       ceLocationId: this.ceExperience.location.ceLocationId,
-      programTitle: this.ceExperience.programTitle,
+      programTitle: [this.ceExperience.programTitle, Validators.required],
       eventName: this.ceExperience.eventName,
       description: this.ceExperience.description,
-      timeSpentParent: this.parentAmount.amount,
+      timeSpentParent: [this.parentAmount.amount, Validators.required],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
         disabled: this.childUnit.isDisabled,
@@ -234,22 +243,29 @@ export class AddExperienceComponent implements OnInit {
         (c) => c.categoryListId === catList.ceCategoryListId
       );
 
-      if (catList.categories.length === 1) {
-        // set the value of the radio button group
-        if (chosenCategory) {
-          // if we are updating, prepopulate with existing data.
-          this.categories.push(new FormControl(chosenCategory.ceCategoryId));
-        } else {
-          this.categories.push(new FormControl());
-        }
+      if (chosenCategory) {
+        // if we are updating, prepopulate with existing data.
+        this.categories.push(new FormControl(chosenCategory.ceCategoryId, [Validators.required]));
       } else {
-        // set the value of the select list
-        if (chosenCategory) {
-          this.categories.push(new FormControl(chosenCategory.ceCategoryId));
-        } else {
-          this.categories.push(new FormControl());
-        }
+        this.categories.push(new FormControl(null, [Validators.required]));
       }
+
+      // if (catList.categories.length === 1) {
+      //   // set the value of the radio button group
+      //   if (chosenCategory) {
+      //     // if we are updating, prepopulate with existing data.
+      //     this.categories.push(new FormControl(chosenCategory.ceCategoryId, [Validators.required]));
+      //   } else {
+      //     this.categories.push(new FormControl(null, [Validators.required]));
+      //   }
+      // } else {
+      //   // set the value of the select list
+      //   if (chosenCategory) {
+      //     this.categories.push(new FormControl(chosenCategory.ceCategoryId, [Validators.required]));
+      //   } else {
+      //     this.categories.push(new FormControl(null, [Validators.required]));
+      //   }
+      // }
     }
   }
 }

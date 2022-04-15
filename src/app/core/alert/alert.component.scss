@@ -23,18 +23,6 @@
   }
 }
 
-// .alert-title::after {
-//   left: 0;
-//   bottom: -5px;
-//   background-position: left 0 top -2px;
-//   position: absolute;
-//   width: 100%;
-//   height: 5px;
-//   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==);
-//   background-repeat: repeat-x;
-//   content: "";
-// }
-
 .alert-content {
   padding: 0 20px;
   margin-bottom: 16px;
@@ -52,4 +40,23 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.button {
+  box-sizing: border-box;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 4px;
+  padding: 8px 15px;
+  margin: 4px 2px;
+  letter-spacing: var(--app-button-letter-spacing);
+}
+
+.button-confirm {
+  color: white;
+  background-color: var(--ion-color-primary);
+}
+
+.button-cancel {
+  color: var(--ion-color-primary);
+  background-color: white;
 }
