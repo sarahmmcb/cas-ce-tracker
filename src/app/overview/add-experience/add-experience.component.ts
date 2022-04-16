@@ -9,6 +9,7 @@ import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
 import { ExperienceService } from 'src/app/services/experience.service';
+import { positiveValueValidator } from './validators';
 
 @Component({
   selector: 'app-add-experience',
@@ -227,7 +228,7 @@ export class AddExperienceComponent implements OnInit {
       programTitle: [this.ceExperience.programTitle, Validators.required],
       eventName: this.ceExperience.eventName,
       description: this.ceExperience.description,
-      timeSpentParent: [this.parentAmount.amount, Validators.required],
+      timeSpentParent: [this.parentAmount.amount, [Validators.required, positiveValueValidator()]],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
         disabled: this.childUnit.isDisabled,

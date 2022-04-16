@@ -45,6 +45,7 @@
           <ion-input [ngClass]="{'input-error': submitted && addForm.get('timeSpentParent').invalid}" type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
           </ion-input>
           <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.required">Time Spent is required.</div>
+          <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.nonPositiveValue">Time Spent must be greater than zero.</div>
         </div>
         <div>
           <ion-label>Time Spent ({{ childUnit.unitPlural }}):</ion-label>
@@ -70,6 +71,7 @@
         <ion-textarea rows="5" formControlName="notes">
         </ion-textarea>
       </div>
+      <div class="error-message" *ngIf="submitted && addForm.invalid">There were errors found. Please review your entries.</div>
       <ion-button type="submit">{{ formTitle }}</ion-button>
       <ion-button type="button" class="cancel-button" fill="outline" (click)="onCancel()">Cancel</ion-button>
     </form>
@@ -78,7 +80,13 @@
   <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
     <div [formGroup]="addForm" class="div-single-category">
       <div formArrayName="categories">
-          <ion-select [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--" (ionChange)="selectChange($event)">
+          <ion-select
+            [ngClass]="{'input-error': submitted && addForm.get('categories').controls[controlName].invalid}"
+            [formControlName]="controlName"
+            [name]="controlName"
+            placeholder="--Choose One--"
+            (ionChange)="selectChange($event)"
+          >
             <ion-select-option *ngFor="let item of cat" [value]="item.ceCategoryId">{{ item.displayName }}
             </ion-select-option>
           </ion-select>
@@ -97,7 +105,7 @@
           <ion-radio [value]="0"></ion-radio>
         </ion-radio-group>
       </div>
-      <!-- <div class="error-message" *ngIf="submitted && addForm.get(controlName).errors?.required">This field is required.</div> -->
+      <div class="error-message" *ngIf="submitted && addForm.get('categories').controls[controlName].errors?.required">This field is required.</div>
     </div>
   </ng-template>
 </ion-content>
