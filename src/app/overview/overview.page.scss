@@ -3,6 +3,10 @@
   text-align: center;
 }
 
+ion-content {
+  --background: var(--ion-color-primary);
+}
+
 ion-card {
   --color: var(--app-card-color);
   margin: auto;
