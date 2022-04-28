@@ -25,7 +25,22 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
 ion-input {
-  border-bottom: 1px solid var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 50px;
+  margin-top: 5px;
+  --padding-start: var(--app-input-padding);
+  --padding-end: var(--app-input-padding);
+}
+
+ion-card {
+  --color: var(--app-card-color);
+  font-size: var(--app-card-font-size);
+  margin-bottom: var(--app-card-margin-bottom);
+  margin-top: var(--app-card-margin-top);
+  padding: 20px;
+}
+
+.div-form-control {
+  margin-bottom: 15px;
 }

@@ -1,26 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/user';
+import { CEUser } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tempUser: User = {
+  private tempUser: CEUser = {
     userId: 1,
     firstName: 'Betty',
     lastName: 'Boop',
     email: 'stuff@stuff.com',
-    roles: [
-      {
-        roleId: 1,
-        nationalStandardId: 3,
-        longName: 'Appointed Actuary',
-        shortName: 'App. Actuary',
-      },
-    ],
+    title: 'Ms.',
     nationalStandard: {
-      nationalStandardId: 3,
+      nationalStandardId: 2,
       owningOrganizationId: 2,
       longName: 'United States Specific Qualification Standard',
       shortName: 'USQS Specific',
@@ -37,11 +30,19 @@ export class AuthService {
         shortName: 'AAA',
       },
     ],
+    credentials: [
+      {
+        credentialId: 1,
+        organizationId: 1,
+        shortName: 'FCAS',
+        longName: 'Fellow of the Casualty Actuarial Society'
+      }
+    ]
   };
 
-  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  private userSubject: BehaviorSubject<CEUser> = new BehaviorSubject<CEUser>(null);
 
-  private _userIsAuthenticated = true;
+  private _userIsAuthenticated = false;
 
   constructor() {}
 
@@ -52,6 +53,9 @@ export class AuthService {
     return this.userSubject.asObservable();
   }
 
+  /**
+   * Return user is authenticated boolean.
+   */
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }

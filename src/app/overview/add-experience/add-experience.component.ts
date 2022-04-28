@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { InputCustomEvent, ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
@@ -9,6 +8,7 @@ import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
 import { ExperienceService } from 'src/app/services/experience.service';
+
 import { positiveValueValidator } from './validators';
 
 @Component({
@@ -86,7 +86,6 @@ export class AddExperienceComponent implements OnInit {
     private fb: FormBuilder,
     private experienceService: ExperienceService,
     private alertService: CEAlertService,
-    private router: Router
   ) {}
 
   /**

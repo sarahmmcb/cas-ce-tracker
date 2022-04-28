@@ -2,14 +2,15 @@
   <ion-menu contentId="main" menuId="m1" type="reveal">
     <ion-header>
       <ion-title>
-        <p>Username</p>
-        <p>Last login or something</p>
+        <ng-container *ngIf="user">
+          <p>{{user.firstName}} {{user.lastName}}</p>
+        </ng-container>
       </ion-title>
     </ion-header>
     <ion-content>
       <ion-list>
         <ion-menu-toggle>
-          <ion-item button lines="none">
+          <ion-item button lines="none" routerLink="/edit-profile">
             <ion-icon slot="start" name="create" color="primary"></ion-icon>
             Edit Profile
           </ion-item>

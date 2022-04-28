@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-back" color="primary" (click)="onCancel()"></ion-icon>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col offsetSm="2" sizeSm="8">
+        <ion-card>
+          <form *ngIf="user; else emptyUser" (ngSubmit)="onSubmit()" [formGroup]="profileForm">
+            <div class="div-form-control">
+              <ion-label>First Name:*</ion-label>
+              <ion-input name="firstName" formControlName="firstName" maxlength="100"></ion-input>
+            </div>
+            <div class="div-form-control">
+              <ion-label>Last Name:*</ion-label>
+              <ion-input name="lastName" formControlName="lastName" maxlength="100"></ion-input>
+            </div>
+            <div class="div-form-control">
+              <ion-label>Email:*</ion-label>
+              <ion-input name="email" formControlName="email" maxlength="100"></ion-input>
+            </div>
+            <div class="div-form-control">
+              <ion-label>Title:</ion-label>
+              <ion-input name="title" formControlName="title" maxlength="20"></ion-input>
+            </div>
+            <div class="div-form-control">
+              <ion-label>National Standard</ion-label>
+              <ion-radio-group formControlName="nationalStandard" name="nationalStandard">
+                <table>
+                <tr *ngFor="let item of nationalStandards">
+                  <td class="td-radio"><ion-radio [value]="item.nationalStandardId"></ion-radio></td>
+                  <td><ion-label>{{ item.longName }}</ion-label></td>
+                </tr>
+              </table>
+              </ion-radio-group>
+            </div>
+            <ion-button type="submit">Update</ion-button>
+            <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
+          </form>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ng-template #emptyUser>
+  <ion-card>
+    No user found. Please restart the app or try again later.
+  </ion-card>
+</ng-template>

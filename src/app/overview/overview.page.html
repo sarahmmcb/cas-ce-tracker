@@ -8,19 +8,25 @@
 </ion-header>
 
 <ion-content>
-  <app-compliance-graphic [ceData]="ceData"></app-compliance-graphic>
-  <ion-card class="card-overview-buttons">
-    <ion-button expand="full" shape="round" (click)="onAddCE()">
-      Add CE
-      <ion-icon name="add" slot="end"></ion-icon>
-    </ion-button>
-    <ion-button expand="full" shape="round" [routerLink]="['/', 'overview', 'view-experience']">
-      View CE
-      <ion-icon name="search" slot="end"></ion-icon>
-    </ion-button>
-    <ion-button expand="full" shape="round">
-      Export CE
-      <ion-icon name="open" slot="end"></ion-icon>
-    </ion-button>
-  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="8" offsetSm="2">
+        <app-compliance-graphic [ceData]="ceData"></app-compliance-graphic>
+        <ion-card class="card-overview-buttons">
+          <ion-button expand="full" shape="round" (click)="onAddCE()">
+            Add CE
+            <ion-icon name="add" slot="end"></ion-icon>
+          </ion-button>
+          <ion-button expand="full" shape="round" [routerLink]="['/', 'overview', 'view-experience']">
+            View CE
+            <ion-icon name="search" slot="end"></ion-icon>
+          </ion-button>
+          <ion-button expand="full" shape="round">
+            Export CE
+            <ion-icon name="open" slot="end"></ion-icon>
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

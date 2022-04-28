@@ -25,7 +25,13 @@ const routes: Routes = [
       path: 'view-experience',
       loadChildren: () => import('./overview/view-experience/view-experience.module').then( m => m.ViewExperiencePageModule)
     }]
+  },
+  {
+    path: 'edit-profile',
+    loadChildren: () => import('./edit-profile/edit-profile.module').then( m => m.EditProfilePageModule),
+    canLoad: [AuthGuard]
   }
+
 ];
 
 @NgModule({

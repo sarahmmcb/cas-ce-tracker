@@ -1,14 +1,15 @@
 /**
  * User object.
  */
-export class User {
+export class CEUser {
   public userId = 0;
   public firstName = '';
   public lastName = '';
   public email = '';
-  public roles: Role[];
+  public title = '';
   public nationalStandard: NationalStandard;
-  public organizations: Organization[];
+  public organizations?: Organization[];
+  public credentials?: CECredential[];
 }
 
 /**
@@ -35,6 +36,16 @@ export class NationalStandard {
  * Organization, i.e. CAS, AAA
  */
 export class Organization {
+  public organizationId = 0;
+  public longName = '';
+  public shortName = '';
+}
+
+/**
+ * Credential object, i.e. FCAS, ACAS
+ */
+export class CECredential {
+  public credentialId = 0;
   public organizationId = 0;
   public longName = '';
   public shortName = '';

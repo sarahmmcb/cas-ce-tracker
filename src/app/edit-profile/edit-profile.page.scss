@@ -1,0 +1,18 @@
+ion-content {
+  --background: var(--ion-color-primary);
+}
+
+ion-icon {
+  font-size: 20pt;
+  margin-left: 10px;
+}
+
+.form-select-result {
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.td-radio {
+  padding-right: 7px;
+}

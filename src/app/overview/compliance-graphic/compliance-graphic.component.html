@@ -1,6 +1,6 @@
 <ion-card>
   <ion-card-title>{{ ceData.title }}</ion-card-title>
-  <ion-card-content>
+
     <div *ngFor="let categoryGroup of ceData.categoryGroups">
       <ion-grid>
         <ion-row *ngFor="let category of categoryGroup.categories">
@@ -35,5 +35,5 @@
     <div class="ion-text-right div-compliant-message">
       {{ ceData.complianceStatus }} <ion-icon name="checkmark-circle" color="green"></ion-icon>
     </div>
-  </ion-card-content>
+
 </ion-card>
