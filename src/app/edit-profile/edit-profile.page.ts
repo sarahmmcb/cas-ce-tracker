@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -29,6 +29,11 @@ export class EditProfilePage implements OnInit, OnDestroy {
    * Possible National Standards.
    */
   public nationalStandards: NationalStandard[] = [];
+
+  /**
+   * Flag indicating whether form has been submitted.
+   */
+  public submitted = false;
 
   /**
    * User object subscription.
@@ -64,6 +69,10 @@ export class EditProfilePage implements OnInit, OnDestroy {
    */
   public onSubmit(): void {
     console.log(this.profileForm);
+    this.submitted = true;
+    if(!this.profileForm.valid) {
+      return;
+    }
   }
 
   /**
@@ -89,7 +98,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
         }]
       });
     } else {
-      this.router.navigateByUrl('/overview')
+      this.router.navigateByUrl('/overview');
     }
   }
 
@@ -105,11 +114,11 @@ export class EditProfilePage implements OnInit, OnDestroy {
    */
   private initializeFormControls(): void {
     this.profileForm = this.fb.group({
-      firstName: [this.user.firstName],
-      lastName: [this.user.lastName],
-      email: [this.user.email],
-      title: [this.user.title],
-      nationalStandard: [this.user.nationalStandard.nationalStandardId]
+      firstName: [this.user.firstName, Validators.required],
+      lastName: [this.user.lastName, Validators.required],
+      email: [this.user.email, Validators.required],
+      title: this.user.title,
+      nationalStandard: [this.user.nationalStandard.nationalStandardId, Validators.required]
     });
   }
 

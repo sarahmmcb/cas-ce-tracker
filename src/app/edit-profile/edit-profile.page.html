@@ -15,22 +15,37 @@
           <form *ngIf="user; else emptyUser" (ngSubmit)="onSubmit()" [formGroup]="profileForm">
             <div class="div-form-control">
               <ion-label>First Name:*</ion-label>
-              <ion-input name="firstName" formControlName="firstName" maxlength="100"></ion-input>
+              <ion-input [ngClass]="{'input-error': submitted && profileForm.get('firstName').invalid}"
+                name="firstName" formControlName="firstName" maxlength="100">
+              </ion-input>
+              <div class="error-message" *ngIf="submitted && profileForm.get('firstName').errors?.required">
+                First name is required.
+              </div>
             </div>
             <div class="div-form-control">
               <ion-label>Last Name:*</ion-label>
-              <ion-input name="lastName" formControlName="lastName" maxlength="100"></ion-input>
+              <ion-input [ngClass]="{'input-error': submitted && profileForm.get('lastName').invalid}"
+                name="lastName" formControlName="lastName" maxlength="100">
+              </ion-input>
+              <div class="error-message" *ngIf="submitted && profileForm.get('lastName').errors?.required">
+                Last name is required.
+              </div>
             </div>
             <div class="div-form-control">
               <ion-label>Email:*</ion-label>
-              <ion-input name="email" formControlName="email" maxlength="100"></ion-input>
+              <ion-input [ngClass]="{'input-error': submitted && profileForm.get('email').invalid}"
+                name="email" formControlName="email" maxlength="100">
+              </ion-input>
+              <div class="error-message" *ngIf="submitted && profileForm.get('email').errors?.required">
+                Email is required.
+              </div>
             </div>
             <div class="div-form-control">
               <ion-label>Title:</ion-label>
-              <ion-input name="title" formControlName="title" maxlength="20"></ion-input>
+              <ion-input name="title" id="title" formControlName="title" maxlength="20"></ion-input>
             </div>
             <div class="div-form-control">
-              <ion-label>National Standard</ion-label>
+              <ion-label>Select a National Standard:*</ion-label>
               <ion-radio-group formControlName="nationalStandard" name="nationalStandard">
                 <table>
                 <tr *ngFor="let item of nationalStandards">
@@ -39,8 +54,13 @@
                 </tr>
               </table>
               </ion-radio-group>
+              <div class="error-message" *ngIf="submitted && profileForm.get('nationalStandard').errors?.required">
+                National Standard is required.
+              </div>
             </div>
-            <ion-button type="submit">Update</ion-button>
+            <div class="error-message" *ngIf="submitted && profileForm.invalid">There were errors found. Please review your
+              entries.</div>
+            <ion-button type="submit" [disabled]="!profileForm.dirty">Update</ion-button>
             <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
           </form>
         </ion-card>

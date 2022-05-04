@@ -120,6 +120,13 @@ export class ExperienceService {
           categoryListId: 9,
           name: 'Organized',
           displayName: 'Organized'
+        },{
+          ceCategoryId: 12,
+          parentCategoryId: 0,
+          nationalStandardId: 3,
+          categoryListId: 10,
+          name: 'Specific',
+          displayName: 'Specific'
         }],
         amounts: [{
           ceExperienceAmountId: 5,
@@ -216,6 +223,19 @@ export class ExperienceService {
         categoryListId: 9,
         name: 'Organized',
         displayName: 'Organized'
+      }]
+    },{
+      ceCategoryListId: 10,
+      name: 'specific',
+      displayQuestion: 'Does this meet USQS Specific Education Requirements under Section 3.3?',
+      displayOrder: 4,
+      categories: [{
+        ceCategoryId: 12,
+        parentCategoryId: 0,
+        nationalStandardId: 2,
+        categoryListId: 10,
+        name: 'Specific',
+        displayName: 'Specific'
       }]
     }];
   }

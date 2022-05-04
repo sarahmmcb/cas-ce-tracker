@@ -249,23 +249,6 @@ export class AddExperienceComponent implements OnInit {
       } else {
         this.categories.push(new FormControl(null, [Validators.required]));
       }
-
-      // if (catList.categories.length === 1) {
-      //   // set the value of the radio button group
-      //   if (chosenCategory) {
-      //     // if we are updating, prepopulate with existing data.
-      //     this.categories.push(new FormControl(chosenCategory.ceCategoryId, [Validators.required]));
-      //   } else {
-      //     this.categories.push(new FormControl(null, [Validators.required]));
-      //   }
-      // } else {
-      //   // set the value of the select list
-      //   if (chosenCategory) {
-      //     this.categories.push(new FormControl(chosenCategory.ceCategoryId, [Validators.required]));
-      //   } else {
-      //     this.categories.push(new FormControl(null, [Validators.required]));
-      //   }
-      // }
     }
   }
 }

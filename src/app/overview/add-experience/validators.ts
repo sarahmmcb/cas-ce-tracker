@@ -11,6 +11,6 @@ export function positiveValueValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
-    return value <= 0 ? { nonPositiveValue: true} : null;
+    return value <= 0 ? { nonPositiveValue: true } : null;
   };
 };

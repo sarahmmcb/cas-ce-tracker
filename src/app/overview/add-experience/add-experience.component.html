@@ -83,7 +83,7 @@
             </div>
             <div class="error-message" *ngIf="submitted && addForm.invalid">There were errors found. Please review your
               entries.</div>
-            <ion-button type="submit">{{ formTitle }}</ion-button>
+            <ion-button type="submit" [disabled]="!addForm.valid">{{ formTitle }}</ion-button>
             <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
           </form>
         </ion-card>

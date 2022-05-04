@@ -6,7 +6,7 @@ import { CEUser } from '../models/user';
   providedIn: 'root',
 })
 export class AuthService {
-  private tempUser: CEUser = {
+  private tempUserSpecific: CEUser = {
     userId: 1,
     firstName: 'Betty',
     lastName: 'Boop',
@@ -65,7 +65,7 @@ export class AuthService {
    */
   public login(email: string, password: string): void {
     this._userIsAuthenticated = true;
-    this.userSubject.next(this.tempUser);
+    this.userSubject.next(this.tempUserSpecific);
   }
 
   /**
