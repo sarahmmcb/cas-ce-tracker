@@ -7,7 +7,7 @@ import { CELocation } from '../models/location';
 @Injectable({
   providedIn: 'root'
 })
-export class ExperienceService {
+export class CEExperienceService {
 
   constructor() { }
 

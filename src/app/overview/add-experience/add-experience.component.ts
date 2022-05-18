@@ -7,7 +7,7 @@ import { CEAlertService } from 'src/app/core/alert.service';
 import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
-import { ExperienceService } from 'src/app/services/experience.service';
+import { CEExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
 
@@ -84,7 +84,7 @@ export class AddExperienceComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private fb: FormBuilder,
-    private experienceService: ExperienceService,
+    private experienceService: CEExperienceService,
     private alertService: CEAlertService,
   ) {}
 

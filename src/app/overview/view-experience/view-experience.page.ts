@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import { e } from 'mathjs';
 import { CEExperience, CEUnit } from 'src/app/models/experience';
-import { ExperienceService } from 'src/app/services/experience.service';
+import { CEExperienceService } from 'src/app/services/experience.service';
 
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 
@@ -29,7 +29,7 @@ export class ViewExperiencePage implements OnInit {
    */
   public year: number;
 
-  constructor(private experienceService: ExperienceService,
+  constructor(private experienceService: CEExperienceService,
               private modalCtrl: ModalController) { }
 
   /**

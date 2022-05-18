@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExperienceService } from './experience.service';
+import { CEExperienceService } from './experience.service';
 
 describe('ExperienceService', () => {
-  let service: ExperienceService;
+  let service: CEExperienceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ExperienceService);
+    service = TestBed.inject(CEExperienceService);
   });
 
   it('should be created', () => {
