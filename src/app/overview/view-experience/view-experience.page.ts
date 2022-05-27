@@ -37,9 +37,13 @@ export class ViewExperiencePage implements OnInit {
    */
   public ngOnInit(): void {
     this.year = DateTime.now().year;
+    // Should all this be done in the experience service?
+    // follow bookings example in ionic course project
     this.ceUnits = this.experienceService.fetchUnitInfo();
-    this.currentCE = this.experienceService.fetchExperiences(this.year);
-    this.assignUnits();
+    // this.experienceService.getExperiences(this.year).subscribe(res => {
+    //   this.currentCE = res.body;
+    //   this.assignUnits();
+    // });
   }
 
   /**
@@ -60,6 +64,7 @@ export class ViewExperiencePage implements OnInit {
    * Assign unit labels to experience amounts.
    */
   private assignUnits(): void {
+    // Use array methods here?
     for(const exp of this.currentCE) {
       for(const am of exp.amounts) {
         const unit = this.ceUnits.find(u => u.ceUnitId === am.ceUnitId);

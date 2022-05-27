@@ -2,12 +2,12 @@
  * Interface for data to be fed into the
  * Compliance graphic
  */
-export interface CEData {
-  title: string;
-  unitLongName: string;
-  unitShortName: string;
-  categoryGroups: CategoryGroup[];
-  complianceStatus: ComplianceStatus;
+export class CEData {
+  title = '';
+  unitLongName = '';
+  unitShortName = '';
+  categoryGroups: [];
+  complianceStatus: '';
 }
 
 /**

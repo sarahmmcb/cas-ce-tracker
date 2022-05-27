@@ -1,9 +1,6 @@
 import { CECategory } from './category';
 import { CELocation } from './location';
 
-/**
- * Model for a CE Experience.
- */
 export class CEExperience {
   public ceExperienceId = 0;
   public userId = 0;
@@ -20,7 +17,9 @@ export class CEExperience {
 }
 
 /**
- * CE Experience time amounts.
+ * CE Experience time amounts. A single experience
+ * may have more than one of these if multiple units
+ * are associated with each experience, i.e. hours and credits
  */
 export class CEExperienceAmount {
   public ceExperienceAmountId = 0;
@@ -31,9 +30,6 @@ export class CEExperienceAmount {
   public unitPlural? = '';
 }
 
-/**
- * CE Experience Units.
- */
 export interface CEUnit {
   ceUnitId: number;
   parentUnitId: number;

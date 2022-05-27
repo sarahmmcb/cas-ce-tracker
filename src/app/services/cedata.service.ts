@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-import { CECategory } from '../models/category';
-import { CEData, ComplianceStatus } from '../models/cedata';
+import { CEData } from '../models/cedata';
 import { CEApiService, CEHttpParams } from './api.service';
 
 export interface ICEDataRequestParams extends CEHttpParams {
@@ -13,12 +14,18 @@ export interface ICEDataRequestParams extends CEHttpParams {
 })
 export class CEDataService {
 
+  private ceDataSubject: Subject<CEData> = new Subject<CEData>();
+
   constructor(private api: CEApiService) { }
 
-  /**
-   * Return CEData for the CEData graphic.
-   */
-  public async getCEComplianceData() {
-    const ceData: CEData = this.api.get('ceData', { year: 2022 });
+  public get ceData() {
+    return this.ceDataSubject.asObservable();
+  }
+
+  public getCEComplianceData(year?: number): Observable<CEData> {
+    return this.api.get('ceData', { year: year || new Date().getFullYear() })
+      .pipe(
+        tap(ceData => this.ceDataSubject.next(ceData.body))
+      );
   }
 }
