@@ -16,43 +16,24 @@ export class CEExperienceService {
 
   constructor( private api: CEApiService ) { }
 
-  /**
-   * Get experiences by year.
-   */
+  public get experiences() {
+    return this.experienceSub.asObservable();
+  }
+
   public getExperiences(year: number): Observable<CEExperience[]> {
-    return this.api.get('experiences', { year }).pipe(
+    return this.api.get('/experiences', { year }).pipe(
       tap(experiences => {
         this.experienceSub.next(experiences);
       })
     );
   }
 
-  /**
-   * Return amount field information for the
-   * add CE form.
-   */
-  public fetchUnitInfo(): CEUnit[] {
-    return [{
-      ceUnitId: 1,
-      parentUnitId: 2,
-      unitSingular: 'Hr.',
-      unitPlural: 'Hrs.',
-      isDisabled: true,
-      conversionFormula: '/50'
-    },
-    {
-      ceUnitId: 2,
-      parentUnitId: 0,
-      unitSingular: 'Min.',
-      unitPlural: 'Min.',
-      isDisabled: false,
-      conversionFormula: ''
-    }];
+  public fetchUnitInfo(): Observable<CEUnit[]> {
+    return this.api.get('/units').pipe(
+      tap(res => res.body)
+    );
   }
 
-  /**
-   * Return category lists for input ce form.
-   */
   public fetchCategoryLists(): CECategoryList[] {
     return [{
       ceCategoryListId: 7,

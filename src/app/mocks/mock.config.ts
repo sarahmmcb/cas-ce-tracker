@@ -68,8 +68,8 @@ const getCEData = () =>
   })
 );
 
-const getExperienceData = () => {
-  of(new HttpResponse({
+const getExperienceData = () =>
+ of(new HttpResponse({
     status: 200,
     body: [{
       ceExperienceId: 1,
@@ -198,7 +198,28 @@ const getExperienceData = () => {
       }]
     })
   );
-};
+
+const getUnitInfo = () =>
+    of(new HttpResponse({
+        status: 200,
+        body: [{
+          ceUnitId: 1,
+          parentUnitId: 2,
+          unitSingular: 'Hr.',
+          unitPlural: 'Hrs.',
+          isDisabled: true,
+          conversionFormula: '/50'
+        },
+        {
+          ceUnitId: 2,
+          parentUnitId: 0,
+          unitSingular: 'Min.',
+          unitPlural: 'Min.',
+          isDisabled: false,
+          conversionFormula: ''
+        }]
+      })
+    );
 
 export const mockEndpoints = {
   GET: {
@@ -207,6 +228,9 @@ export const mockEndpoints = {
     },
     'https://192.168.31.186:44309/api/ce/experiences': {
       handler: getExperienceData
+    },
+    'https://192.168.31.186:44309/api/ce/units': {
+      handler: getUnitInfo
     }
   },
 };

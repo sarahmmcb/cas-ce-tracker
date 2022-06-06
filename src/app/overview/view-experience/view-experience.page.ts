@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import { e } from 'mathjs';
+import { Subscription } from 'rxjs';
 import { CEExperience, CEUnit } from 'src/app/models/experience';
 import { CEExperienceService } from 'src/app/services/experience.service';
 
@@ -12,38 +13,38 @@ import { AddExperienceComponent } from '../add-experience/add-experience.compone
   templateUrl: './view-experience.page.html',
   styleUrls: ['./view-experience.page.scss'],
 })
-export class ViewExperiencePage implements OnInit {
+export class ViewExperiencePage implements OnInit, OnDestroy {
 
-  /**
-   * List of ce.
-   */
   public currentCE: CEExperience[] = [];
-
-  /**
-   * CE Unit info.
-   */
   public ceUnits: CEUnit[] = [];
-
-  /**
-   * Year to show CE for.
-   */
   public year: number;
+
+  private experienceSub: Subscription;
 
   constructor(private experienceService: CEExperienceService,
               private modalCtrl: ModalController) { }
 
-  /**
-   * On Init.
-   */
   public ngOnInit(): void {
-    this.year = DateTime.now().year;
-    // Should all this be done in the experience service?
-    // follow bookings example in ionic course project
-    this.ceUnits = this.experienceService.fetchUnitInfo();
-    // this.experienceService.getExperiences(this.year).subscribe(res => {
-    //   this.currentCE = res.body;
-    //   this.assignUnits();
-    // });
+    // subscribe to the subject in the experience service
+    this.experienceSub = this.experienceService.experiences.subscribe(ex => {
+      this.currentCE = ex;
+    });
+
+    this.experienceService.fetchUnitInfo().subscribe(res => {
+      this.ceUnits = res;
+    });
+  }
+
+  public ionViewWillEnter(): void {
+    this.experienceService.getExperiences(this.year).subscribe(res => {
+      this.assignUnits();
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.experienceSub) {
+      this.experienceSub.unsubscribe();
+    }
   }
 
   /**

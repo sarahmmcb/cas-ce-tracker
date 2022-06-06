@@ -14,8 +14,8 @@ import { AddExperienceComponent } from './add-experience/add-experience.componen
 })
 export class OverviewPage implements OnInit, OnDestroy {
 
-  public ceDataSub: Subscription;
   public ceData: CEData = new CEData();
+  private ceDataSub: Subscription;
 
   constructor(private ceDataService: CEDataService,
               private modalCtrl: ModalController) { }
@@ -31,7 +31,9 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.ceDataSub.unsubscribe();
+    if(this.ceDataSub) {
+      this.ceDataSub.unsubscribe();
+    }
   }
 
   public async onAddCE(): Promise<void> {

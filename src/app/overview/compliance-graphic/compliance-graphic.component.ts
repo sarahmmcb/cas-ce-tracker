@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CEData } from 'src/app/models/cedata';
 
 @Component({
@@ -6,7 +6,7 @@ import { CEData } from 'src/app/models/cedata';
   templateUrl: './compliance-graphic.component.html',
   styleUrls: ['./compliance-graphic.component.scss'],
 })
-export class ComplianceGraphicComponent implements OnInit, OnChanges {
+export class ComplianceGraphicComponent implements OnInit {
 
   @Input()
   public ceData: CEData;
@@ -14,10 +14,5 @@ export class ComplianceGraphicComponent implements OnInit, OnChanges {
   constructor() { }
 
   public ngOnInit(): void {}
-
-  public ngOnChanges(changes: SimpleChanges): void {
-      console.log(changes);
-      this.ceData = changes.ceData.currentValue;
-  }
 
 }

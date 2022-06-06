@@ -180,18 +180,13 @@ export class AddExperienceComponent implements OnInit {
     });
   }
 
-  /**
-   * Fetch needed data and initialize needed variables.
-   */
   private initializeData(): void {
-    // TODO: make a DTO object to get all this form info in one call.
-    // Most of this should be loaded on app startup
     // fetch categories by list
     this.categoryLists = this.experienceService.fetchCategoryLists();
     // fetch possible locations
     this.locations = this.experienceService.fetchLocations();
     // fetch possible units
-    this.ceUnits = this.experienceService.fetchUnitInfo();
+    this.experienceService.fetchUnitInfo().subscribe(res => this.ceUnits = res);
     this.parentUnit = this.ceUnits.find((u) => u.parentUnitId === 0);
     this.childUnit = this.ceUnits.find((u) => u.parentUnitId !== 0);
   }
@@ -217,9 +212,6 @@ export class AddExperienceComponent implements OnInit {
     ) || new CEExperienceAmount();
   }
 
-  /**
-   * Initialize form controls.
-   */
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
       ceDate: [this.ceExperience.startDate, Validators.required],
