@@ -8,8 +8,9 @@ import { CECategory, CECategoryList } from 'src/app/models/category';
 import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
 import { CELocation } from 'src/app/models/location';
 import { CEExperienceService } from 'src/app/services/experience.service';
-
+import { forkJoin, of, throwError } from 'rxjs';
 import { positiveValueValidator } from './validators';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-experience',
@@ -24,62 +25,20 @@ export class AddExperienceComponent implements OnInit {
    */
   @Input()
   public ceExperience: CEExperience;
-
-  /**
-   * Title of form based on add or update.
-   */
   public formTitle: string;
-
-  /**
-   * Category lists.
-   */
   public categoryLists: CECategoryList[] = [];
-
-  /**
-   * Possible CE locations.
-   */
   public locations: CELocation[] = [];
-
-  /**
-   * Possible CE units.
-   */
   public ceUnits: CEUnit[] = [];
-
-  /**
-   * Parent unit.
-   */
   public parentUnit: CEUnit;
-
-  /**
-   * Child Unit.
-   */
   public childUnit: CEUnit;
-
-  /**
-   * Form group property.
-   */
   public addForm: FormGroup;
-
-  /**
-   * Flag indicated whether or not form has been submitted.
-   */
   public submitted = false;
-
-  /**
-   * Time spent in the unit entered by user.
-   */
   public parentAmount: CEExperienceAmount;
-
-  /**
-   * Time spent in the standard's accepted unit, as
-   * calculated from the parent unit.
-   */
+  // Time spent in the standard's accepted unit, as calculated from the parent unit.
   public childAmount: CEExperienceAmount;
-
-  /**
-   * Year to carry CE forward to.
-   */
   public carryForwardYear: number;
+  public isFormReady = false;
+  public fetchError: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -95,15 +54,8 @@ export class AddExperienceComponent implements OnInit {
     return this.addForm.get('categories') as FormArray;
   }
 
-  /**
-   * On Init.
-   */
   public ngOnInit(): void {
-    this.initializeData();
-    this.initializeExperienceData();
-    this.initializeFormControls();
-
-    this.formTitle = this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
+    this.fetchData();
   }
 
   /**
@@ -134,9 +86,6 @@ export class AddExperienceComponent implements OnInit {
     }
   }
 
-  /**
-   * Logic to submit form.
-   */
   public onSubmit(): void {
     console.log(this.addForm.getRawValue());
     this.submitted = true;
@@ -180,20 +129,43 @@ export class AddExperienceComponent implements OnInit {
     });
   }
 
+  private fetchData(): void {
+    const dataCalls = forkJoin({
+      getCategoryLists: this.experienceService.fetchCategoryLists(),
+      getLocations: this.experienceService.fetchLocations(),
+      getUnitInfo: this.experienceService.fetchUnitInfo()
+    }).pipe(
+      catchError(error => of(error))
+    );
+
+    dataCalls.subscribe(res => {
+      if (res.errorMessage) {
+        this.formTitle = 'Experience Form';
+        this.fetchError = 'There was a problem fetching the form data. Please try again later.';
+      } else {
+        this.categoryLists = res.getCategoryLists;
+        this.locations = res.getLocations;
+        this.ceUnits = res.getUnitInfo;
+
+        this.initializeData();
+      }
+    });
+  }
+
   private initializeData(): void {
-    // fetch categories by list
-    this.categoryLists = this.experienceService.fetchCategoryLists();
-    // fetch possible locations
-    this.locations = this.experienceService.fetchLocations();
-    // fetch possible units
-    this.experienceService.fetchUnitInfo().subscribe(res => this.ceUnits = res);
+    this.initializeUnits();
+    this.initializeExperienceData();
+    this.initializeFormControls();
+
+    this.formTitle = this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
+    this.isFormReady = true;
+  }
+
+  private initializeUnits() {
     this.parentUnit = this.ceUnits.find((u) => u.parentUnitId === 0);
     this.childUnit = this.ceUnits.find((u) => u.parentUnitId !== 0);
   }
 
-  /**
-   * Initialize experience data.
-   */
   private initializeExperienceData(): void {
     if (!this.ceExperience) {
       this.ceExperience = new CEExperience();
@@ -222,7 +194,7 @@ export class AddExperienceComponent implements OnInit {
       timeSpentParent: [this.parentAmount.amount, [Validators.required, positiveValueValidator()]],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
-        disabled: this.childUnit.isDisabled,
+        disabled: this.childUnit?.isDisabled,
       }),
       carryForward: this.ceExperience.carryForward,
       notes: this.ceExperience.notes,

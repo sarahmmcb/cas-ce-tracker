@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { DateTime } from 'luxon';
-import { e } from 'mathjs';
 import { Subscription } from 'rxjs';
 import { CEExperience, CEUnit } from 'src/app/models/experience';
 import { CEExperienceService } from 'src/app/services/experience.service';

@@ -12,7 +12,8 @@
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
         <ion-card>
-          <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+          <p *ngIf="fetchError">{{ fetchError }}</p>
+          <form *ngIf="isFormReady" [formGroup]="addForm" (ngSubmit)="onSubmit()">
             <div class="div-form-control">
               <ion-label>Date of CE:*</ion-label>
               <ion-input [ngClass]="{'input-error': submitted && addForm.get('ceDate').invalid}" type="date"

@@ -200,26 +200,118 @@ const getExperienceData = () =>
   );
 
 const getUnitInfo = () =>
-    of(new HttpResponse({
-        status: 200,
-        body: [{
-          ceUnitId: 1,
-          parentUnitId: 2,
-          unitSingular: 'Hr.',
-          unitPlural: 'Hrs.',
-          isDisabled: true,
-          conversionFormula: '/50'
-        },
-        {
-          ceUnitId: 2,
-          parentUnitId: 0,
-          unitSingular: 'Min.',
-          unitPlural: 'Min.',
-          isDisabled: false,
-          conversionFormula: ''
+  of(new HttpResponse({
+      status: 200,
+      body: [{
+        ceUnitId: 1,
+        parentUnitId: 2,
+        unitSingular: 'Hr.',
+        unitPlural: 'Hrs.',
+        isDisabled: true,
+        conversionFormula: '/50'
+      },
+      {
+        ceUnitId: 2,
+        parentUnitId: 0,
+        unitSingular: 'Min.',
+        unitPlural: 'Min.',
+        isDisabled: false,
+        conversionFormula: ''
+      }]
+    })
+  );
+
+const getCategoryLists = () =>
+  of(new HttpResponse({
+      status: 200,
+      body: [{
+        ceCategoryListId: 7,
+        name: 'generalCategories',
+        displayQuestion: 'Please indicate the CE Type',
+        displayOrder: 1,
+        categories: [{
+          ceCategoryId: 2,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 7,
+          name: 'Professionalism',
+          displayName: 'Professionalism'
+        },{
+          ceCategoryId: 4,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 7,
+          name: 'General Business',
+          displayName: 'General Business'
+        },{
+          ceCategoryId: 5,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 7,
+          name: 'Other Relevant',
+          displayName: 'Other Relevant'
         }]
-      })
-    );
+      },{
+        ceCategoryListId: 8,
+        name: 'bias',
+        displayQuestion: 'Does this CE include a Bias topic?',
+        displayOrder: 2,
+        categories: [{
+          ceCategoryId: 3,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 8,
+          name: 'Bias',
+          displayName: 'Bias'
+        }]
+      },{
+        ceCategoryListId: 9,
+        name: 'organized',
+        displayQuestion: 'Is this CE organized?',
+        displayOrder: 3,
+        categories: [{
+          ceCategoryId: 6,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 9,
+          name: 'Organized',
+          displayName: 'Organized'
+        }]
+      },{
+        ceCategoryListId: 10,
+        name: 'specific',
+        displayQuestion: 'Does this meet USQS Specific Education Requirements under Section 3.3?',
+        displayOrder: 4,
+        categories: [{
+          ceCategoryId: 12,
+          parentCategoryId: 0,
+          nationalStandardId: 2,
+          categoryListId: 10,
+          name: 'Specific',
+          displayName: 'Specific'
+        }]
+      }]
+    })
+  );
+
+const getLocations = () =>
+  of(new HttpResponse({
+      status: 200,
+      body: [{
+        ceLocationId: 1,
+        name: 'Home'
+      },{
+        ceLocationId: 2,
+        name: 'Work'
+      },{
+        ceLocationId: 3,
+        name: 'Online'
+      },{
+        ceLocationId: 4,
+        name: 'Other'
+      }]
+    })
+  );
 
 export const mockEndpoints = {
   GET: {
@@ -231,6 +323,12 @@ export const mockEndpoints = {
     },
     'https://192.168.31.186:44309/api/ce/units': {
       handler: getUnitInfo
+    },
+    'https://192.168.31.186:44309/api/ce/categoryLists': {
+      handler: getCategoryLists
+    },
+    'https://192.168.31.186:44309/api/ce/locations': {
+      handler: getLocations
     }
   },
 };
