@@ -63,7 +63,7 @@ export class AddExperienceComponent implements OnInit {
    */
   public onCancel(): Promise<boolean> | void {
     // present confirmation modal
-    if (this.addForm.dirty) {
+    if (this.addForm && this.addForm.dirty) {
       // define alert here and add modalCtrl.dismiss() to button handler
       this.alertService.showAlert({
         title: 'Confirm',
