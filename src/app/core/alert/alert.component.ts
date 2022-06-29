@@ -11,37 +11,12 @@ import { CEAlertService } from '../alert.service';
 })
 export class AlertComponent implements OnInit, OnDestroy {
 
-  /**
-   * Alert object to display.
-   */
   public alert: CEAlert;
-  // public alert: CEAlert = {
-  //   title: 'Confirm',
-  //   content: 'Are you you want to quit? Your changes will not be saved.',
-  //   type: 'confirm',
-  //   buttons: [{
-  //     text: 'OK',
-  //     role: 'confirm',
-  //     id: 'confirmButton',
-  //     handler: () => {}
-  //   }, {
-  //     text: 'Cancel',
-  //     role: 'cancel',
-  //     id: 'cancelButton',
-  //     handler: () => {}
-  //   }]
-  // };
 
-  /**
-   * Alert subscription.
-   */
   public alertSub: Subscription;
 
   constructor(private alertService: CEAlertService) {}
 
-  /**
-   * On init.
-   */
   public ngOnInit(): void {
    this.alertSub = this.alertService.alert.subscribe((alert: CEAlert) => {
       this.alert = alert;
@@ -52,11 +27,7 @@ export class AlertComponent implements OnInit, OnDestroy {
     this.alertSub.unsubscribe();
   }
 
-  /**
-   * Logic to execute when an alert's button
-   * is clicked.
-   */
-  public onButtonClick(button: CEAlertButton): void {
-    button.handler();
-  }
+  // public onButtonClick(button: CEAlertButton): void {
+  //   button.handler();
+  // }
 }

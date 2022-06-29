@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CEExperience, CEUnit } from 'src/app/models/experience';
+import { ICEExperience, ICEUnit } from 'src/app/models/experience';
 import { CEExperienceService } from 'src/app/services/experience.service';
 
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
@@ -13,8 +13,8 @@ import { AddExperienceComponent } from '../add-experience/add-experience.compone
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
 
-  public currentCE: CEExperience[] = [];
-  public ceUnits: CEUnit[] = [];
+  public currentCE: ICEExperience[] = [];
+  public ceUnits: ICEUnit[] = [];
   public year: number;
 
   private experienceSub: Subscription;
@@ -48,7 +48,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   /**
    * Open modal to edit CE.
    */
-  public async onEditCE(ceExperience: CEExperience): Promise<void> {
+  public async onEditCE(ceExperience: ICEExperience): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
       componentProps: {

@@ -13,8 +13,9 @@
       <ion-col sizeSm="8" offsetSm="2">
         <ion-card>
           <!-- TODO: Write a Notification Banner component for displaying error messages -->
+          <!-- TODO: Write a loading component to show while data is loading -->
           <p *ngIf="fetchError">{{ fetchError }}</p>
-          <form *ngIf="isFormReady" [formGroup]="addForm" (ngSubmit)="onSubmit()">
+          <form *ngIf="!isLoading && !fetchError" [formGroup]="addForm" (ngSubmit)="onSubmit()">
             <div class="div-form-control">
               <ion-label>Date of CE:*</ion-label>
               <ion-input [ngClass]="{'input-error': submitted && addForm.get('ceDate').invalid}" type="date"

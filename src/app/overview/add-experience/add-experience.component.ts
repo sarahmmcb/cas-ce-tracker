@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { InputCustomEvent, ModalController } from '@ionic/angular';
+import { InputCustomEvent, LoadingController, ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
-import { CEAlertService } from 'src/app/core/alert.service';
-import { CECategory, CECategoryList } from 'src/app/models/category';
-import { CEExperience, CEExperienceAmount, CEUnit } from 'src/app/models/experience';
-import { CELocation } from 'src/app/models/location';
-import { CEExperienceService } from 'src/app/services/experience.service';
-import { forkJoin, of, throwError } from 'rxjs';
-import { positiveValueValidator } from './validators';
+import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { CEAlertService } from 'src/app/core/alert.service';
+import { ICECategory, ICECategoryList } from 'src/app/models/category';
+import { ICEExperience, ICEExperienceAmount, ICEUnit, IUpdateExperience } from 'src/app/models/experience';
+import { ICELocation } from 'src/app/models/location';
+import { CEExperienceService } from 'src/app/services/experience.service';
+
+import { positiveValueValidator } from './validators';
 
 @Component({
   selector: 'app-add-experience',
@@ -24,27 +25,30 @@ export class AddExperienceComponent implements OnInit {
    * is being edited.
    */
   @Input()
-  public ceExperience: CEExperience;
+  public ceExperience: ICEExperience;
   public formTitle: string;
-  public categoryLists: CECategoryList[] = [];
-  public locations: CELocation[] = [];
-  public ceUnits: CEUnit[] = [];
-  public parentUnit: CEUnit;
-  public childUnit: CEUnit;
+  public categoryLists: ICECategoryList[] = [];
+  public locations: ICELocation[] = [];
+  public ceUnits: ICEUnit[] = [];
+  public parentUnit: ICEUnit;
+  public childUnit: ICEUnit;
   public addForm: FormGroup;
   public submitted = false;
-  public parentAmount: CEExperienceAmount;
+  public parentAmount: ICEExperienceAmount;
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
-  public childAmount: CEExperienceAmount;
+  public childAmount: ICEExperienceAmount;
   public carryForwardYear: number;
-  public isFormReady = false;
+  public isLoading = false;
   public fetchError: string;
+
+  private loading: HTMLIonLoadingElement;
 
   constructor(
     private modalCtrl: ModalController,
     private fb: FormBuilder,
     private experienceService: CEExperienceService,
     private alertService: CEAlertService,
+    private loadingCtrl: LoadingController
   ) {}
 
   /**
@@ -58,9 +62,6 @@ export class AddExperienceComponent implements OnInit {
     this.fetchData();
   }
 
-  /**
-   * Logic executed when cancel button is pressed.
-   */
   public onCancel(): Promise<boolean> | void {
     // present confirmation modal
     if (this.addForm && this.addForm.dirty) {
@@ -93,13 +94,12 @@ export class AddExperienceComponent implements OnInit {
       return;
     }
 
-    // Update/add experience object with form data
-    // or... send to server and return with updated experience object.
-    if (this.ceExperience.ceExperienceId === 0) {
-      this.experienceService.addExperience(this.addForm.value);
+    // send to server and return with updated experience object.
+    if (this.ceExperience?.ceExperienceId === 0) {
+      this.experienceService.addExperience(this.prepareExperienceData());
     } else {
       this.experienceService.addExperience(
-        this.addForm.value,
+        this.prepareExperienceData(),
         this.ceExperience
       );
     }
@@ -129,7 +129,20 @@ export class AddExperienceComponent implements OnInit {
     });
   }
 
-  private fetchData(): void {
+  private prepareExperienceData(): IUpdateExperience {
+    return {
+      ...this.addForm.value,
+      ceExperienceId: this.ceExperience.ceExperienceId,
+      categories: [...this.addForm.value.categories],
+    };
+  }
+
+  private async fetchData() {
+    this.isLoading = true;
+    this.loading = await this.loadingCtrl.create({
+      message: 'Loading form data'
+    });
+    await this.loading.present();
     const dataCalls = forkJoin({
       getCategoryLists: this.experienceService.fetchCategoryLists(),
       getLocations: this.experienceService.fetchLocations(),
@@ -138,7 +151,7 @@ export class AddExperienceComponent implements OnInit {
       catchError(error => of(error))
     );
 
-    dataCalls.subscribe(res => {
+    dataCalls.subscribe(async res => {
       if (res.errorMessage) {
         this.formTitle = 'Experience Form';
         this.fetchError = 'There was a problem fetching the form data. Please try again later.';
@@ -149,6 +162,9 @@ export class AddExperienceComponent implements OnInit {
 
         this.initializeData();
       }
+
+      await this.loading.dismiss();
+      this.isLoading = false;
     });
   }
 
@@ -157,8 +173,8 @@ export class AddExperienceComponent implements OnInit {
     this.initializeExperienceData();
     this.initializeFormControls();
 
-    this.formTitle = this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
-    this.isFormReady = true;
+    this.formTitle = this.ceExperience?.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
+    this.isLoading = false;
   }
 
   private initializeUnits() {
@@ -168,7 +184,7 @@ export class AddExperienceComponent implements OnInit {
 
   private initializeExperienceData(): void {
     if (!this.ceExperience) {
-      this.ceExperience = new CEExperience();
+      this.ceExperience = new ICEExperience();
     }
 
     this.carryForwardYear = DateTime.fromSQL(this.ceExperience.startDate).plus({
@@ -177,11 +193,11 @@ export class AddExperienceComponent implements OnInit {
 
     this.parentAmount = this.ceExperience.amounts.find(
       (p) => p.ceUnitId === this.parentUnit.ceUnitId
-    ) || new CEExperienceAmount();
+    ) || new ICEExperienceAmount();
 
     this.childAmount = this.ceExperience.amounts.find(
       (p) => p.ceUnitId === this.childUnit.ceUnitId
-    ) || new CEExperienceAmount();
+    ) || new ICEExperienceAmount();
   }
 
   private initializeFormControls(): void {
@@ -203,7 +219,7 @@ export class AddExperienceComponent implements OnInit {
 
     // Add categorylist controls
      for(const catList of this.categoryLists) {
-      const chosenCategory: CECategory = this.ceExperience.categories.find(
+      const chosenCategory: ICECategory = this.ceExperience.categories.find(
         (c) => c.categoryListId === catList.ceCategoryListId
       );
 

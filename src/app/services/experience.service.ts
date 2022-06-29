@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { CECategoryList } from '../models/category';
-import { AddExDTO, CEExperience, CEUnit } from '../models/experience';
-import { CELocation } from '../models/location';
+import { ICECategoryList } from '../models/category';
+import { IUpdateExperience, ICEExperience, ICEUnit } from '../models/experience';
+import { ICELocation } from '../models/location';
 import { CEApiService } from './api.service';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { CEApiService } from './api.service';
 })
 export class CEExperienceService {
 
-  private experienceSub: BehaviorSubject<CEExperience[]> = new BehaviorSubject<CEExperience[]>([]);
+  private experienceSub: BehaviorSubject<ICEExperience[]> = new BehaviorSubject<ICEExperience[]>([]);
 
   constructor( private api: CEApiService ) { }
 
@@ -20,7 +20,7 @@ export class CEExperienceService {
     return this.experienceSub.asObservable();
   }
 
-  public getExperiences(year: number): Observable<CEExperience[]> {
+  public getExperiences(year: number): Observable<ICEExperience[]> {
     return this.api.get('/experiences', { year }).pipe(
       tap(experiences => {
         this.experienceSub.next(experiences);
@@ -28,7 +28,7 @@ export class CEExperienceService {
     );
   }
 
-  public fetchUnitInfo(): Observable<CEUnit[]> {
+  public fetchUnitInfo(): Observable<ICEUnit[]> {
     return this.api.get('/units').pipe(
       tap(res => res.body),
       catchError(error => of({
@@ -38,7 +38,7 @@ export class CEExperienceService {
     );
   }
 
-  public fetchCategoryLists(): Observable<CECategoryList[]> {
+  public fetchCategoryLists(): Observable<ICECategoryList[]> {
     return this.api.get('/categoryLists').pipe(
       tap(res => res.body),
       catchError(error => of({
@@ -48,7 +48,7 @@ export class CEExperienceService {
     );
   }
 
-  public fetchLocations(): Observable<CELocation[]> {
+  public fetchLocations(): Observable<ICELocation[]> {
     return this.api.get('/locations').pipe(
       tap(res => res.body),
       catchError(error => of({
@@ -63,7 +63,7 @@ export class CEExperienceService {
  *
  * @param addExDTO experience DTO object.
  */
-public addExperience(addExDTO: AddExDTO, exp: CEExperience = null): void {
+public addExperience(addExDTO: IUpdateExperience, exp: ICEExperience = null): void {
   // make API call to update database, return updated experience list
   // and updated ceData object
 }

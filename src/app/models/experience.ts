@@ -1,10 +1,10 @@
-import { CECategory } from './category';
-import { CELocation } from './location';
+import { ICECategory } from './category';
+import { ICELocation } from './location';
 
-export class CEExperience {
+export class ICEExperience {
   public ceExperienceId = 0;
   public userId = 0;
-  public location: CELocation = new CELocation();
+  public location: ICELocation = new ICELocation();
   public carryForward = false;
   public programTitle = '';
   public eventName? = '';
@@ -12,8 +12,8 @@ export class CEExperience {
   public endDate = '';
   public description? = '';
   public notes? = '';
-  public categories: CECategory[] = [];
-  public amounts: CEExperienceAmount[] = [];
+  public categories: ICECategory[] = [];
+  public amounts: ICEExperienceAmount[] = [];
 }
 
 /**
@@ -21,7 +21,7 @@ export class CEExperience {
  * may have more than one of these if multiple units
  * are associated with each experience, i.e. hours and credits
  */
-export class CEExperienceAmount {
+export class ICEExperienceAmount {
   public ceExperienceAmountId = 0;
   public ceExperienceId = 0;
   public ceUnitId = 0;
@@ -30,7 +30,7 @@ export class CEExperienceAmount {
   public unitPlural? = '';
 }
 
-export interface CEUnit {
+export interface ICEUnit {
   ceUnitId: number;
   parentUnitId: number;
   unitSingular: string;
@@ -39,11 +39,8 @@ export interface CEUnit {
   conversionFormula: string;
 }
 
-/**
- * Interface for the DTO for adding
- * or updating a DTO.
- */
-export interface AddExDTO {
+export interface IUpdateExperience {
+  ceExperienceId: number;
   ceDate?: string;
   carryForward?: boolean;
   categories: number[];

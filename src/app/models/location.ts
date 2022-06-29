@@ -1,7 +1,5 @@
-/**
- * Model for CE location.
- */
-export class CELocation {
+
+export class ICELocation {
   public ceLocationId = 0;
   public name = '';
 }

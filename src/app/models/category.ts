@@ -1,7 +1,7 @@
 /**
  * Interface for a Category.
  */
-export interface CECategory {
+export interface ICECategory {
   ceCategoryId: number;
   parentCategoryId: number;
   nationalStandardId: number;
@@ -17,10 +17,10 @@ export interface CECategory {
 /**
  * Interface for a category list.
  */
-export interface CECategoryList {
+export interface ICECategoryList {
   ceCategoryListId: number;
   name: string;
   displayQuestion?: string;
   displayOrder?: number;
-  categories?: CECategory[];
+  categories?: ICECategory[];
 }
