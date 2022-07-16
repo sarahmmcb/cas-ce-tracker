@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface CEHttpParams {
   [key: string]: string | string[] | number;
-}
+};
 
 @Injectable({
   providedIn: 'root'

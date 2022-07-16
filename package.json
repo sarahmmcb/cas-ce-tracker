@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start:mock": "ng serve --c=mock"
+    "start:mock": "ng serve --c=mock",
+    "start:dev": "ng serve --c=dev"
   },
   "private": true,
   "dependencies": {

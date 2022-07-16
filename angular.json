@@ -65,6 +65,14 @@
                 }
               ]
             },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.mock.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ]
+            },
             "mock": {
               "fileReplacements": [
                 {
@@ -86,6 +94,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "dev": {
+              "browserTarget": "app:build:dev"
             },
             "mock": {
               "browserTarget": "app:build:mock"

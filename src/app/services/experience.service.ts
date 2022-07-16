@@ -58,14 +58,12 @@ export class CEExperienceService {
     );
   }
 
-/**
- * API call to add an experience.
- *
- * @param addExDTO experience DTO object.
- */
-public addExperience(addExDTO: IUpdateExperience, exp: ICEExperience = null): void {
+public addExperience(exp: IUpdateExperience = null): Observable<any> {
   // make API call to update database, return updated experience list
   // and updated ceData object
+  return this.api.post('/addExperience', exp).pipe(
+    tap(res => console.log(res.body))
+  );
 }
 
 }

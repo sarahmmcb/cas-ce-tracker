@@ -51,9 +51,8 @@ export class AddExperienceComponent implements OnInit {
     private loadingCtrl: LoadingController
   ) {}
 
-  /**
-   * Helper method to access category form group.
-   */
+
+  // Helper method to access category form group in the template.
   public get categories(): FormArray {
     return this.addForm.get('categories') as FormArray;
   }
@@ -95,20 +94,15 @@ export class AddExperienceComponent implements OnInit {
     }
 
     // send to server and return with updated experience object.
-    if (this.ceExperience?.ceExperienceId === 0) {
-      this.experienceService.addExperience(this.prepareExperienceData());
+    if (this.ceExperience.ceExperienceId === 0) {
+      this.experienceService.addExperience(this.prepareExperienceData()).subscribe();
     } else {
-      this.experienceService.addExperience(
-        this.prepareExperienceData(),
-        this.ceExperience
-      );
+      // this.experienceService.updateExperience(
+      //   this.prepareExperienceData()
+      // );
     }
 
     this.modalCtrl.dismiss();
-  }
-
-  public selectChange(event: any) {
-    console.log(event);
   }
 
   /**
@@ -173,7 +167,7 @@ export class AddExperienceComponent implements OnInit {
     this.initializeExperienceData();
     this.initializeFormControls();
 
-    this.formTitle = this.ceExperience?.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
+    this.formTitle = this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
     this.isLoading = false;
   }
 

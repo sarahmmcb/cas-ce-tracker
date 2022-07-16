@@ -41,14 +41,14 @@ export interface ICEUnit {
 
 export interface IUpdateExperience {
   ceExperienceId: number;
-  ceDate?: string;
-  carryForward?: boolean;
+  ceDate: string;
+  carryForward: boolean;
   categories: number[];
-  ceLocationId?: number;
-  description?: string;
-  eventName?: string;
-  notes?: string;
-  programTitle?: string;
-  timeSpentChild?: number;
-  timeSpentParent?: number;
+  ceLocationId: number;
+  description: string | null | undefined;
+  eventName: string | null | undefined;
+  notes: string | null | undefined;
+  programTitle: string | null | undefined;
+  timeSpentChild: number;
+  timeSpentParent: number;
 }

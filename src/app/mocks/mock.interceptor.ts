@@ -14,6 +14,6 @@ export class HttpMockApiInterceptor implements HttpInterceptor {
 
     // We are checking if a fake endpoint handler is available, if there is one – using it,
     // otherwise continue with normal call using next.handle(request)
-    return currentMockEndpoint ? currentMockEndpoint.handler() : next.handle(request);
+    return currentMockEndpoint ? currentMockEndpoint.handler(request.body) : next.handle(request);
   }
 }

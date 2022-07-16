@@ -99,8 +99,7 @@
   <div [formGroup]="addForm" class="div-single-category">
     <div formArrayName="categories">
       <ion-select [ngClass]="{'input-error': submitted && addForm.get('categories').controls[controlName].invalid}"
-        [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--"
-        (ionChange)="selectChange($event)">
+        [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--">
         <ion-select-option *ngFor="let item of cat" [value]="item.ceCategoryId">{{ item.displayName }}
         </ion-select-option>
       </ion-select>

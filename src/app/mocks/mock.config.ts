@@ -1,7 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
+import { ICECategory } from '../models/category';
 
 import { ComplianceStatus } from '../models/cedata';
+import { IUpdateExperience } from '../models/experience';
 
 const getCEData = () =>
   of(new HttpResponse({
@@ -313,6 +315,50 @@ const getLocations = () =>
     })
   );
 
+const addExperience = (exp: IUpdateExperience) => {
+  const id = Math.round(Math.random()*10);
+  const newExp = {
+    ceExperienceId: id,
+    userId: 1,
+    location: {
+      ceLocationId: exp.ceLocationId,
+      name: 'New Location'
+    },
+    carryForward: exp.carryForward,
+    programTitle: exp.programTitle,
+    eventName: exp.eventName,
+    startDate: exp.ceDate,
+    endDate: exp.ceDate,
+    description: exp.description,
+    notes: exp.notes,
+    categories: exp.categories.map(cat => ({
+        ceCategoryId: cat,
+        parentCategoryId: 0,
+        nationalStandardId: 2,
+        categoryListId: 7,
+        name: 'Test',
+        displayName: 'Test'
+      } as ICECategory
+    )),
+    amounts: [{
+      ceExperienceAmountId: id + 1,
+      ceExperienceId: id,
+      ceUnitId: 1,
+      amount: exp.timeSpentParent
+    },
+    {
+      ceExperienceAmountId: id + 2,
+      ceExperienceId: id,
+      ceUnitId: 2,
+      amount: exp.timeSpentChild
+    }]
+  };
+  return of(new HttpResponse({
+    status: 200,
+    body: newExp
+  }));
+};
+
 export const mockEndpoints = {
   GET: {
     'https://192.168.31.186:44309/api/ce/ceData': {
@@ -331,4 +377,9 @@ export const mockEndpoints = {
       handler: getLocations
     }
   },
+  POST: {
+    'https://192.168.31.186:44309/api/ce/addExperience': {
+      handler: addExperience
+    }
+  }
 };
