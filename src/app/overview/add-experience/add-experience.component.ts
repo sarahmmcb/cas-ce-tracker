@@ -87,7 +87,6 @@ export class AddExperienceComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.addForm.getRawValue());
     this.submitted = true;
     if (!this.addForm.valid) {
       return;

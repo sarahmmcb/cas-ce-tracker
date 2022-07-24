@@ -13,7 +13,7 @@ import { AddExperienceComponent } from '../add-experience/add-experience.compone
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
 
-  public currentCE: ICEExperience[] = [];
+  public experiences: ICEExperience[] = [];
   public ceUnits: ICEUnit[] = [];
   public year: number;
 
@@ -25,7 +25,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // subscribe to the subject in the experience service
     this.experienceSub = this.experienceService.experiences.subscribe(ex => {
-      this.currentCE = ex;
+      this.experiences = ex;
     });
 
     this.experienceService.fetchUnitInfo().subscribe(res => {
@@ -35,7 +35,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   public ionViewWillEnter(): void {
     this.experienceService.getExperiences(this.year).subscribe(res => {
-      this.assignUnits();
+      this.assignUnitLabels();
     });
   }
 
@@ -45,9 +45,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Open modal to edit CE.
-   */
   public async onEditCE(ceExperience: ICEExperience): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
@@ -59,12 +56,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  /**
-   * Assign unit labels to experience amounts.
-   */
-  private assignUnits(): void {
-    // Use array methods here?
-    for(const exp of this.currentCE) {
+  private assignUnitLabels(): void {
+    for(const exp of this.experiences) {
       for(const am of exp.amounts) {
         const unit = this.ceUnits.find(u => u.ceUnitId === am.ceUnitId);
         am.unitPlural = unit.unitPlural;

@@ -315,8 +315,9 @@ const getLocations = () =>
     })
   );
 
-const addExperience = (exp: IUpdateExperience) => {
+const addExperience = (body) => {
   const id = Math.round(Math.random()*10);
+  const exp = JSON.parse(body);
   const newExp = {
     ceExperienceId: id,
     userId: 1,

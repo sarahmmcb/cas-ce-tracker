@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, switchMap, take, tap } from 'rxjs/operators';
 
 import { ICECategoryList } from '../models/category';
 import { IUpdateExperience, ICEExperience, ICEUnit } from '../models/experience';
@@ -58,12 +58,15 @@ export class CEExperienceService {
     );
   }
 
-public addExperience(exp: IUpdateExperience = null): Observable<any> {
-  // make API call to update database, return updated experience list
-  // and updated ceData object
-  return this.api.post('/addExperience', exp).pipe(
-    tap(res => console.log(res.body))
-  );
-}
-
+  public addExperience(exp: IUpdateExperience = null): Observable<any> {
+    let newExperience: ICEExperience;
+    return this.api.post('/addExperience', exp).pipe(
+      switchMap(newExp => {
+        newExperience = newExp;
+        return this.experiences;
+      }),
+      take(1),
+      tap(experiences => this.experienceSub.next(experiences.concat(newExperience)))
+    );
+  }
 }
