@@ -1,8 +1,8 @@
 /**
  * Interface for a Category.
  */
-export interface ICECategory {
-  ceCategoryId: number;
+export interface ICategory {
+  categoryId: number;
   parentCategoryId: number;
   nationalStandardId: number;
   categoryListId: number;
@@ -17,10 +17,10 @@ export interface ICECategory {
 /**
  * Interface for a category list.
  */
-export interface ICECategoryList {
-  ceCategoryListId: number;
+export interface ICategoryList {
+  categoryListId: number;
   name: string;
   displayQuestion?: string;
   displayOrder?: number;
-  categories?: ICECategory[];
+  categories?: ICategory[];
 }

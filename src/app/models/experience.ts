@@ -1,7 +1,7 @@
-import { ICECategory } from './category';
+import { ICategory } from './category';
 import { ICELocation } from './location';
 
-export class ICEExperience {
+export class IExperience {
   public ceExperienceId = 0;
   public userId = 0;
   public location: ICELocation = new ICELocation();
@@ -12,8 +12,8 @@ export class ICEExperience {
   public endDate = '';
   public description? = '';
   public notes? = '';
-  public categories: ICECategory[] = [];
-  public amounts: ICEExperienceAmount[] = [];
+  public categories: ICategory[] = [];
+  public amounts: IExperienceAmount[] = [];
 }
 
 /**
@@ -21,17 +21,17 @@ export class ICEExperience {
  * may have more than one of these if multiple units
  * are associated with each experience, i.e. hours and credits
  */
-export class ICEExperienceAmount {
-  public ceExperienceAmountId = 0;
-  public ceExperienceId = 0;
-  public ceUnitId = 0;
+export class IExperienceAmount {
+  public experienceAmountId = 0;
+  public experienceId = 0;
+  public unitId = 0;
   public amount = 0.0;
   public unitSingular? = '';
   public unitPlural? = '';
 }
 
-export interface ICEUnit {
-  ceUnitId: number;
+export interface IUnit {
+  unitId: number;
   parentUnitId: number;
   unitSingular: string;
   unitPlural: string;
@@ -40,11 +40,11 @@ export interface ICEUnit {
 }
 
 export interface IUpdateExperience {
-  ceExperienceId: number;
-  ceDate: string;
+  experienceId: number;
+  date: string;
   carryForward: boolean;
   categories: number[];
-  ceLocationId: number;
+  locationId: number;
   description: string | null | undefined;
   eventName: string | null | undefined;
   notes: string | null | undefined;
