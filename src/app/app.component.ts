@@ -13,22 +13,23 @@ import { CEApiService } from './services/api.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   public user: CEUser;
 
   private authUserSub: Subscription;
 
-  constructor(private auth: AuthService,
-              private router: Router,
-              private api: CEApiService) {
-                this.initializeApp();
-              }
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private api: CEApiService
+  ) {
+    this.initializeApp();
+  }
 
   /**
    * On Init.
    */
   public ngOnInit(): void {
-    this.authUserSub = this.auth.user.subscribe(user => this.user = user);
+    this.authUserSub = this.auth.user.subscribe((user) => (this.user = user));
   }
 
   /**
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Logic to be executed fromthe constructor.
+   * Logic to be executed from the constructor.
    */
   private initializeApp(): void {
     if (environment.production) {
