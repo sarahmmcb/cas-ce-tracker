@@ -29,8 +29,9 @@ export class CEExperienceService {
     );
   }
 
+  // TODO: feed in route params
   public fetchUnitInfo(): Observable<IUnit[]> {
-    return this.api.get('/units').pipe(
+    return this.api.get('/units/1').pipe(
       tap((res) => res.body),
       catchError((error) =>
         of({

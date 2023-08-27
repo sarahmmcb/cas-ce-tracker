@@ -56,7 +56,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (environment.production) {
       this.api.baseUrl = `https://wordapi20211030215150.azurewebsites.net/${this.api.baseUrl}`;
     } else {
-      this.api.baseUrl = `https://192.168.31.186:44309/${this.api.baseUrl}`;
+      this.api.baseUrl = `https://localhost:7248/${this.api.baseUrl}`;
+      //this.api.baseUrl = `https://192.168.31.186:44309/${this.api.baseUrl}`;
       //this.api.baseUrl = `https://wordapi20211030215150-test.azurewebsites.net/${this.api.baseUrl}`;
       //this.api.baseUrl = `https://wordapi20211030215150.azurewebsites.net/${this.api.baseUrl}`;
     }

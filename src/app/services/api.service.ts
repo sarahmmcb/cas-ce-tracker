@@ -11,7 +11,7 @@ export interface CEHttpParams {
 })
 export class CEApiService {
 
-  public baseUrl = 'api/ce';
+  public baseUrl = 'api';
 
   constructor(private http: HttpClient) { }
 
