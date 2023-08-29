@@ -25,6 +25,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     // subscribe to the subject in the experience service
+    this.year = new Date().getFullYear();
     this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
       this.experiences = ex;
     });

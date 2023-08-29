@@ -22,11 +22,13 @@ export class CEExperienceService {
   }
 
   public getExperiences(year: number): Observable<IExperience[]> {
-    return this.api.get('/experiences', { year }).pipe(
-      tap((experiences) => {
-        this.experienceSub.next(experiences);
-      })
-    );
+    return this.api
+      .get(`/experiences/year/${year}/userId/1/nationalStandardId/1`)
+      .pipe(
+        tap((experiences) => {
+          this.experienceSub.next(experiences);
+        })
+      );
   }
 
   // TODO: feed in route params
