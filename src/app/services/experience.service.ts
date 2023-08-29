@@ -5,17 +5,17 @@ import { catchError, switchMap, take, tap } from 'rxjs/operators';
 import { ICategoryList } from '../models/category';
 import { IUpdateExperience, IExperience, IUnit } from '../models/experience';
 import { ICELocation } from '../models/location';
-import { CEApiService } from './api.service';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CEExperienceService {
+export class ExperienceService {
   private experienceSub: BehaviorSubject<IExperience[]> = new BehaviorSubject<
     IExperience[]
   >([]);
 
-  constructor(private api: CEApiService) {}
+  constructor(private api: ApiService) {}
 
   public get experiences() {
     return this.experienceSub.asObservable();
@@ -32,8 +32,8 @@ export class CEExperienceService {
   }
 
   // TODO: feed in route params
-  public fetchUnitInfo(): Observable<IUnit[]> {
-    return this.api.get('/units/1').pipe(
+  public fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
+    return this.api.get(`/units/${nationalStandardId}`).pipe(
       tap((res) => res.body),
       catchError((error) =>
         of({

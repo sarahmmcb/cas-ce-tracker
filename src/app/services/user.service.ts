@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { CECredential, NationalStandard, Organization } from '../models/user';
+import {
+  CECredential,
+  CEUser,
+  NationalStandard,
+  Organization,
+} from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CEUserService {
+export class UserService {
+  public user: CEUser;
+
   constructor() {}
 
   public fetchCredentials(): CECredential[] {

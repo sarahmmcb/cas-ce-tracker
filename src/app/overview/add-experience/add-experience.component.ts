@@ -24,7 +24,7 @@ import {
   IUpdateExperience,
 } from 'src/app/models/experience';
 import { ICELocation } from 'src/app/models/location';
-import { CEExperienceService } from 'src/app/services/experience.service';
+import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
 
@@ -60,7 +60,7 @@ export class AddExperienceComponent implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private fb: FormBuilder,
-    private experienceService: CEExperienceService,
+    private experienceService: ExperienceService,
     private alertService: CEAlertService,
     private loadingCtrl: LoadingController
   ) {}

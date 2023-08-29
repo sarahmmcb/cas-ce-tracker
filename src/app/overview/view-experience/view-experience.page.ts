@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { IExperience, IUnit } from 'src/app/models/experience';
-import { CEExperienceService } from 'src/app/services/experience.service';
+import { CEUser } from 'src/app/models/user';
+import { ExperienceService } from 'src/app/services/experience.service';
+import { UserService } from 'src/app/services/user.service';
 
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 
@@ -19,7 +21,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   private experienceSub: Subscription;
 
   constructor(
-    private experienceService: CEExperienceService,
+    private experienceService: ExperienceService,
+    private userService: UserService,
     private modalCtrl: ModalController
   ) {}
 
@@ -30,9 +33,14 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.experiences = ex;
     });
 
-    this.experienceService.fetchUnitInfo().subscribe((res) => {
-      this.ceUnits = res;
-    });
+    const nationalStandardId =
+      this.userService.user.nationalStandard.nationalStandardId;
+
+    this.experienceService
+      .fetchUnitInfo(nationalStandardId)
+      .subscribe((res) => {
+        this.ceUnits = res;
+      });
   }
 
   public ionViewWillEnter(): void {
