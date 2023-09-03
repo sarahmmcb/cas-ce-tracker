@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
 import { ICategoryList } from '../models/category';
 import { IUpdateExperience, IExperience, IUnit } from '../models/experience';
@@ -17,13 +17,24 @@ export class ExperienceService {
 
   constructor(private api: ApiService) {}
 
+  /**
+   * Perhaps use some kind of GenericActionResponse like at DS
+   * to detect, parse, and handle errors
+   */
+
   public get experiences() {
     return this.experienceSub.asObservable();
   }
 
-  public getExperiences(year: number): Observable<IExperience[]> {
+  public getExperiences(
+    year: number,
+    userId: number,
+    nationalStandardId: number
+  ): Observable<IExperience[]> {
     return this.api
-      .get(`/experiences/year/${year}/userId/1/nationalStandardId/1`)
+      .get(
+        `/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`
+      )
       .pipe(
         tap((experiences) => {
           this.experienceSub.next(experiences);
@@ -31,10 +42,9 @@ export class ExperienceService {
       );
   }
 
-  // TODO: feed in route params
   public fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
     return this.api.get(`/units/${nationalStandardId}`).pipe(
-      tap((res) => res.body),
+      map((res) => res.units),
       catchError((error) =>
         of({
           ...error,

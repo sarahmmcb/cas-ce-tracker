@@ -13,10 +13,10 @@ export class AuthService {
     email: 'stuff@stuff.com',
     title: 'Ms.',
     nationalStandard: {
-      nationalStandardId: 2,
+      nationalStandardId: 1,
       owningOrganizationId: 2,
-      longName: 'United States Specific Qualification Standard',
-      shortName: 'USQS Specific',
+      longName: 'United States General Qualification Standard',
+      shortName: 'USQS General',
     },
     organizations: [
       {
@@ -35,12 +35,14 @@ export class AuthService {
         credentialId: 1,
         organizationId: 1,
         shortName: 'FCAS',
-        longName: 'Fellow of the Casualty Actuarial Society'
-      }
-    ]
+        longName: 'Fellow of the Casualty Actuarial Society',
+      },
+    ],
   };
 
-  private userSubject: BehaviorSubject<CEUser> = new BehaviorSubject<CEUser>(null);
+  private userSubject: BehaviorSubject<CEUser> = new BehaviorSubject<CEUser>(
+    null
+  );
 
   private _userIsAuthenticated = false;
 
@@ -60,9 +62,7 @@ export class AuthService {
     return this._userIsAuthenticated;
   }
 
-  /**
-   * Log in method.
-   */
+  // TODO: make this async
   public login(email: string, password: string): void {
     this._userIsAuthenticated = true;
     this.userSubject.next(this.tempUserSpecific);

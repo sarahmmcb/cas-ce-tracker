@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -13,8 +13,10 @@ import {
 } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
+import { CEAlertButton } from 'src/app/core/alert';
 import { CEAlertService } from 'src/app/core/alert.service';
 import { ICategory, ICategoryList } from 'src/app/models/category';
 import {
@@ -24,6 +26,7 @@ import {
   IUpdateExperience,
 } from 'src/app/models/experience';
 import { ICELocation } from 'src/app/models/location';
+import { CEUser } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
@@ -33,7 +36,7 @@ import { positiveValueValidator } from './validators';
   templateUrl: './add-experience.component.html',
   styleUrls: ['./add-experience.component.scss'],
 })
-export class AddExperienceComponent implements OnInit {
+export class AddExperienceComponent implements OnInit, OnDestroy {
   /**
    * Experience data input if the experience
    * is being edited.
@@ -54,15 +57,18 @@ export class AddExperienceComponent implements OnInit {
   public carryForwardYear: number;
   public isLoading = false;
   public fetchError: string;
+  public user: CEUser;
 
   private loading: HTMLIonLoadingElement;
+  private userSub: Subscription;
 
   constructor(
     private modalCtrl: ModalController,
     private fb: FormBuilder,
     private experienceService: ExperienceService,
     private alertService: CEAlertService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private authService: AuthService
   ) {}
 
   // Helper method to access category form group in the template.
@@ -71,7 +77,17 @@ export class AddExperienceComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.fetchData();
+    // subscribe to the user subject from auth service
+    this.userSub = this.authService.user.subscribe((user) => {
+      this.user = user;
+      this.fetchData();
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 
   public onCancel(): Promise<boolean> | void {
@@ -157,7 +173,9 @@ export class AddExperienceComponent implements OnInit {
     const dataCalls = forkJoin({
       getCategoryLists: this.experienceService.fetchCategoryLists(),
       getLocations: this.experienceService.fetchLocations(),
-      getUnitInfo: this.experienceService.fetchUnitInfo(),
+      getUnitInfo: this.experienceService.fetchUnitInfo(
+        this.user.nationalStandard.nationalStandardId
+      ),
     }).pipe(catchError((error) => of(error)));
 
     dataCalls.subscribe(async (res) => {

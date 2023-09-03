@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 import { AuthService } from './auth.service';
 
@@ -10,7 +11,6 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-
   /**
    * User email.
    */
@@ -21,20 +21,18 @@ export class AuthPage implements OnInit {
    */
   public password: string;
 
-  constructor(private auth: AuthService,
-              private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) {}
 
   /**
    * On Init.
    */
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
   /**
    * On form submit.
    */
   public onSubmit(form: NgForm): void {
-    if(!form.valid){
+    if (!form.valid) {
       return;
     }
 
@@ -42,8 +40,9 @@ export class AuthPage implements OnInit {
     const password = form.value.password;
 
     this.auth.login(email, password);
+    if (this.auth.userIsAuthenticated) {
+      this.router.navigateByUrl('/overview');
+    }
     form.reset();
-    this.router.navigateByUrl('/overview');
   }
-
 }
