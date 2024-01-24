@@ -1,0 +1,2 @@
+1. Handle errors on the front end
+2. Add a way to choose the year in the UI

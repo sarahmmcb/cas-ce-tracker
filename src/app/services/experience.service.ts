@@ -17,11 +17,6 @@ export class ExperienceService {
 
   constructor(private api: ApiService) {}
 
-  /**
-   * Perhaps use some kind of GenericActionResponse like at DS
-   * to detect, parse, and handle errors
-   */
-
   public get experiences() {
     return this.experienceSub.asObservable();
   }
