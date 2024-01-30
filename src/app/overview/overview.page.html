@@ -11,8 +11,12 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <div *ngIf="showError" class="error-msg">{{errorMessage}}</div>
-        <app-compliance-graphic [ceData]="ceData"></app-compliance-graphic>
+        <app-compliance-graphic
+          [ceData]="ceData"
+          [errorMessage]="errorMessage"
+          [year]="year"
+          (yearChanged)="updateYear($event)"
+        ></app-compliance-graphic>
         <ion-card class="card-overview-buttons">
           <ion-button expand="full" shape="round" (click)="onAddCE()">
             Add CE
