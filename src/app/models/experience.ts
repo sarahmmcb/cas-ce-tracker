@@ -1,10 +1,10 @@
 import { ICategory } from './category';
-import { ICELocation } from './location';
+import { ILocation } from './location';
 
 export class IExperience {
   public ceExperienceId = 0;
   public userId = 0;
-  public location: ICELocation = new ICELocation();
+  public location: ILocation = new ILocation();
   public carryForward = false;
   public programTitle = '';
   public eventName? = '';

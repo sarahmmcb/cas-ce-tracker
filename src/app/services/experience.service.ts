@@ -4,7 +4,7 @@ import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
 import { ICategoryList } from '../models/category';
 import { IUpdateExperience, IExperience, IUnit } from '../models/experience';
-import { ICELocation } from '../models/location';
+import { ILocation } from '../models/location';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -38,7 +38,7 @@ export class ExperienceService {
   }
 
   public fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
-    return this.api.get(`/units/${nationalStandardId}`).pipe(
+    return this.api.get(`/units/nationalStandardId/${nationalStandardId}`).pipe(
       map((res) => res.units),
       catchError((error) =>
         of({
@@ -49,19 +49,26 @@ export class ExperienceService {
     );
   }
 
-  public fetchCategoryLists(): Observable<ICategoryList[]> {
-    return this.api.get('/categoryLists').pipe(
-      tap((res) => res.body),
-      catchError((error) =>
-        of({
-          ...error,
-          errorMessage: 'There was an error fetching experiences',
-        })
+  public fetchCategoryLists(
+    nationalStandardId: number,
+    year: number
+  ): Observable<ICategoryList[]> {
+    return this.api
+      .get(
+        `/categoryLists/nationalStandardId/${nationalStandardId}/year/${year}`
       )
-    );
+      .pipe(
+        tap((res) => res.body),
+        catchError((error) =>
+          of({
+            ...error,
+            errorMessage: 'There was an error fetching experiences',
+          })
+        )
+      );
   }
 
-  public fetchLocations(): Observable<ICELocation[]> {
+  public fetchLocations(): Observable<ILocation[]> {
     return this.api.get('/locations').pipe(
       tap((res) => res.body),
       catchError((error) =>

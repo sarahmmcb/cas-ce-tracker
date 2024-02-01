@@ -25,11 +25,12 @@ import {
   IUnit,
   IUpdateExperience,
 } from 'src/app/models/experience';
-import { ICELocation } from 'src/app/models/location';
+import { ILocation } from 'src/app/models/location';
 import { CEUser } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-add-experience',
@@ -45,7 +46,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public ceExperience: IExperience;
   public formTitle: string;
   public categoryLists: ICategoryList[] = [];
-  public locations: ICELocation[] = [];
+  public locations: ILocation[] = [];
   public ceUnits: IUnit[] = [];
   public parentUnit: IUnit;
   public childUnit: IUnit;
@@ -68,7 +69,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     private experienceService: ExperienceService,
     private alertService: CEAlertService,
     private loadingCtrl: LoadingController,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   // Helper method to access category form group in the template.
@@ -171,7 +173,10 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     });
     await this.loading.present();
     const dataCalls = forkJoin({
-      getCategoryLists: this.experienceService.fetchCategoryLists(),
+      getCategoryLists: this.experienceService.fetchCategoryLists(
+        this.user.nationalStandard.nationalStandardId,
+        this.userService.year
+      ),
       getLocations: this.experienceService.fetchLocations(),
       getUnitInfo: this.experienceService.fetchUnitInfo(
         this.user.nationalStandard.nationalStandardId
@@ -235,7 +240,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
       ceDate: [this.ceExperience.startDate, Validators.required],
-      ceLocationId: this.ceExperience.location.ceLocationId,
+      ceLocationId: this.ceExperience.location.locationId,
       programTitle: [this.ceExperience.programTitle, Validators.required],
       eventName: this.ceExperience.eventName,
       description: this.ceExperience.description,

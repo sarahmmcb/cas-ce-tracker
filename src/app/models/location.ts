@@ -1,5 +1,4 @@
-
-export class ICELocation {
-  public ceLocationId = 0;
+export class ILocation {
+  public locationId = 0;
   public name = '';
 }

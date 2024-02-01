@@ -7,6 +7,7 @@ import { CEData } from '../models/cedata';
 import { CEDataService } from '../services/cedata.service';
 import { AddExperienceComponent } from './add-experience/add-experience.component';
 import { ErrorCodes } from '../utils/errors';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-overview',
@@ -22,11 +23,12 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   constructor(
     private ceDataService: CEDataService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private userService: UserService
   ) {}
 
   public ngOnInit(): void {
-    this.year = new Date().getFullYear();
+    this.year = this.userService.year;
     this.ceDataSub = this.ceDataService.ceData.subscribe(
       (ceData) => {
         this.ceData = ceData;

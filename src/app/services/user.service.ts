@@ -11,9 +11,26 @@ import {
   providedIn: 'root',
 })
 export class UserService {
+  // This class can just house methods to fetch user-related info
+  // Methods will take a user id provided by the auth service
+  // The actual user object will be provided by auth
   public user: CEUser;
 
+  private _year: number;
+
   constructor() {}
+
+  get year(): number {
+    if (!this._year) {
+      return new Date().getFullYear();
+    }
+
+    return this._year;
+  }
+
+  set year(year: number) {
+    this._year = year;
+  }
 
   public fetchCredentials(): CECredential[] {
     return [
