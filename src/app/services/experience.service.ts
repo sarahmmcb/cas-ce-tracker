@@ -58,7 +58,7 @@ export class ExperienceService {
         `/categoryLists/nationalStandardId/${nationalStandardId}/year/${year}`
       )
       .pipe(
-        tap((res) => res.body),
+        map((res) => res.categoryLists),
         catchError((error) =>
           of({
             ...error,
@@ -70,7 +70,7 @@ export class ExperienceService {
 
   public fetchLocations(): Observable<ILocation[]> {
     return this.api.get('/locations').pipe(
-      tap((res) => res.body),
+      map((res) => res.locations),
       catchError((error) =>
         of({
           ...error,

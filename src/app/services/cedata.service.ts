@@ -27,7 +27,7 @@ export class CEDataService {
       .pipe(
         tap((ceData) => this.ceDataSubject.next(ceData.body)),
         catchError((err) => {
-          console.log('error on get');
+          console.log('error on get'); // TODO: remove this after adding more accurate error messaging
           return throwError(err);
         })
       );
