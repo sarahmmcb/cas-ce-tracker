@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
   /**
    * Profile form group.
    */
-  public profileForm: FormGroup;
+  public profileForm: UntypedFormGroup;
 
   /**
    * Possible National Standards.
@@ -41,7 +41,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
   private userSub: Subscription;
 
   constructor(private authService: AuthService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private userService: CEUserService,
               private router: Router,
               private alertService: CEAlertService) { }

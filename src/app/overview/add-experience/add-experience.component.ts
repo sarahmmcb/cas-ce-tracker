@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -46,7 +46,7 @@ export class AddExperienceComponent implements OnInit {
   public ceUnits: IUnit[] = [];
   public parentUnit: IUnit;
   public childUnit: IUnit;
-  public addForm: FormGroup;
+  public addForm: UntypedFormGroup;
   public submitted = false;
   public parentAmount: IExperienceAmount;
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
@@ -59,15 +59,15 @@ export class AddExperienceComponent implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private experienceService: CEExperienceService,
     private alertService: CEAlertService,
     private loadingCtrl: LoadingController
   ) {}
 
   // Helper method to access category form group in the template.
-  public get categories(): FormArray {
-    return this.addForm.get('categories') as FormArray;
+  public get categories(): UntypedFormArray {
+    return this.addForm.get('categories') as UntypedFormArray;
   }
 
   public ngOnInit(): void {
@@ -225,7 +225,7 @@ export class AddExperienceComponent implements OnInit {
         this.parentAmount.amount,
         [Validators.required, positiveValueValidator()],
       ],
-      timeSpentChild: new FormControl({
+      timeSpentChild: new UntypedFormControl({
         value: this.childAmount.amount,
         disabled: this.childUnit?.isDisabled,
       }),
@@ -243,10 +243,10 @@ export class AddExperienceComponent implements OnInit {
       if (chosenCategory) {
         // if we are updating, prepopulate with existing data.
         this.categories.push(
-          new FormControl(chosenCategory.categoryId, [Validators.required])
+          new UntypedFormControl(chosenCategory.categoryId, [Validators.required])
         );
       } else {
-        this.categories.push(new FormControl(null, [Validators.required]));
+        this.categories.push(new UntypedFormControl(null, [Validators.required]));
       }
     }
   }
