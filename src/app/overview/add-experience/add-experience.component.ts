@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   UntypedFormArray,
   UntypedFormBuilder,
@@ -13,8 +13,10 @@ import {
 } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
+import { CEAlertButton } from 'src/app/core/alert';
 import { CEAlertService } from 'src/app/core/alert.service';
 import { ICategory, ICategoryList } from 'src/app/models/category';
 import {
@@ -23,17 +25,19 @@ import {
   IUnit,
   IUpdateExperience,
 } from 'src/app/models/experience';
-import { ICELocation } from 'src/app/models/location';
-import { CEExperienceService } from 'src/app/services/experience.service';
+import { ILocation } from 'src/app/models/location';
+import { CEUser } from 'src/app/models/user';
+import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-add-experience',
   templateUrl: './add-experience.component.html',
   styleUrls: ['./add-experience.component.scss'],
 })
-export class AddExperienceComponent implements OnInit {
+export class AddExperienceComponent implements OnInit, OnDestroy {
   /**
    * Experience data input if the experience
    * is being edited.
@@ -42,7 +46,7 @@ export class AddExperienceComponent implements OnInit {
   public ceExperience: IExperience;
   public formTitle: string;
   public categoryLists: ICategoryList[] = [];
-  public locations: ICELocation[] = [];
+  public locations: ILocation[] = [];
   public ceUnits: IUnit[] = [];
   public parentUnit: IUnit;
   public childUnit: IUnit;
@@ -54,15 +58,19 @@ export class AddExperienceComponent implements OnInit {
   public carryForwardYear: number;
   public isLoading = false;
   public fetchError: string;
+  public user: CEUser;
 
   private loading: HTMLIonLoadingElement;
+  private userSub: Subscription;
 
   constructor(
     private modalCtrl: ModalController,
     private fb: UntypedFormBuilder,
-    private experienceService: CEExperienceService,
+    private experienceService: ExperienceService,
     private alertService: CEAlertService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   // Helper method to access category form group in the template.
@@ -71,7 +79,17 @@ export class AddExperienceComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.fetchData();
+    // subscribe to the user subject from auth service
+    this.userSub = this.authService.user.subscribe((user) => {
+      this.user = user;
+      this.fetchData();
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 
   public onCancel(): Promise<boolean> | void {
@@ -155,9 +173,14 @@ export class AddExperienceComponent implements OnInit {
     });
     await this.loading.present();
     const dataCalls = forkJoin({
-      getCategoryLists: this.experienceService.fetchCategoryLists(),
+      getCategoryLists: this.experienceService.fetchCategoryLists(
+        this.user.nationalStandard.nationalStandardId,
+        this.userService.year
+      ),
       getLocations: this.experienceService.fetchLocations(),
-      getUnitInfo: this.experienceService.fetchUnitInfo(),
+      getUnitInfo: this.experienceService.fetchUnitInfo(
+        this.user.nationalStandard.nationalStandardId
+      ),
     }).pipe(catchError((error) => of(error)));
 
     dataCalls.subscribe(async (res) => {
@@ -217,7 +240,7 @@ export class AddExperienceComponent implements OnInit {
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
       ceDate: [this.ceExperience.startDate, Validators.required],
-      ceLocationId: this.ceExperience.location.ceLocationId,
+      ceLocationId: this.ceExperience.location.locationId,
       programTitle: [this.ceExperience.programTitle, Validators.required],
       eventName: this.ceExperience.eventName,
       description: this.ceExperience.description,

@@ -1,38 +1,45 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
 import { ICategoryList } from '../models/category';
 import { IUpdateExperience, IExperience, IUnit } from '../models/experience';
-import { ICELocation } from '../models/location';
-import { CEApiService } from './api.service';
+import { ILocation } from '../models/location';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CEExperienceService {
+export class ExperienceService {
   private experienceSub: BehaviorSubject<IExperience[]> = new BehaviorSubject<
     IExperience[]
   >([]);
 
-  constructor(private api: CEApiService) {}
+  constructor(private api: ApiService) {}
 
   public get experiences() {
     return this.experienceSub.asObservable();
   }
 
-  public getExperiences(year: number): Observable<IExperience[]> {
-    return this.api.get('/experiences', { year }).pipe(
-      tap((experiences) => {
-        this.experienceSub.next(experiences);
-      })
-    );
+  public getExperiences(
+    year: number,
+    userId: number,
+    nationalStandardId: number
+  ): Observable<IExperience[]> {
+    return this.api
+      .get(
+        `/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`
+      )
+      .pipe(
+        tap((experiences) => {
+          this.experienceSub.next(experiences);
+        })
+      );
   }
 
-  // TODO: feed in route params
-  public fetchUnitInfo(): Observable<IUnit[]> {
-    return this.api.get('/units/1').pipe(
-      tap((res) => res.body),
+  public fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
+    return this.api.get(`/units/nationalStandardId/${nationalStandardId}`).pipe(
+      map((res) => res.units),
       catchError((error) =>
         of({
           ...error,
@@ -42,21 +49,28 @@ export class CEExperienceService {
     );
   }
 
-  public fetchCategoryLists(): Observable<ICategoryList[]> {
-    return this.api.get('/categoryLists').pipe(
-      tap((res) => res.body),
-      catchError((error) =>
-        of({
-          ...error,
-          errorMessage: 'There was an error fetching experiences',
-        })
+  public fetchCategoryLists(
+    nationalStandardId: number,
+    year: number
+  ): Observable<ICategoryList[]> {
+    return this.api
+      .get(
+        `/categoryLists/nationalStandardId/${nationalStandardId}/year/${year}`
       )
-    );
+      .pipe(
+        map((res) => res.categoryLists),
+        catchError((error) =>
+          of({
+            ...error,
+            errorMessage: 'There was an error fetching experiences',
+          })
+        )
+      );
   }
 
-  public fetchLocations(): Observable<ICELocation[]> {
+  public fetchLocations(): Observable<ILocation[]> {
     return this.api.get('/locations').pipe(
-      tap((res) => res.body),
+      map((res) => res.locations),
       catchError((error) =>
         of({
           ...error,

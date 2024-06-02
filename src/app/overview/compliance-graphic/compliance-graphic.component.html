@@ -1,9 +1,21 @@
 <ion-card>
-  <ion-card-title>{{ ceData.title }}</ion-card-title>
+  <ion-card-title>CE Summary {{ year }}</ion-card-title>
+  <ion-card-content>
+    <div class="centered-error-message">{{ errorMessage }}</div>
+    <div class="right-align">
+      Select Year:
+      <ion-select placeholder="year" (ionChange)="emitYearChanged($event)">
+        <ion-select-option
+          *ngFor="let yearOption of allYears"
+          [value]="yearOption"
+          >{{ yearOption }}</ion-select-option
+        >
+      </ion-select>
+    </div>
 
     <div *ngFor="let categoryGroup of ceData.categoryGroups">
       <ion-grid>
-        <ion-row *ngFor="let category of categoryGroup.categories">
+        <!-- <ion-row *ngFor="let category of categoryGroup.categories">
           <ion-col>
             <ion-grid class="ion-no-padding">
               <ion-row>
@@ -29,11 +41,12 @@
               </ion-row>
             </ion-grid>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </div>
     <div class="ion-text-right div-compliant-message">
-      {{ ceData.complianceStatus }} <ion-icon name="checkmark-circle" color="green"></ion-icon>
+      {{ ceData.complianceStatus }}
+      <ion-icon name="checkmark-circle" color="green"></ion-icon>
     </div>
-
+  </ion-card-content>
 </ion-card>

@@ -11,13 +11,22 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <app-compliance-graphic [ceData]="ceData"></app-compliance-graphic>
+        <app-compliance-graphic
+          [ceData]="ceData"
+          [errorMessage]="errorMessage"
+          [year]="year"
+          (yearChanged)="updateYear($event)"
+        ></app-compliance-graphic>
         <ion-card class="card-overview-buttons">
           <ion-button expand="full" shape="round" (click)="onAddCE()">
             Add CE
             <ion-icon name="add" slot="end"></ion-icon>
           </ion-button>
-          <ion-button expand="full" shape="round" [routerLink]="['/', 'overview', 'view-experience']">
+          <ion-button
+            expand="full"
+            shape="round"
+            [routerLink]="['/', 'overview', 'view-experience']"
+          >
             View CE
             <ion-icon name="search" slot="end"></ion-icon>
           </ion-button>

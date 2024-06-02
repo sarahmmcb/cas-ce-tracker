@@ -1,0 +1,7 @@
+1. Handle errors on the front end - DONE on overview page
+2. Add a way to choose the year in the UI - DONE
+3. Fix error when opening add Experience form - DONE
+4. Fetch CEData
+5. Sideways navigation through years on overview page (either by tap or swipe)
+6. More accurate messaging on CEData error, 404 vs. 500
+7. Accurate error messaging on Add Experience form

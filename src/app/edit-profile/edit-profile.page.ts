@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { CEAlertService } from '../core/alert.service';
 import { CEUser, NationalStandard } from '../models/user';
-import { CEUserService } from '../services/user.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -14,7 +14,6 @@ import { CEUserService } from '../services/user.service';
   styleUrls: ['./edit-profile.page.scss'],
 })
 export class EditProfilePage implements OnInit, OnDestroy {
-
   /**
    * User object.
    */
@@ -40,17 +39,21 @@ export class EditProfilePage implements OnInit, OnDestroy {
    */
   private userSub: Subscription;
 
-  constructor(private authService: AuthService,
-              private fb: UntypedFormBuilder,
-              private userService: CEUserService,
-              private router: Router,
-              private alertService: CEAlertService) { }
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router,
+    private alertService: CEAlertService
+  ) {}
 
   /**
    * On Init.
    */
   public ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(user => this.user = user);
+    this.userSub = this.authService.user.subscribe(
+      (user) => (this.user = user)
+    );
     this.initializeData();
     this.initializeFormControls();
   }
@@ -59,7 +62,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
    * On Destroy.
    */
   public ngOnDestroy(): void {
-    if(this.userSub) {
+    if (this.userSub) {
       this.userSub.unsubscribe();
     }
   }
@@ -70,7 +73,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
   public onSubmit(): void {
     console.log(this.profileForm);
     this.submitted = true;
-    if(!this.profileForm.valid) {
+    if (!this.profileForm.valid) {
       return;
     }
   }
@@ -78,24 +81,27 @@ export class EditProfilePage implements OnInit, OnDestroy {
   /**
    * Logic executed when cancel button is pressed.
    */
-   public onCancel(): Promise<boolean> | void {
+  public onCancel(): Promise<boolean> | void {
     // present confirmation modal
     if (this.profileForm.dirty) {
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
         type: 'confirm',
-        buttons: [{
-          text: 'OK',
-          role: 'confirm',
-          id: 'confirmButton',
-          action: () => this.router.navigateByUrl('/overview')
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          id: 'cancelButton',
-          action: () => {}
-        }]
+        buttons: [
+          {
+            text: 'OK',
+            role: 'confirm',
+            id: 'confirmButton',
+            action: () => this.router.navigateByUrl('/overview'),
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            id: 'cancelButton',
+            action: () => {},
+          },
+        ],
       });
     } else {
       this.router.navigateByUrl('/overview');
@@ -118,8 +124,10 @@ export class EditProfilePage implements OnInit, OnDestroy {
       lastName: [this.user.lastName, Validators.required],
       email: [this.user.email, Validators.required],
       title: this.user.title,
-      nationalStandard: [this.user.nationalStandard.nationalStandardId, Validators.required]
+      nationalStandard: [
+        this.user.nationalStandard.nationalStandardId,
+        Validators.required,
+      ],
     });
   }
-
 }

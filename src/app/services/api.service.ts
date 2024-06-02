@@ -2,24 +2,25 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export interface CEHttpParams {
+export interface HttpParams {
   [key: string]: string | string[] | number;
-};
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CEApiService {
-
+export class ApiService {
   public baseUrl = 'api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  public get(route: string, params?: CEHttpParams): Observable<any> {
+  public get(route: string, params?: HttpParams): Observable<any> {
     return this.http.get(this.baseUrl + route, { params });
   }
 
-  public post(route: string, body: any, params?: CEHttpParams): Observable<any> {
-    return this.http.post(this.baseUrl + route, JSON.stringify(body), { params });
+  public post(route: string, body: any, params?: HttpParams): Observable<any> {
+    return this.http.post(this.baseUrl + route, JSON.stringify(body), {
+      params,
+    });
   }
 }
