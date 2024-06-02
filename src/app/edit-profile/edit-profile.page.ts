@@ -41,7 +41,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private userService: UserService,
     private router: Router,
     private alertService: CEAlertService
