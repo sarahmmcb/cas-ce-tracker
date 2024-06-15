@@ -9,9 +9,8 @@ describe('ViewExperiencePage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewExperiencePage ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    imports: [IonicModule.forRoot(), ViewExperiencePage]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ViewExperiencePage);
     component = fixture.componentInstance;

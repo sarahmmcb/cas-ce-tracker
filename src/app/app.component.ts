@@ -10,6 +10,8 @@ import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })

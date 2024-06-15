@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -7,11 +7,15 @@ import { AuthService } from '../auth/auth.service';
 import { CEAlertService } from '../core/alert.service';
 import { CEUser, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-edit-profile',
-  templateUrl: './edit-profile.page.html',
-  styleUrls: ['./edit-profile.page.scss'],
+    selector: 'app-edit-profile',
+    templateUrl: './edit-profile.page.html',
+    styleUrls: ['./edit-profile.page.scss'],
+    standalone: true,
+    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor]
 })
 export class EditProfilePage implements OnInit, OnDestroy {
   /**

@@ -1,16 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  InputCustomEvent,
-  LoadingController,
-  ModalController,
-} from '@ionic/angular';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
 import { forkJoin, of, Subscription } from 'rxjs';
@@ -31,11 +21,14 @@ import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
 import { UserService } from 'src/app/services/user.service';
+import { NgIf, NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
 
 @Component({
-  selector: 'app-add-experience',
-  templateUrl: './add-experience.component.html',
-  styleUrls: ['./add-experience.component.scss'],
+    selector: 'app-add-experience',
+    templateUrl: './add-experience.component.html',
+    styleUrls: ['./add-experience.component.scss'],
+    standalone: true,
+    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet]
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
   /**

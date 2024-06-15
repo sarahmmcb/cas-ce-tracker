@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { CEData } from '../models/cedata';
@@ -8,11 +8,15 @@ import { CEDataService } from '../services/cedata.service';
 import { AddExperienceComponent } from './add-experience/add-experience.component';
 import { ErrorCodes } from '../utils/errors';
 import { UserService } from '../services/user.service';
+import { RouterLink } from '@angular/router';
+import { ComplianceGraphicComponent } from './compliance-graphic/compliance-graphic.component';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.page.html',
-  styleUrls: ['./overview.page.scss'],
+    selector: 'app-overview',
+    templateUrl: './overview.page.html',
+    styleUrls: ['./overview.page.scss'],
+    standalone: true,
+    imports: [IonicModule, ComplianceGraphicComponent, RouterLink]
 })
 export class OverviewPage implements OnInit, OnDestroy {
   public ceData: CEData = new CEData();
