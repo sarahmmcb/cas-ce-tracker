@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TouchSequence } from 'selenium-webdriver';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -7,11 +7,15 @@ import { IExperience, IUnit } from 'src/app/models/experience';
 import { CEUser } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
+import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-view-experience',
-  templateUrl: './view-experience.page.html',
-  styleUrls: ['./view-experience.page.scss'],
+    selector: 'app-view-experience',
+    templateUrl: './view-experience.page.html',
+    styleUrls: ['./view-experience.page.scss'],
+    standalone: true,
+    imports: [IonicModule, NgFor, NgIf, ShortenTextPipe]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
   public experiences: IExperience[] = [];

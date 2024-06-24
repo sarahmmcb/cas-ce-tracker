@@ -3,11 +3,14 @@ import { Subscription } from 'rxjs';
 
 import { CEAlert, CEAlertButton } from '../alert';
 import { CEAlertService } from '../alert.service';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-alert',
-  templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.scss'],
+    selector: 'app-alert',
+    templateUrl: './alert.component.html',
+    styleUrls: ['./alert.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, NgClass]
 })
 export class AlertComponent implements OnInit, OnDestroy {
 

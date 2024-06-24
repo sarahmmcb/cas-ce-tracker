@@ -9,9 +9,8 @@ describe('AddExperienceComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddExperienceComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    imports: [IonicModule.forRoot(), AddExperienceComponent]
+}).compileComponents();
 
     fixture = TestBed.createComponent(AddExperienceComponent);
     component = fixture.componentInstance;

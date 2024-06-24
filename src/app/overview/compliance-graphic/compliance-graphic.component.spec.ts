@@ -9,9 +9,8 @@ describe('ComplianceGraphicComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComplianceGraphicComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    imports: [IonicModule.forRoot(), ComplianceGraphicComponent]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ComplianceGraphicComponent);
     component = fixture.componentInstance;

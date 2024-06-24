@@ -8,12 +8,12 @@ import { ViewExperiencePageRoutingModule } from './view-experience-routing.modul
 import { ViewExperiencePage } from './view-experience.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ViewExperiencePageRoutingModule
-  ],
-  declarations: [ViewExperiencePage, ShortenTextPipe]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ViewExperiencePageRoutingModule,
+        ViewExperiencePage, ShortenTextPipe
+    ]
 })
 export class ViewExperiencePageModule {}

@@ -9,13 +9,13 @@ import { OverviewPageRoutingModule } from './overview-routing.module';
 import { OverviewPage } from './overview.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    OverviewPageRoutingModule
-  ],
-  declarations: [OverviewPage, ComplianceGraphicComponent, AddExperienceComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IonicModule,
+        OverviewPageRoutingModule,
+        OverviewPage, ComplianceGraphicComponent, AddExperienceComponent
+    ]
 })
 export class OverviewPageModule {}
