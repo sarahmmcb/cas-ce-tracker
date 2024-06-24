@@ -28,7 +28,7 @@
             <div class="div-form-control">
               <ion-label>Location:</ion-label>
               <ion-select formControlName="ceLocationId" placeHolder="--Choose One--">
-                <ion-select-option *ngFor="let item of locations" [value]="item.ceLocationId">{{ item.name }}
+                <ion-select-option *ngFor="let item of locations" [value]="item.locationId">{{ item.name }}
                 </ion-select-option>
               </ion-select>
             </div>
@@ -98,13 +98,13 @@
 <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
   <div [formGroup]="addForm" class="div-single-category">
     <div formArrayName="categories">
-      <ion-select [ngClass]="{'input-error': submitted && addForm.get('categories').controls[controlName].invalid}"
+      <ion-select [ngClass]="{'input-error': submitted && addForm.get('categories').invalid}"
         [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--">
         <ion-select-option *ngFor="let item of cat" [value]="item.ceCategoryId">{{ item.displayName }}
         </ion-select-option>
       </ion-select>
     </div>
-    <div class="error-message" *ngIf="submitted && addForm.get('categories').controls[controlName].errors?.required">
+    <div class="error-message" *ngIf="submitted && addForm.get('categories').errors?.required">
       This field is required.</div>
   </div>
 </ng-template>
@@ -119,7 +119,7 @@
         <ion-radio [value]="0"></ion-radio>
       </ion-radio-group>
     </div>
-    <div class="error-message" *ngIf="submitted && addForm.get('categories').controls[controlName].errors?.required">
+    <div class="error-message" *ngIf="submitted && addForm.get('categories').errors?.required">
       This field is required.</div>
   </div>
 </ng-template>

@@ -1,12 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import * as math from 'mathjs';
 import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
-import { CEAlertButton } from 'src/app/core/alert';
 import { CEAlertService } from 'src/app/core/alert.service';
 import { ICategory, ICategoryList } from 'src/app/models/category';
 import {
@@ -43,7 +42,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public ceUnits: IUnit[] = [];
   public parentUnit: IUnit;
   public childUnit: IUnit;
-  public addForm: UntypedFormGroup;
+  public addForm: FormGroup;
   public submitted = false;
   public parentAmount: IExperienceAmount;
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
@@ -58,7 +57,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalCtrl: ModalController,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private experienceService: ExperienceService,
     private alertService: CEAlertService,
     private loadingCtrl: LoadingController,
@@ -67,8 +66,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   ) {}
 
   // Helper method to access category form group in the template.
-  public get categories(): UntypedFormArray {
-    return this.addForm.get('categories') as UntypedFormArray;
+  public get categories(): FormArray {
+    return this.addForm.get('categories') as FormArray;
   }
 
   public ngOnInit(): void {
@@ -241,7 +240,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         this.parentAmount.amount,
         [Validators.required, positiveValueValidator()],
       ],
-      timeSpentChild: new UntypedFormControl({
+      timeSpentChild: new FormControl({
         value: this.childAmount.amount,
         disabled: this.childUnit?.isDisabled,
       }),
@@ -259,10 +258,10 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       if (chosenCategory) {
         // if we are updating, prepopulate with existing data.
         this.categories.push(
-          new UntypedFormControl(chosenCategory.categoryId, [Validators.required])
+          new FormControl(chosenCategory.categoryId, [Validators.required])
         );
       } else {
-        this.categories.push(new UntypedFormControl(null, [Validators.required]));
+        this.categories.push(new FormControl(null, [Validators.required]));
       }
     }
   }

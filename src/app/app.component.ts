@@ -7,11 +7,14 @@ import { AuthService } from './auth/auth.service';
 import { CEUser } from './models/user';
 import { ApiService } from './services/api.service';
 import { UserService } from './services/user.service';
+import { NgIf } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
+import { AlertComponent } from './core/alert/alert.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [],
+  imports: [IonicModule, NgIf, AlertComponent],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
