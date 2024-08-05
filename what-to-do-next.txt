@@ -5,3 +5,6 @@
 5. Sideways navigation through years on overview page (either by tap or swipe)
 6. More accurate messaging on CEData error, 404 vs. 500
 7. Accurate error messaging on Add Experience form
+8. Add endpoint to add a CE
+9. Remove surrogate from ExperienceCategory table?
+10. Add error messaging when Add Experience fails, don't close modal

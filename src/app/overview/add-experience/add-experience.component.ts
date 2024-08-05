@@ -21,13 +21,17 @@ import { ExperienceService } from 'src/app/services/experience.service';
 import { positiveValueValidator } from './validators';
 import { UserService } from 'src/app/services/user.service';
 import { NgIf, NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomHttpInterceptorService } from 'src/app/app.interceptor';
 
 @Component({
     selector: 'app-add-experience',
     templateUrl: './add-experience.component.html',
     styleUrls: ['./add-experience.component.scss'],
     standalone: true,
-    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet]
+    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
+
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
   /**

@@ -33,24 +33,26 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.year = this.userService.year;
-    this.ceDataSub = this.ceDataService.ceData.subscribe(
-      (ceData) => {
-        this.ceData = ceData;
-        this.errorMessage = '';
-      },
-      (error) => {
-        this.handleError(error);
-        this.showError = true;
+    this.ceDataSub = this.ceDataService.ceData.subscribe({
+        next: (ceData) => {
+          this.ceData = ceData;
+          this.errorMessage = '';
+        },
+        error: (error) => {
+          this.handleError(error);
+          this.showError = true;
+        }
       }
     );
   }
 
   public ionViewWillEnter(): void {
-    this.ceDataService.getCEComplianceData(this.year).subscribe(
-      () => {},
-      (error) => {
-        this.handleError(error);
-        this.showError = true;
+    this.ceDataService.getCEComplianceData(this.year).subscribe({
+        next: () => {},
+        error: (error) => {
+          this.handleError(error);
+          this.showError = true;
+        }
       }
     );
   }
@@ -71,11 +73,12 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   public updateYear(year: number) {
     this.year = year;
-    this.ceDataService.getCEComplianceData(year).subscribe(
-      () => {},
-      (error) => {
-        this.handleError(error);
-        this.showError = true;
+    this.ceDataService.getCEComplianceData(year).subscribe({
+        next: () => {},
+        error: (error) => {
+          this.handleError(error);
+          this.showError = true;
+        }
       }
     );
   }

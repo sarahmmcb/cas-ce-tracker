@@ -8,7 +8,7 @@ import { ILocation } from '../models/location';
 import { ApiService } from './api.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ExperienceService {
   private experienceSub: BehaviorSubject<IExperience[]> = new BehaviorSubject<
@@ -80,9 +80,9 @@ export class ExperienceService {
     );
   }
 
-  public addExperience(exp: IUpdateExperience = null): Observable<any> {
+  public addExperience(exp: IUpdateExperience = null): Observable<IExperience[]> {
     let newExperience: IExperience;
-    return this.api.post('/addExperience', exp).pipe(
+    return this.api.post('/experiences', exp).pipe(
       switchMap((newExp) => {
         newExperience = newExp;
         return this.experiences;

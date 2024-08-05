@@ -10,6 +10,8 @@ import { UserService } from './services/user.service';
 import { NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomHttpInterceptorService } from './app.interceptor';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,7 @@ import { AlertComponent } from './core/alert/alert.component';
   imports: [IonicModule, NgIf, AlertComponent],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
 })
 export class AppComponent implements OnInit, OnDestroy {
   public user: CEUser;
@@ -53,9 +56,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (environment.production) {
       this.api.baseUrl = `https://wordapi20211030215150.azurewebsites.net/${this.api.baseUrl}`;
     } else {
-      this.api.baseUrl = `https://localhost:7248/${this.api.baseUrl}`;
-      //this.api.baseUrl = `https://wordapi20211030215150-test.azurewebsites.net/${this.api.baseUrl}`;
-      //this.api.baseUrl = `https://wordapi20211030215150.azurewebsites.net/${this.api.baseUrl}`;
+      this.api.baseUrl = `http://localhost/${this.api.baseUrl}`;
+      //this.api.baseUrl = `https://localhost:7248/${this.api.baseUrl}`;
     }
   }
 }
