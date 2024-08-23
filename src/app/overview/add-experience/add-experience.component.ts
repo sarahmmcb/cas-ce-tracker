@@ -9,12 +9,12 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { CEAlertService } from 'src/app/core/alert.service';
 import { ICategory, ICategoryList } from 'src/app/models/category';
 import {
-  IExperience,
-  IExperienceAmount,
+  Experience,
+  ExperienceAmount,
   IUnit,
   IUpdateExperience,
 } from 'src/app/models/experience';
-import { ILocation } from 'src/app/models/location';
+import { Location } from 'src/app/models/location';
 import { CEUser } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 
@@ -39,18 +39,18 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
    * is being edited.
    */
   @Input()
-  public ceExperience: IExperience;
+  public ceExperience: Experience;
   public formTitle: string;
   public categoryLists: ICategoryList[] = [];
-  public locations: ILocation[] = [];
+  public locations: Location[] = [];
   public ceUnits: IUnit[] = [];
   public parentUnit: IUnit;
   public childUnit: IUnit;
   public addForm: FormGroup;
   public submitted = false;
-  public parentAmount: IExperienceAmount;
+  public parentAmount: ExperienceAmount;
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
-  public childAmount: IExperienceAmount;
+  public childAmount: ExperienceAmount;
   public carryForwardYear: number;
   public isLoading = false;
   public fetchError: string;
@@ -123,9 +123,9 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     }
 
     // send to server and return with updated experience object.
-    if (this.ceExperience.ceExperienceId === 0) {
+    if (this.ceExperience.experienceId === 0) {
       this.experienceService
-        .addExperience(this.prepareExperienceData())
+        .updateExperience(this.prepareExperienceData())
         .subscribe();
     } else {
       // this.experienceService.updateExperience(
@@ -157,7 +157,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   private prepareExperienceData(): IUpdateExperience {
     return {
       ...this.addForm.value,
-      experienceId: this.ceExperience.ceExperienceId,
+      experienceId: this.ceExperience.experienceId,
       categories: [...this.addForm.value.categories],
     };
   }
@@ -203,7 +203,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     this.initializeFormControls();
 
     this.formTitle =
-      this.ceExperience.ceExperienceId !== 0 ? 'Update CE' : 'Add CE';
+      this.ceExperience.experienceId !== 0 ? 'Update CE' : 'Add CE';
     this.isLoading = false;
   }
 
@@ -214,7 +214,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   private initializeExperienceData(): void {
     if (!this.ceExperience) {
-      this.ceExperience = new IExperience();
+      this.ceExperience = new Experience();
     }
 
     this.carryForwardYear =
@@ -225,12 +225,12 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     this.parentAmount =
       this.ceExperience.amounts.find(
         (p) => p.unitId === this.parentUnit.unitId
-      ) || new IExperienceAmount();
+      ) || new ExperienceAmount();
 
     this.childAmount =
       this.ceExperience.amounts.find(
         (p) => p.unitId === this.childUnit.unitId
-      ) || new IExperienceAmount();
+      ) || new ExperienceAmount();
   }
 
   private initializeFormControls(): void {

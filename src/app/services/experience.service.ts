@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
-import { ICategoryList } from '../models/category';
-import { IUpdateExperience, IExperience, IUnit } from '../models/experience';
-import { ILocation } from '../models/location';
+import { ICategory, ICategoryList } from '../models/category';
+import { IUpdateExperience, Experience, IUnit } from '../models/experience';
+import { Location } from '../models/location';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExperienceService {
-  private experienceSub: BehaviorSubject<IExperience[]> = new BehaviorSubject<
-    IExperience[]
+  private experienceSub: BehaviorSubject<Experience[]> = new BehaviorSubject<
+    Experience[]
   >([]);
 
   constructor(private api: ApiService) {}
@@ -21,11 +21,14 @@ export class ExperienceService {
     return this.experienceSub.asObservable();
   }
 
+  private _categories: ICategory[];
+  private _units: IUnit[];
+
   public getExperiences(
     year: number,
     userId: number,
     nationalStandardId: number
-  ): Observable<IExperience[]> {
+  ): Observable<Experience[]> {
     return this.api
       .get(
         `/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`
@@ -37,7 +40,22 @@ export class ExperienceService {
       );
   }
 
-  public fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
+  public getUnits(nationalStandardId: number): Observable<IUnit[]> {
+    return new Observable(observer => {
+      if (this._units) {
+        observer.next(this._units);
+        return observer.complete();
+      }
+
+      this.fetchUnitInfo(nationalStandardId).subscribe(units => {
+        this._units = units;
+        observer.next(this._units);
+        observer.complete();
+      });
+    });
+  }
+
+  private fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
     return this.api.get(`/units/nationalStandardId/${nationalStandardId}`).pipe(
       map((res) => res.units),
       catchError((error) =>
@@ -68,7 +86,7 @@ export class ExperienceService {
       );
   }
 
-  public fetchLocations(): Observable<ILocation[]> {
+  public fetchLocations(): Observable<Location[]> {
     return this.api.get('/locations').pipe(
       map((res) => res.locations),
       catchError((error) =>
@@ -80,8 +98,8 @@ export class ExperienceService {
     );
   }
 
-  public addExperience(exp: IUpdateExperience = null): Observable<IExperience[]> {
-    let newExperience: IExperience;
+  public updateExperience(exp: IUpdateExperience = null): Observable<Experience[]> {
+    let newExperience: Experience;
     return this.api.post('/experiences', exp).pipe(
       switchMap((newExp) => {
         newExperience = newExp;

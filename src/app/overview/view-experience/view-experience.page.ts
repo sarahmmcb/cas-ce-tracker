@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { TouchSequence } from 'selenium-webdriver';
 import { AuthService } from 'src/app/auth/auth.service';
-import { IExperience, IUnit } from 'src/app/models/experience';
+import { Experience, IUnit } from 'src/app/models/experience';
 import { CEUser } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
 import { NgFor, NgIf } from '@angular/common';
+import { ICategory } from 'src/app/models/category';
 
 @Component({
     selector: 'app-view-experience',
@@ -18,9 +18,10 @@ import { NgFor, NgIf } from '@angular/common';
     imports: [IonicModule, NgFor, NgIf, ShortenTextPipe]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
-  public experiences: IExperience[] = [];
+  public experiences: Experience[] = [];
   public user: CEUser;
-  public ceUnits: IUnit[] = [];
+  public units: IUnit[] = [];
+  public categories: ICategory[] = [];
   public year: number;
 
   private experienceSub: Subscription;
@@ -74,7 +75,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     }
   }
 
-  public async onEditCE(ceExperience: IExperience): Promise<void> {
+  public async onEditCE(ceExperience: Experience): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
       componentProps: {
@@ -90,23 +91,38 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.user = user;
       const nationalStandardId = this.user.nationalStandard.nationalStandardId;
 
+      // TODO: fetch this on app startup and store it in the service
+      // because it only needs to be fetched once
+
       this.experienceService
-        .fetchUnitInfo(nationalStandardId)
+        .getUnits(nationalStandardId)
         .subscribe((res) => {
-          this.ceUnits = res;
+          this.units = res;
         });
+
+      // TODO: fetch categories
+
     } else {
       // TODO: show an error message stating something is wrong
     }
   }
 
   private assignUnitLabels(): void {
-    // TODO: check if this.experiences is hydrated
+    // TODO: check if this.experiences is hydrated - show msg if none
     for (const exp of this.experiences) {
-      for (const am of exp.amounts) {
-        const unit = this.ceUnits.find((u) => u.unitId === am.unitId);
+      for (const am of exp.experienceAmounts) {
+        const unit = this.units.find((u) => u.unitId === am.unitId);
         am.unitPlural = unit.unitPlural;
         am.unitSingular = unit.unitSingular;
+      }
+    }
+  }
+
+  private assignCategoryNames(): void {
+    for (const exp of this.experiences) {
+      for (const category of exp.experienceCategories) {
+        const cat = this.categories.find(c => c.categoryId === category.categoryId);
+        category.displayName = cat.displayName;
       }
     }
   }

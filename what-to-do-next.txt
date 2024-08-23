@@ -8,3 +8,7 @@
 8. Add endpoint to add a CE
 9. Remove surrogate from ExperienceCategory table?
 10. Add error messaging when Add Experience fails, don't close modal
+11. BUG - When creating an experience, if a category is specified but not a category list, that category won't show in the UI
+12. BUG? - When creating experience, date is not saved (at least in Swagger)
+13. Don't send such detailed errors back to client, but rather to a log
+14. Add 'v1' to controller URI

@@ -1,9 +1,6 @@
-/**
- * Interface for a Category.
- */
+
 export interface ICategory {
   categoryId: number;
-  parentCategoryId: number;
   nationalStandardId: number;
   categoryListId: number;
   name: string;
@@ -14,13 +11,17 @@ export interface ICategory {
   isProgressShown?: boolean;
 }
 
-/**
- * Interface for a category list.
- */
 export interface ICategoryList {
   categoryListId: number;
   name: string;
   displayQuestion?: string;
   displayOrder?: number;
   categories?: ICategory[];
+}
+
+export interface IExperienceCategory {
+  experienceCateggoryId: number;
+  experienceId: number;
+  categoryId: number;
+  displayName?: string;
 }

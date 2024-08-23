@@ -1,10 +1,10 @@
-import { ICategory } from './category';
-import { ILocation } from './location';
+import { IExperienceCategory } from './category';
+import { Location } from './location';
 
-export class IExperience {
-  public ceExperienceId = 0;
+export class Experience {
+  public experienceId = 0;
   public userId = 0;
-  public location: ILocation = new ILocation();
+  public location: Location = new Location();
   public carryForward = false;
   public programTitle = '';
   public eventName? = '';
@@ -12,8 +12,8 @@ export class IExperience {
   public endDate = '';
   public description? = '';
   public notes? = '';
-  public categories: ICategory[] = [];
-  public amounts: IExperienceAmount[] = [];
+  public experienceCategories: IExperienceCategory[] = [];
+  public experienceAmounts: ExperienceAmount[] = [];
 }
 
 /**
@@ -21,7 +21,7 @@ export class IExperience {
  * may have more than one of these if multiple units
  * are associated with each experience, i.e. hours and credits
  */
-export class IExperienceAmount {
+export class ExperienceAmount {
   public experienceAmountId = 0;
   public experienceId = 0;
   public unitId = 0;
@@ -41,9 +41,10 @@ export interface IUnit {
 
 export interface IUpdateExperience {
   experienceId: number;
-  date: string;
+  startDate: string;
+  endDate: string;
   carryForward: boolean;
-  categories: number[];
+  experienceCategories: number[];
   locationId: number;
   description: string | null | undefined;
   eventName: string | null | undefined;
