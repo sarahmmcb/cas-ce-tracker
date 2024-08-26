@@ -7,10 +7,11 @@ import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { CEAlertService } from 'src/app/core/alert.service';
-import { ICategory, ICategoryList } from 'src/app/models/category';
+import { ICategoryList } from 'src/app/models/category';
 import {
   Experience,
   ExperienceAmount,
+  IExperienceCategory,
   IUnit,
   IUpdateExperience,
 } from 'src/app/models/experience';
@@ -39,7 +40,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
    * is being edited.
    */
   @Input()
-  public ceExperience: Experience;
+  public experience: Experience;
   public formTitle: string;
   public categoryLists: ICategoryList[] = [];
   public locations: Location[] = [];
@@ -123,7 +124,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     }
 
     // send to server and return with updated experience object.
-    if (this.ceExperience.experienceId === 0) {
+    if (this.experience.experienceId === 0) {
       this.experienceService
         .updateExperience(this.prepareExperienceData())
         .subscribe();
@@ -157,7 +158,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   private prepareExperienceData(): IUpdateExperience {
     return {
       ...this.addForm.value,
-      experienceId: this.ceExperience.experienceId,
+      experienceId: this.experience.experienceId,
       categories: [...this.addForm.value.categories],
     };
   }
@@ -174,7 +175,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         this.userService.year
       ),
       getLocations: this.experienceService.fetchLocations(),
-      getUnitInfo: this.experienceService.fetchUnitInfo(
+      getUnitInfo: this.experienceService.getUnits(
         this.user.nationalStandard.nationalStandardId
       ),
     }).pipe(catchError((error) => of(error)));
@@ -203,7 +204,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     this.initializeFormControls();
 
     this.formTitle =
-      this.ceExperience.experienceId !== 0 ? 'Update CE' : 'Add CE';
+      this.experience.experienceId !== 0 ? 'Update CE' : 'Add CE';
     this.isLoading = false;
   }
 
@@ -213,33 +214,33 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   private initializeExperienceData(): void {
-    if (!this.ceExperience) {
-      this.ceExperience = new Experience();
+    if (!this.experience) {
+      this.experience = new Experience();
     }
 
     this.carryForwardYear =
-      DateTime.fromSQL(this.ceExperience.startDate).plus({
+      DateTime.fromSQL(this.experience.startDate).plus({
         years: 1,
       }).year || new Date().getFullYear() + 1;
 
     this.parentAmount =
-      this.ceExperience.amounts.find(
+      this.experience.amounts.find(
         (p) => p.unitId === this.parentUnit.unitId
       ) || new ExperienceAmount();
 
     this.childAmount =
-      this.ceExperience.amounts.find(
+      this.experience.amounts.find(
         (p) => p.unitId === this.childUnit.unitId
       ) || new ExperienceAmount();
   }
 
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
-      ceDate: [this.ceExperience.startDate, Validators.required],
-      ceLocationId: this.ceExperience.location.locationId,
-      programTitle: [this.ceExperience.programTitle, Validators.required],
-      eventName: this.ceExperience.eventName,
-      description: this.ceExperience.description,
+      ceDate: [this.experience.startDate, Validators.required],
+      ceLocationId: this.experience.location.locationId,
+      programTitle: [this.experience.programTitle, Validators.required],
+      eventName: this.experience.eventName,
+      description: this.experience.description,
       timeSpentParent: [
         this.parentAmount.amount,
         [Validators.required, positiveValueValidator()],
@@ -248,14 +249,14 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         value: this.childAmount.amount,
         disabled: this.childUnit?.isDisabled,
       }),
-      carryForward: this.ceExperience.carryForward,
-      notes: this.ceExperience.notes,
+      carryForward: this.experience.carryForward,
+      notes: this.experience.notes,
       categories: this.fb.array([]),
     });
 
     // Add categorylist controls
     for (const catList of this.categoryLists) {
-      const chosenCategory: ICategory = this.ceExperience.categories.find(
+      const chosenCategory: IExperienceCategory = this.experience.categories.find(
         (c) => c.categoryListId === catList.categoryListId
       );
 

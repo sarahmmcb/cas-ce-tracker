@@ -18,10 +18,3 @@ export interface ICategoryList {
   displayOrder?: number;
   categories?: ICategory[];
 }
-
-export interface IExperienceCategory {
-  experienceCateggoryId: number;
-  experienceId: number;
-  categoryId: number;
-  displayName?: string;
-}

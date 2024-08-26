@@ -21,7 +21,6 @@ export class ExperienceService {
     return this.experienceSub.asObservable();
   }
 
-  private _categories: ICategory[];
   private _units: IUnit[];
 
   public getExperiences(

@@ -75,11 +75,11 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     }
   }
 
-  public async onEditCE(ceExperience: Experience): Promise<void> {
+  public async onEditCE(experience: Experience): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
       componentProps: {
-        ceExperience,
+        experience,
       },
     });
 
@@ -91,17 +91,11 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.user = user;
       const nationalStandardId = this.user.nationalStandard.nationalStandardId;
 
-      // TODO: fetch this on app startup and store it in the service
-      // because it only needs to be fetched once
-
       this.experienceService
         .getUnits(nationalStandardId)
         .subscribe((res) => {
           this.units = res;
         });
-
-      // TODO: fetch categories
-
     } else {
       // TODO: show an error message stating something is wrong
     }
@@ -110,19 +104,10 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   private assignUnitLabels(): void {
     // TODO: check if this.experiences is hydrated - show msg if none
     for (const exp of this.experiences) {
-      for (const am of exp.experienceAmounts) {
+      for (const am of exp.amounts) {
         const unit = this.units.find((u) => u.unitId === am.unitId);
         am.unitPlural = unit.unitPlural;
         am.unitSingular = unit.unitSingular;
-      }
-    }
-  }
-
-  private assignCategoryNames(): void {
-    for (const exp of this.experiences) {
-      for (const category of exp.experienceCategories) {
-        const cat = this.categories.find(c => c.categoryId === category.categoryId);
-        category.displayName = cat.displayName;
       }
     }
   }

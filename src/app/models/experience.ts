@@ -1,4 +1,3 @@
-import { IExperienceCategory } from './category';
 import { Location } from './location';
 
 export class Experience {
@@ -12,8 +11,8 @@ export class Experience {
   public endDate = '';
   public description? = '';
   public notes? = '';
-  public experienceCategories: IExperienceCategory[] = [];
-  public experienceAmounts: ExperienceAmount[] = [];
+  public categories: IExperienceCategory[] = [];
+  public amounts: ExperienceAmount[] = [];
 }
 
 /**
@@ -28,6 +27,14 @@ export class ExperienceAmount {
   public amount = 0.0;
   public unitSingular? = '';
   public unitPlural? = '';
+}
+
+export interface IExperienceCategory {
+  experienceCategoryId: number;
+  experienceId: number;
+  categoryId: number;
+  categoryListId: number;
+  displayName?: string;
 }
 
 export interface IUnit {
