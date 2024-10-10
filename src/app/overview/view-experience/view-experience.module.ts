@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
+import { DatePipe } from '@angular/common';
 
 import { ViewExperiencePageRoutingModule } from './view-experience-routing.module';
 import { ViewExperiencePage } from './view-experience.page';
@@ -13,7 +14,9 @@ import { ViewExperiencePage } from './view-experience.page';
         FormsModule,
         IonicModule,
         ViewExperiencePageRoutingModule,
-        ViewExperiencePage, ShortenTextPipe
+        ViewExperiencePage,
+        ShortenTextPipe,
+        DatePipe
     ]
 })
 export class ViewExperiencePageModule {}

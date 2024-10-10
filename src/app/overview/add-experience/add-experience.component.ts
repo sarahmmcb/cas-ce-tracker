@@ -72,7 +72,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   // Helper method to access category form group in the template.
   public get categories(): FormArray {
-    return this.addForm.get('categories') as FormArray;
+    return this.addForm.get('categories') as FormArray; // TODO: check if this is actually being used
   }
 
   public ngOnInit(): void {
@@ -155,6 +155,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO: construct this object correctly to match the form the server
+  // is expecting
   private prepareExperienceData(): IUpdateExperience {
     return {
       ...this.addForm.value,
@@ -247,7 +249,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       ],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
-        disabled: this.childUnit?.isDisabled,
+        disabled: this.childUnit?.isDisabled,  // TODO: make sure this is working
       }),
       carryForward: this.experience.carryForward,
       notes: this.experience.notes,

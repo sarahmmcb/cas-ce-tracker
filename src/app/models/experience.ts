@@ -51,7 +51,8 @@ export interface IUpdateExperience {
   startDate: string;
   endDate: string;
   carryForward: boolean;
-  experienceCategories: number[];
+  categories: IExperienceCategory[];
+  amounts: ExperienceAmount[];
   locationId: number;
   description: string | null | undefined;
   eventName: string | null | undefined;
