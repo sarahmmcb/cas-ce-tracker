@@ -53,6 +53,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     );
   }
 
+  // TODO: do we really need to fetch these every time?
   public ionViewWillEnter(): void {
     this.experienceService
       .getExperiences(

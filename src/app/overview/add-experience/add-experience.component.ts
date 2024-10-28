@@ -35,10 +35,7 @@ import { CustomHttpInterceptorService } from 'src/app/app.interceptor';
 
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
-  /**
-   * Experience data input if the experience
-   * is being edited.
-   */
+
   @Input()
   public experience: Experience;
   public formTitle: string;
@@ -126,23 +123,17 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     // send to server and return with updated experience object.
     if (this.experience.experienceId === 0) {
       this.experienceService
-        .updateExperience(this.prepareExperienceData())
+        .createExperience(this.prepareExperienceData())
         .subscribe();
     } else {
-      // this.experienceService.updateExperience(
-      //   this.prepareExperienceData()
-      // );
+      this.experienceService
+        .createExperience(this.prepareExperienceData())
+        .subscribe();
     }
 
     this.modalCtrl.dismiss();
   }
 
-  /**
-   * Update child amount when parent amount
-   * id edited.
-   *
-   * @param event ion blur event
-   */
   public onAmountEdit(event: InputCustomEvent): void {
     if (!event.target.value) {
       return;
@@ -238,8 +229,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   private initializeFormControls(): void {
     this.addForm = this.fb.group({
-      ceDate: [this.experience.startDate, Validators.required],
-      ceLocationId: this.experience.location.locationId,
+      startDate: [this.experience.startDate, Validators.required],
+      locationId: this.experience.location.locationId,
       programTitle: [this.experience.programTitle, Validators.required],
       eventName: this.experience.eventName,
       description: this.experience.description,

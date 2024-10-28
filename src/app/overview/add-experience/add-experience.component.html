@@ -19,15 +19,15 @@
             <div class="div-form-control">
               <ion-label>Date of CE:*</ion-label>
               <ion-datetime-button
-                [ngClass]="{'input-error': submitted && addForm.get('ceDate').invalid}"
-                datetime="ceDate">
+                [ngClass]="{'input-error': submitted && addForm.get('startDate').invalid}"
+                datetime="startDate">
               </ion-datetime-button>
               <ion-modal [keepContentsMounted]="true">
                 <ng-template>
                   <ion-datetime
-                    id="ceDate"
-                    formControlName="ceDate"
-                    name="ceDate"
+                    id="startDate"
+                    formControlName="startDate"
+                    name="startDate"
                     presentation="date-time"
                     [formatOptions]="{
                       date: {
@@ -45,13 +45,13 @@
               </ion-modal>
 
 
-              <div class="error-message" *ngIf="submitted && addForm.get('ceDate').errors?.required">
+              <div class="error-message" *ngIf="submitted && addForm.get('startDate').errors?.required">
                 Date is required.
               </div>
             </div>
             <div class="div-form-control">
               <ion-label>Location:</ion-label>
-              <ion-select formControlName="ceLocationId" placeHolder="--Choose One--">
+              <ion-select formControlName="locationId" placeHolder="--Choose One--">
                 <ion-select-option *ngFor="let item of locations" [value]="item.locationId">{{ item.name }}
                 </ion-select-option>
               </ion-select>

@@ -97,7 +97,7 @@ export class ExperienceService {
     );
   }
 
-  public updateExperience(exp: IUpdateExperience = null): Observable<Experience[]> {
+  public createExperience(exp: IUpdateExperience = null): Observable<Experience[]> {
     let newExperience: Experience;
     return this.api.post('/experiences', exp).pipe(
       switchMap((newExp) => {
