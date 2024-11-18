@@ -53,7 +53,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     );
   }
 
-  // TODO: do we really need to fetch these every time?
+  // TODO: do we really need to fetch these every time? Figure out how to cache
   public ionViewWillEnter(): void {
     this.experienceService
       .getExperiences(

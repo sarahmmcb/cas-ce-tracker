@@ -30,7 +30,6 @@ export class ExperienceAmount {
 }
 
 export interface IExperienceCategory {
-  experienceCategoryId: number;
   experienceId: number;
   categoryId: number;
   categoryListId: number;
@@ -60,4 +59,6 @@ export interface IUpdateExperience {
   programTitle: string | null | undefined;
   timeSpentChild: number;
   timeSpentParent: number;
+  childUnitId: number;
+  parentUnitId: number;
 }

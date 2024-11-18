@@ -153,6 +153,16 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       ...this.addForm.value,
       experienceId: this.experience.experienceId,
       categories: [...this.addForm.value.categories],
+      timeSpentChild: {
+        experienceId: this.experience.experienceId,
+        unitId: this.childUnit.unitId,
+        amount: this.addForm.value.timeSpentChild
+      },
+      timeSpentParent: {
+        experienceId: this.experience.experienceId,
+        unitId: this.parentUnit.unitId,
+        amount: this.addForm.value.timeSpentParent
+      }
     };
   }
 
@@ -162,6 +172,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       message: 'Loading form data',
     });
     await this.loading.present();
+
+    // TODO: figure out how to cache these
     const dataCalls = forkJoin({
       getCategoryLists: this.experienceService.fetchCategoryLists(
         this.user.nationalStandard.nationalStandardId,
