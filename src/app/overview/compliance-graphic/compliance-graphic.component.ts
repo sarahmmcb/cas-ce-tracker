@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SelectCustomEvent, IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { CEData } from 'src/app/models/cedata';
 import { NgFor } from '@angular/common';
 
