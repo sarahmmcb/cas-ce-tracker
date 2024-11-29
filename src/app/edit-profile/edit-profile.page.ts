@@ -7,15 +7,23 @@ import { AuthService } from '../auth/auth.service';
 import { CEAlertService } from '../core/alert.service';
 import { CEUser, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgIf, NgClass, NgFor, CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { EditProfilePageRoutingModule } from './edit-profile-routing.module';
 
 @Component({
     selector: 'app-edit-profile',
     templateUrl: './edit-profile.page.html',
     styleUrls: ['./edit-profile.page.scss'],
     standalone: true,
-    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        IonicModule,
+        EditProfilePageRoutingModule,
+        NgIf, NgFor, NgClass
+    ]
 })
 export class EditProfilePage implements OnInit, OnDestroy {
   /**
