@@ -10,6 +10,7 @@ import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
 import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-view-experience',
@@ -39,7 +40,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   constructor(
     private experienceService: ExperienceService,
     private authService: AuthService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private route: ActivatedRoute
   ) {}
 
   /*************************
@@ -50,8 +52,11 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
    * 3. Handle the case where the user is both USQS General and USQS Specific
    */
   public ngOnInit(): void {
+   // this.year = +this.route.snapshot.paramMap.get('year') || new Date().getFullYear();
+    this.route.queryParams.subscribe(params => {
+      this.year = params['selectedYear'] || new Date().getFullYear()
+    });
     // subscribe to the subject in the experience service
-    this.year = new Date().getFullYear();
     this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
       this.experiences = ex;
     });

@@ -41,7 +41,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.year = this.userService.year;
+    this.year = this.userService.year; // TODO: Do we still need year held in user service?
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
           this.ceData = ceData;

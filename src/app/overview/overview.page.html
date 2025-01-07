@@ -26,6 +26,7 @@
             expand="full"
             shape="round"
             [routerLink]="['/', 'overview', 'view-experience']"
+            [queryParams]="{ selectedYear: year }"
           >
             View CE
             <ion-icon name="search" slot="end"></ion-icon>
