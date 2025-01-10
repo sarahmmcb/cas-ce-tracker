@@ -52,7 +52,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
    * 3. Handle the case where the user is both USQS General and USQS Specific
    */
   public ngOnInit(): void {
-   // this.year = +this.route.snapshot.paramMap.get('year') || new Date().getFullYear();
     this.route.queryParams.subscribe(params => {
       this.year = params['selectedYear'] || new Date().getFullYear()
     });
@@ -67,7 +66,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     );
   }
 
-  // TODO: do we really need to fetch these every time? Figure out how to cache
   public ionViewWillEnter(): void {
     this.experienceService
       .getExperiences(
@@ -108,7 +106,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
       this.experienceService
         .getUnits(nationalStandardId)
-        .subscribe((res) => {
+        .subscribe(res => {
           this.units = res;
         });
     } else {

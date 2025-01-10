@@ -110,7 +110,7 @@
             </div>
             <div class="error-message" *ngIf="submitted && addForm.invalid">There were errors found. Please review your
               entries.</div>
-            <ion-button type="submit" [disabled]="!addForm.valid">{{ formTitle }}</ion-button>
+            <ion-button type="submit">{{ formTitle }}</ion-button>
             <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
           </form>
         </ion-card>
@@ -122,13 +122,13 @@
 <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
   <div [formGroup]="addForm" class="div-single-category">
     <div formArrayName="categories">
-      <ion-select [ngClass]="{'input-error': submitted && addForm.get('categories').invalid}"
+      <ion-select [ngClass]="{'input-error': submitted && categories.controls[controlName].errors?.required}"
         [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--">
         <ion-select-option *ngFor="let item of cat" [value]="item.categoryId">{{ item.displayName }}
         </ion-select-option>
       </ion-select>
     </div>
-    <div class="error-message" *ngIf="submitted && addForm.get('categories').errors?.required">
+    <div class="error-message" *ngIf="submitted && categories.controls[controlName].errors?.required">
       This field is required.
     </div>
   </div>
@@ -144,7 +144,7 @@
         <ion-radio [value]="0"></ion-radio>
       </ion-radio-group>
     </div>
-    <div class="error-message" *ngIf="submitted && addForm.get('categories').errors?.required">
+    <div class="error-message" *ngIf="submitted && categories.controls[controlName].errors?.required">
       This field is required.
     </div>
   </div>
