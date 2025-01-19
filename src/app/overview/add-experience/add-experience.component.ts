@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
-import { DateTime } from 'luxon';
 import * as math from 'mathjs';
 import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -69,7 +68,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   // Helper method to access category form group in the template.
   public get categories(): FormArray {
-    return this.addForm.get('categories') as FormArray; // TODO: check if this is actually being used
+    return this.addForm.get('categories') as FormArray;
   }
 
   public ngOnInit(): void {
@@ -173,13 +172,12 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     });
     await this.loading.present();
 
-    // TODO: figure out how to cache these
     const dataCalls = forkJoin({
-      getCategoryLists: this.experienceService.fetchCategoryLists(
+      getCategoryLists: this.experienceService.getCategoryLists(
         this.user.nationalStandard.nationalStandardId,
-        this.userService.year
+        this.userService.selectedYear
       ),
-      getLocations: this.experienceService.fetchLocations(),
+      getLocations: this.experienceService.getLocations(),
       getUnitInfo: this.experienceService.getUnits(
         this.user.nationalStandard.nationalStandardId
       ),
@@ -224,9 +222,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     }
 
     this.carryForwardYear =
-      DateTime.fromSQL(this.experience.startDate).plus({
-        years: 1,
-      }).year || new Date().getFullYear() + 1;
+      new Date(this.experience.startDate).getFullYear() + 1 ||
+      new Date().getFullYear() + 1;
 
     this.parentAmount =
       this.experience.amounts.find(

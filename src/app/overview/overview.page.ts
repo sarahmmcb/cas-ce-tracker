@@ -29,10 +29,13 @@ import { RouterModule } from '@angular/router';
 })
 export class OverviewPage implements OnInit, OnDestroy {
   public ceData: CEData = new CEData();
-  public year: number;
   public showError = false;
   public errorMessage: string;
   private ceDataSub: Subscription;
+
+  get selectedYear(): number {
+    return this.userService.selectedYear;
+  }
 
   constructor(
     private ceDataService: CEDataService,
@@ -41,7 +44,6 @@ export class OverviewPage implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.year = this.userService.year; // TODO: Do we still need year held in user service?
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
           this.ceData = ceData;
@@ -56,7 +58,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
-    this.ceDataService.getCEComplianceData(this.year).subscribe({
+    this.ceDataService.getCEComplianceData(this.selectedYear).subscribe({
         next: () => {},
         error: (error) => {
           this.handleError(error);
@@ -81,7 +83,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public updateYear(year: number) {
-    this.year = year;
+    this.userService.selectedYear = year;
     this.ceDataService.getCEComplianceData(year).subscribe({
         next: () => {},
         error: (error) => {
@@ -96,7 +98,7 @@ export class OverviewPage implements OnInit, OnDestroy {
     const status = error.status;
     switch (status) {
       case ErrorCodes.NotFound:
-        this.errorMessage = `No data found for ${this.year}`;
+        this.errorMessage = `No data found for ${this.selectedYear}`;
         break;
       default:
         this.errorMessage = 'An error occurred, please try again';

@@ -16,20 +16,20 @@ export class UserService {
   // The actual user object will be provided by auth
   public user: CEUser;
 
-  private _year: number;
+  private _selectedYear: number;
 
   constructor() {}
 
-  get year(): number {
-    if (!this._year) {
+  get selectedYear(): number {
+    if (!this._selectedYear) {
       return new Date().getFullYear();
     }
 
-    return this._year;
+    return this._selectedYear;
   }
 
-  set year(year: number) {
-    this._year = year;
+  set selectedYear(year: number) {
+    this._selectedYear = year;
   }
 
   public fetchCredentials(): CECredential[] {
