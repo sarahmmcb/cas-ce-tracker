@@ -22,6 +22,8 @@ export class ExperienceService {
   }
 
   private _units: IUnit[];
+  private _categoryLists: ICategoryList[];
+  private _locations: Location[];
 
   public getExperiences(
     year: number,
@@ -66,7 +68,27 @@ export class ExperienceService {
     );
   }
 
-  public fetchCategoryLists(
+  public getCategoryLists(
+    nationalStandardId: number,
+    year: number
+  ): Observable<ICategoryList[]> {
+    return new Observable(observer => {
+      if (this._categoryLists) {
+        observer.next(this._categoryLists);
+        observer.complete();
+      }
+
+      this.fetchCategoryLists(
+        nationalStandardId,
+        year).subscribe(res => {
+          this._categoryLists = res;
+          observer.next(this._categoryLists);
+          observer.complete();
+        });
+    });
+  }
+
+  private fetchCategoryLists(
     nationalStandardId: number,
     year: number
   ): Observable<ICategoryList[]> {
@@ -85,7 +107,22 @@ export class ExperienceService {
       );
   }
 
-  public fetchLocations(): Observable<Location[]> {
+  public getLocations(): Observable<Location[]> {
+    return new Observable(observer => {
+      if (this._locations) {
+        observer.next(this._locations);
+        observer.complete();
+      }
+
+      this.fetchLocations().subscribe(res => {
+        this._locations = res;
+        observer.next(this._locations);
+        observer.complete();
+      });
+    });
+  }
+
+  private fetchLocations(): Observable<Location[]> {
     return this.api.get('/locations').pipe(
       map((res) => res.locations),
       catchError((error) =>

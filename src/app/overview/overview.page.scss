@@ -3,6 +3,20 @@
   text-align: center;
 }
 
+.ce-action-button {
+  text-align: center;
+  margin-top: 0;
+  font-variant: small-caps;
+  padding: 15px;
+  cursor: pointer;
+}
+
+ion-icon {
+  color: var(--ion-color-secondary);
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
 ion-content {
   --background: var(--ion-color-primary);
 }

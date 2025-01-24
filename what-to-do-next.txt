@@ -12,3 +12,4 @@
 12. BUG? - When creating experience, date is not saved (at least in Swagger)
 13. Don't send such detailed errors back to client, but rather to a log
 14. Add 'v1' to controller URI
+15. Styling
