@@ -25,6 +25,8 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@import "theme/variables.scss";
+
 ion-input {
   border: 1px solid var(--ion-color-primary);
   border-radius: 50px;
@@ -39,6 +41,7 @@ ion-card {
   margin-bottom: var(--app-card-margin-bottom);
   margin-top: var(--app-card-margin-top);
   padding: 20px;
+  border-radius: 15px;
 }
 
 .div-form-control {
