@@ -85,7 +85,6 @@ const getExperienceData = () =>
           carryForward: false,
           programTitle: 'Exam Study',
           startDate: '2022-03-01',
-          endDate: '2022-03-01',
           categories: [
             {
               categoryId: 5,
@@ -119,7 +118,6 @@ const getExperienceData = () =>
           programTitle: 'Professionalism Seminar',
           eventName: 'Actuary Conference',
           startDate: '2022-02-12',
-          endDate: '2022-02-12',
           description:
             'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu',
           categories: [
@@ -161,7 +159,6 @@ const getExperienceData = () =>
           carryForward: false,
           programTitle: 'General Business Round Table',
           startDate: '2022-01-11',
-          endDate: '2022-01-11',
           description:
             'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu',
           notes:
@@ -361,7 +358,6 @@ const addExperience = (body) => {
     programTitle: exp.programTitle,
     eventName: exp.eventName,
     startDate: exp.ceDate,
-    endDate: exp.ceDate,
     description: exp.description,
     notes: exp.notes,
     categories: exp.categories.map(

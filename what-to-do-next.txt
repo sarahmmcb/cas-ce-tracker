@@ -13,3 +13,6 @@
 13. Don't send such detailed errors back to client, but rather to a log
 14. Add 'v1' to controller URI
 15. Styling
+16. Cancellation Token - use it where you should be using it
+17. Error message component
+18. Loading component?

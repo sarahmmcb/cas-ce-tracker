@@ -20,12 +20,12 @@
               <ion-label>Date of CE:*</ion-label>
               <ion-datetime-button
                 [ngClass]="{'input-error': submitted && addForm.get('startDate').invalid}"
-                datetime="startDate">
+                datetime="startDatePicker">
               </ion-datetime-button>
               <ion-modal [keepContentsMounted]="true">
                 <ng-template>
                   <ion-datetime
-                    id="startDate"
+                    id="startDatePicker"
                     formControlName="startDate"
                     name="startDate"
                     presentation="date-time"
@@ -43,8 +43,6 @@
                   ></ion-datetime>
                 </ng-template>
               </ion-modal>
-
-
               <div class="error-message" *ngIf="submitted && addForm.get('startDate').errors?.required">
                 Date is required.
               </div>

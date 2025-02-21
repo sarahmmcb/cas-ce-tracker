@@ -26,4 +26,10 @@ export class ApiService {
       params,
     });
   }
+
+  public put(route: string, body: any, params?: HttpParams): Observable<any> {
+    return this.http.put(this.baseUrl + route, JSON.stringify(body), {
+      params,
+    });
+  }
 }

@@ -126,7 +126,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         .subscribe();
     } else {
       this.experienceService
-        .createExperience(this.prepareExperienceData())
+        .updateExperience(this.prepareExperienceData())
         .subscribe();
     }
 
@@ -145,12 +145,11 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
-  // TODO: construct this object correctly to match the form the server
-  // is expecting
   private prepareExperienceData(): IUpdateExperience {
     return {
       ...this.addForm.value,
       experienceId: this.experience.experienceId,
+      userId: this.user.userId,
       categories: [...this.addForm.value.categories],
       timeSpentChild: {
         experienceId: this.experience.experienceId,
@@ -237,8 +236,10 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   private initializeFormControls(): void {
+    const now = new Date();
+    const defaultDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0));
     this.addForm = this.fb.group({
-      startDate: [this.experience.startDate, Validators.required],
+      startDate: [this.experience.startDate || defaultDate.toISOString(), Validators.required],
       locationId: this.experience.location.locationId,
       programTitle: [this.experience.programTitle, Validators.required],
       eventName: this.experience.eventName,

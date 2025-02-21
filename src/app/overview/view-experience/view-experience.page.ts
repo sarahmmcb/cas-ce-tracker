@@ -56,7 +56,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.year = params['selectedYear'] || new Date().getFullYear()
     });
     // subscribe to the subject in the experience service
-    this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
+    this.experienceSub = this.experienceService.experiences.subscribe(ex => {
       this.experiences = ex;
     });
 

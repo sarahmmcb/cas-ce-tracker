@@ -134,9 +134,9 @@ export class ExperienceService {
     );
   }
 
-  public createExperience(exp: IUpdateExperience = null): Observable<Experience[]> {
+  public createExperience(exp: IUpdateExperience): Observable<Experience[]> {
     let newExperience: Experience;
-    return this.api.post('/experiences', exp).pipe(
+    return this.api.put('/experiences', exp).pipe(
       switchMap((newExp) => {
         newExperience = newExp;
         return this.experiences;
@@ -144,6 +144,23 @@ export class ExperienceService {
       take(1),
       tap((experiences) =>
         this.experienceSub.next(experiences.concat(newExperience))
+      )
+    );
+  }
+
+  public updateExperience(exp: IUpdateExperience): Observable<Experience[]> {
+    let updatedExperience: Experience;
+    return this.api.put('/experiences', exp).pipe(
+      switchMap((updatedExp) => {
+        updatedExperience = updatedExp;
+        return this.experiences;
+      }),
+      take(1),
+      tap((experiences) => {
+          const expIndex = experiences.findIndex(exp => exp.experienceId === updatedExperience.experienceId);
+          experiences.splice(expIndex, 1, updatedExperience);
+          this.experienceSub.next(experiences);
+        }
       )
     );
   }

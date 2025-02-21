@@ -13,7 +13,20 @@ export interface ICEDataRequestParams extends HttpParams {
   providedIn: 'root',
 })
 export class CEDataService {
-  private ceDataSubject: Subject<CEData> = new Subject<CEData>();
+  private ceDataSubject: Subject<CEData> = new BehaviorSubject<CEData>(new CEData());
+
+  private sampleCEData = {
+    categoryGroups: [
+      {
+        title: 'General',
+        categories: [
+          {
+
+          }
+        ]
+      }
+    ]
+  } as CEData;
 
   constructor(private api: ApiService) {}
 
@@ -23,12 +36,12 @@ export class CEDataService {
 
   public getCEComplianceData(year?: number): Observable<CEData> {
     return this.api
-      .get('/ceData', { year: year || new Date().getFullYear() })
+      .get(`/ceData/${year || new Date().getFullYear()}`)
       .pipe(
         tap((ceData) => this.ceDataSubject.next(ceData.body)),
         catchError((err) => {
           console.log('error on get'); // TODO: remove this after adding more accurate error messaging
-          return throwError(err);
+          return throwError(() => err);
         })
       );
   }

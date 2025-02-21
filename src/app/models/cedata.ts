@@ -3,11 +3,10 @@
  * Compliance graphic
  */
 export class CEData {
-  title = '';
   unitLongName = '';
   unitShortName = '';
-  categoryGroups: [];
-  complianceStatus: '';
+  categoryGroups = [];
+  complianceStatus = '';
 }
 
 /**
@@ -27,6 +26,7 @@ export enum ComplianceStatus {
  * Ex. 'General' and 'Specific'.
  */
 export interface CategoryGroup {
+  title: string;
   categories: CategoryData[];
 }
 
@@ -36,7 +36,8 @@ export interface CategoryGroup {
  */
 export interface CategoryData {
   displayName: string;
-  goal: number;
+  minimum: number;
+  maximum: number;
   amountCompleted: number;
   percentCompleted: number;
 }
