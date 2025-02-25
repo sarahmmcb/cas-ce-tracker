@@ -8,7 +8,6 @@ export class Experience {
   public programTitle = '';
   public eventName? = '';
   public startDate = '';
-  public endDate = '';
   public description? = '';
   public notes? = '';
   public categories: IExperienceCategory[] = [];
@@ -24,6 +23,7 @@ export class ExperienceAmount {
   public experienceAmountId = 0;
   public experienceId = 0;
   public unitId = 0;
+  public nationalStandardId = 0;
   public amount = 0.0;
   public unitSingular? = '';
   public unitPlural? = '';
@@ -47,8 +47,8 @@ export interface IUnit {
 
 export interface IUpdateExperience {
   experienceId: number;
+  userId: number;
   startDate: string;
-  endDate: string;
   carryForward: boolean;
   categories: IExperienceCategory[];
   amounts: ExperienceAmount[];

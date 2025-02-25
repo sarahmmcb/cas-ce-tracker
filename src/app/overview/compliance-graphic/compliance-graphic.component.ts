@@ -36,7 +36,7 @@ export class ComplianceGraphicComponent implements OnInit {
     );
   }
 
-  public emitYearChanged(event: CustomEvent) {
+  public emitYearChanged(event: any) {
     this.yearChanged.emit(event.detail.value);
   }
 }
