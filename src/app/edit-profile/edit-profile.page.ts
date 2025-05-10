@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
-import { CEAlertService } from '../core/alert.service';
+import { CEAlertService } from '../services/alert.service';
 import { CEUser, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
 import { NgIf, NgClass, NgFor, CommonModule } from '@angular/common';

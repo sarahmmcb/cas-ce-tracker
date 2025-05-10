@@ -1,6 +1,4 @@
-/**
- * Type for an alert.
- */
+
 export interface CEAlert {
   title: string;
   content: string;
@@ -9,9 +7,6 @@ export interface CEAlert {
   routeOnClose?: string;
 }
 
-/**
- * Enum of alert types.
- */
 export enum CEAlertType {
   info = 'info',
   warning = 'warning',
@@ -19,9 +14,6 @@ export enum CEAlertType {
   error = 'error'
 }
 
-/**
- * Interface for an alert button.
- */
 export interface CEAlertButton {
   text: string;
   role: string;
@@ -30,9 +22,6 @@ export interface CEAlertButton {
   action?: (input?: any) => any;
 }
 
-/**
- * Possible alert button roles.
- */
 export enum CEAlertButtonRole {
   confirm = 'confirm',
   cancel = 'cancel'

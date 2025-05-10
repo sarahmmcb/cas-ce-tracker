@@ -2,10 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
 import * as math from 'mathjs';
-import { forkJoin, of, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
-import { CEAlertService } from 'src/app/core/alert.service';
+import { CEAlertService } from 'src/app/services/alert.service';
 import { ICategoryList } from 'src/app/models/category';
 import {
   Experience,
@@ -86,9 +86,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   public onCancel(): Promise<boolean> | void {
-    // present confirmation modal
     if (this.addForm && this.addForm.dirty) {
-      // define alert here and add modalCtrl.dismiss() to button handler
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
@@ -179,8 +177,10 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       getLocations: this.experienceService.getLocations(),
       getUnitInfo: this.experienceService.getUnits(
         this.user.nationalStandard.nationalStandardId
-      ),
-    }).pipe(catchError((error) => of(error)));
+      )
+    }).pipe(catchError((error) => {
+      return of(error);
+    }));
 
     dataCalls.subscribe(async (res) => {
       if (res.errorMessage) {

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { CEAlert, CEAlertButton } from '../alert';
-import { CEAlertService } from '../alert.service';
+import { CEAlert, CEAlertButton } from '../../models/alert';
+import { CEAlertService } from '../../services/alert.service';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
@@ -29,8 +29,4 @@ export class AlertComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.alertSub.unsubscribe();
   }
-
-  // public onButtonClick(button: CEAlertButton): void {
-  //   button.handler();
-  // }
 }

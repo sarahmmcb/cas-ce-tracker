@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { CEAlert, CEAlertButtonRole } from './alert';
+import { CEAlert, CEAlertButtonRole } from '../models/alert';
 
 @Injectable({
   providedIn: 'root'
