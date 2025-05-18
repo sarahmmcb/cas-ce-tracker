@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
-import { CEAlertService } from '../services/alert.service';
+import { AlertService } from '../services/alert.service';
 import { CEUser, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
 import { NgIf, NgClass, NgFor, CommonModule } from '@angular/common';
@@ -56,7 +56,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
     private fb: UntypedFormBuilder,
     private userService: UserService,
     private router: Router,
-    private alertService: CEAlertService
+    private alertService: AlertService
   ) {}
 
   /**

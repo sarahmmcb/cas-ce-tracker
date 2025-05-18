@@ -1,20 +1,20 @@
 
-export interface CEAlert {
+export interface Alert {
   title: string;
   content: string;
-  buttons: CEAlertButton[];
+  buttons: AlertButton[];
   type: string;
   routeOnClose?: string;
 }
 
-export enum CEAlertType {
+export enum AlertType {
   info = 'info',
   warning = 'warning',
   confirm = 'confirm',
   error = 'error'
 }
 
-export interface CEAlertButton {
+export interface AlertButton {
   text: string;
   role: string;
   id: string;
@@ -22,7 +22,7 @@ export interface CEAlertButton {
   action?: (input?: any) => any;
 }
 
-export enum CEAlertButtonRole {
+export enum AlertButtonRole {
   confirm = 'confirm',
   cancel = 'cancel'
 }

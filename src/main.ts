@@ -22,7 +22,7 @@ bootstrapApplication(AppComponent, {
           provide: HTTP_INTERCEPTORS,
           useClass: CustomHttpInterceptorService,
           multi: true,
-      }
+        }
     ]
 })
   .catch(err => console.log(err));

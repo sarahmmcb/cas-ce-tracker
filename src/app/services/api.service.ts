@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 export interface HttpParams {
   [key: string]: string | string[] | number;
@@ -18,18 +18,32 @@ export class ApiService {
     const headers = {
       method: 'GET'
     };
-    return this.http.get(this.baseUrl + route, { headers, params });
+    return this.http.get(this.baseUrl + route, { 
+      headers,
+      params
+    })
+    .pipe(
+      map((res: any) => {
+
+        return res.body;
+      }),
+      catchError((err) => {
+        return throwError(() => err);
+      })
+    );
   }
 
   public post(route: string, body: any, params?: HttpParams): Observable<any> {
     return this.http.post(this.baseUrl + route, JSON.stringify(body), {
       params,
+      observe: 'response'
     });
   }
 
   public put(route: string, body: any, params?: HttpParams): Observable<any> {
     return this.http.put(this.baseUrl + route, JSON.stringify(body), {
       params,
+      observe: 'response'
     });
   }
 }
