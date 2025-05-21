@@ -11,6 +11,7 @@ import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ErrorComponent } from 'src/app/core/error/error.component';
 
 @Component({
     selector: 'app-view-experience',
@@ -24,7 +25,8 @@ import { ActivatedRoute } from '@angular/router';
       ShortenTextPipe,
       DatePipe,
       NgFor,
-      NgIf
+      NgIf,
+      ErrorComponent
     ]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
@@ -33,6 +35,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   public units: IUnit[] = [];
   public categories: ICategory[] = [];
   public year: number;
+  public loadingError: string;
 
   private experienceSub: Subscription;
   private userSub: Subscription;
@@ -55,12 +58,17 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       this.year = params['selectedYear'] || new Date().getFullYear()
     });
-    // subscribe to the subject in the experience service
+
     this.experienceSub = this.experienceService.experiences.subscribe(ex => {
-      this.experiences = ex;
+      if (!ex || ex.length === 0) {
+        this.loadingError = "There are no experiences for the selected year. Why don't you add some?";
+      }
+      else {
+        this.experiences = ex;
+        this.assignUnitLabels();
+      }
     });
 
-    // subscribe to the user subject from auth service
     this.userSub = this.authService.user.subscribe((user) =>
       this.initializeUserSpecificData(user)
     );
@@ -73,8 +81,10 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
         this.user.userId,
         this.user.nationalStandard.nationalStandardId
       )
-      .subscribe((res) => {
-        this.assignUnitLabels();
+      .subscribe({
+          error: err => {
+          this.loadingError = "There was an error loading experience data. Please try again later."
+        }
       });
   }
 
@@ -92,7 +102,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
       componentProps: {
-        experience,
+        experience
       },
     });
 
@@ -106,21 +116,28 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
       this.experienceService
         .getUnits(nationalStandardId)
-        .subscribe(res => {
-          this.units = res;
+        .subscribe({
+          next: res => {
+            this.units = res;
+          },
+          error: err => {
+            this.loadingError = "There was an error fetching user info. Please try again later."
+          }
         });
     } else {
-      // TODO: show an error message stating something is wrong
+      this.loadingError = "User undefined! Please exit and retry."
     }
   }
 
+  // TODO: consider moving this to the backend
   private assignUnitLabels(): void {
-    // TODO: check if this.experiences is hydrated - show msg if none
     for (const exp of this.experiences) {
       for (const am of exp.amounts) {
-        const unit = this.units.find((u) => u.unitId === am.unitId);
-        am.unitPlural = unit.unitPlural;
-        am.unitSingular = unit.unitSingular;
+        if (!am.unitSingular || !am.unitPlural) {
+          const unit = this.units.find((u) => u.unitId === am.unitId);
+          am.unitPlural = unit.unitPlural;
+          am.unitSingular = unit.unitSingular;
+        }
       }
     }
   }

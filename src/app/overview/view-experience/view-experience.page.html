@@ -11,52 +11,57 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <ion-card *ngFor="let ex of experiences">
-          <button (click)="onEditCE(ex)">
-            <ion-icon color="primary" name="create"></ion-icon>
-          </button>
-          <ion-card-title>
-            {{ ex.programTitle }}
-          </ion-card-title>
-          <h2 *ngIf="ex.eventName && ex.eventName.length > 0">{{ ex.eventName }}</h2>
-          <ion-grid>
-            <ion-row *ngIf="ex.description && ex.description.length > 0">
-              <ion-col>
-                {{ ex.description | shortenText }}
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
-                <p *ngFor="let am of ex.amounts"> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
-              </ion-col>
-              <ion-col size="6">
-                <ion-label>Location: </ion-label>
-                {{ ex.location.name }}
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
-                <p>
-                  CE Date
-                </p>
-                <p>
-                  {{ ex.startDate | date:'shortDate' }}
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p>Categories: </p>
-                <p>
-                  <ng-container *ngFor="let cat of ex.categories">{{ cat.displayName }} <br /></ng-container>
-                </p>
-              </ion-col>
-            </ion-row>
-            <ion-row *ngIf="ex.notes && ex.notes.length > 0">
-              <ion-col>
-                {{ ex.notes | shortenText }}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
+        @if (loadingError) {
+          <app-error [errorText]="loadingError"></app-error>
+        }
+        @else {
+          <ion-card *ngFor="let ex of experiences">
+            <button (click)="onEditCE(ex)">
+              <ion-icon color="primary" name="create"></ion-icon>
+            </button>
+            <ion-card-title>
+              {{ ex.programTitle }}
+            </ion-card-title>
+            <h2 *ngIf="ex.eventName && ex.eventName.length > 0">{{ ex.eventName }}</h2>
+            <ion-grid>
+              <ion-row *ngIf="ex.description && ex.description.length > 0">
+                <ion-col>
+                  {{ ex.description | shortenText }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  <p *ngFor="let am of ex.amounts"> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-label>Location: </ion-label>
+                  {{ ex.location.name }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  <p>
+                    CE Date
+                  </p>
+                  <p>
+                    {{ ex.startDate | date:'shortDate' }}
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p>Categories: </p>
+                  <p>
+                    <ng-container *ngFor="let cat of ex.categories">{{ cat.displayName }} <br /></ng-container>
+                  </p>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="ex.notes && ex.notes.length > 0">
+                <ion-col>
+                  {{ ex.notes | shortenText }}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+        }
       </ion-col>
     </ion-row>
   </ion-grid>

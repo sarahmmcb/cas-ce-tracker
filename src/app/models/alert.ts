@@ -1,28 +1,20 @@
-/**
- * Type for an alert.
- */
-export interface CEAlert {
+
+export interface Alert {
   title: string;
   content: string;
-  buttons: CEAlertButton[];
+  buttons: AlertButton[];
   type: string;
   routeOnClose?: string;
 }
 
-/**
- * Enum of alert types.
- */
-export enum CEAlertType {
+export enum AlertType {
   info = 'info',
   warning = 'warning',
   confirm = 'confirm',
   error = 'error'
 }
 
-/**
- * Interface for an alert button.
- */
-export interface CEAlertButton {
+export interface AlertButton {
   text: string;
   role: string;
   id: string;
@@ -30,10 +22,7 @@ export interface CEAlertButton {
   action?: (input?: any) => any;
 }
 
-/**
- * Possible alert button roles.
- */
-export enum CEAlertButtonRole {
+export enum AlertButtonRole {
   confirm = 'confirm',
   cancel = 'cancel'
 }

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { CEAlert, CEAlertButtonRole } from './alert';
+import { Alert, AlertButtonRole } from '../models/alert';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CEAlertService {
+export class AlertService {
 
-  public alertSubject: Subject<CEAlert> = new Subject<CEAlert>();
+  private alertSubject: Subject<Alert> = new Subject<Alert>();
 
   get alert() {
     return this.alertSubject.asObservable();
   }
 
-  public showAlert(alert: CEAlert): void {
+  public showAlert(alert: Alert): void {
     this.updateButtonHandlers(alert);
     this.alertSubject.next(alert);
   }
@@ -25,8 +25,8 @@ export class CEAlertService {
 
   // This function wraps the button handlers with extra functionality
   // to clear the alert message
-  private updateButtonHandlers(alert: CEAlert): void {
-    const ceAlertButtonRole = CEAlertButtonRole;
+  private updateButtonHandlers(alert: Alert): void {
+    const ceAlertButtonRole = AlertButtonRole;
     for (const button of alert.buttons) {
       switch (button.role) {
         case ceAlertButtonRole.confirm:

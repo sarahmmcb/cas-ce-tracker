@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { CEAlert, CEAlertButton } from '../alert';
-import { CEAlertService } from '../alert.service';
+import { Alert } from '../../models/alert';
+import { AlertService } from '../../services/alert.service';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
@@ -14,14 +14,13 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 })
 export class AlertComponent implements OnInit, OnDestroy {
 
-  public alert: CEAlert;
+  public alert: Alert;
+  private alertSub: Subscription;
 
-  public alertSub: Subscription;
-
-  constructor(private alertService: CEAlertService) {}
+  constructor(private alertService: AlertService) {}
 
   public ngOnInit(): void {
-   this.alertSub = this.alertService.alert.subscribe((alert: CEAlert) => {
+   this.alertSub = this.alertService.alert.subscribe((alert: Alert) => {
       this.alert = alert;
     });
   }
@@ -29,8 +28,4 @@ export class AlertComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.alertSub.unsubscribe();
   }
-
-  // public onButtonClick(button: CEAlertButton): void {
-  //   button.handler();
-  // }
 }

@@ -2,10 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
 import * as math from 'mathjs';
-import { forkJoin, of, Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, forkJoin, Subscription, throwError } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { CEAlertService } from 'src/app/core/alert.service';
+import { AlertService } from 'src/app/services/alert.service';
 import { ICategoryList } from 'src/app/models/category';
 import {
   Experience,
@@ -23,15 +22,15 @@ import { UserService } from 'src/app/services/user.service';
 import { NgIf, NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from 'src/app/app.interceptor';
+import { ErrorComponent } from 'src/app/core/error/error.component';
 
 @Component({
     selector: 'app-add-experience',
     templateUrl: './add-experience.component.html',
     styleUrls: ['./add-experience.component.scss'],
     standalone: true,
-    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
-
+    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet, ErrorComponent],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
 
@@ -60,7 +59,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private fb: FormBuilder,
     private experienceService: ExperienceService,
-    private alertService: CEAlertService,
+    private alertService: AlertService,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
     private userService: UserService
@@ -86,9 +85,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   public onCancel(): Promise<boolean> | void {
-    // present confirmation modal
     if (this.addForm && this.addForm.dirty) {
-      // define alert here and add modalCtrl.dismiss() to button handler
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
@@ -179,25 +176,41 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       getLocations: this.experienceService.getLocations(),
       getUnitInfo: this.experienceService.getUnits(
         this.user.nationalStandard.nationalStandardId
-      ),
-    }).pipe(catchError((error) => of(error)));
+      )
+    }).pipe(
+      catchError((err) => {
+        return throwError(() => err)})
+    );
 
-    dataCalls.subscribe(async (res) => {
-      if (res.errorMessage) {
-        this.formTitle = 'Experience Form';
-        this.fetchError =
-          'There was a problem fetching the form data. Please try again later.';
-      } else {
-        this.categoryLists = res.getCategoryLists;
-        this.locations = res.getLocations;
-        this.ceUnits = res.getUnitInfo;
+    dataCalls.subscribe({
+      next: async (res) => {
+        if (res.getCategoryLists.length === 0 || 
+            res.getLocations.length === 0 ||
+            res.getUnitInfo.length === 0
+        ) {
+          this.handleFormDataLoadError();
+        } else {
+          this.categoryLists = res.getCategoryLists;
+          this.locations = res.getLocations;
+          this.ceUnits = res.getUnitInfo;
+  
+          this.initializeData();
+        }
 
-        this.initializeData();
-      }
-
-      await this.loading.dismiss();
-      this.isLoading = false;
+        await this.dismissLoading();
+      },
+      error: async (err) => await this.handleFormDataLoadError()
     });
+  }
+
+  private async handleFormDataLoadError(): Promise<boolean> {
+    this.fetchError = 'There was an error fetching the form data. Please try again later.'
+    return await this.dismissLoading();
+  }
+
+  private async dismissLoading(): Promise<boolean> {
+    this.isLoading = false;
+    return await this.loading.dismiss();
   }
 
   private initializeData(): void {
