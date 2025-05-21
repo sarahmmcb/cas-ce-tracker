@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
-import { ICategory, ICategoryList } from '../models/category';
+import { ICategoryList } from '../models/category';
 import { IUpdateExperience, Experience, IUnit } from '../models/experience';
 import { Location } from '../models/location';
 import { ApiService } from './api.service';
@@ -39,6 +39,9 @@ export class ExperienceService {
       .pipe(
         tap((experiences) => {
           this.experienceSub.next(experiences);
+        }),
+        catchError(err => {
+          return throwError(() => err);
         })
       );
   }
@@ -46,7 +49,7 @@ export class ExperienceService {
   public createExperience(exp: IUpdateExperience): Observable<Experience[]> {
     let newExperience: Experience;
     return this.api.put('/experiences', exp).pipe(
-      switchMap((newExp) => {
+      switchMap((newExp) => {  // should only return the id of the newly created experience
         newExperience = newExp;
         return this.experiences;
       }),

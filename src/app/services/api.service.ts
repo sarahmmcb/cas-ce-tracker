@@ -18,12 +18,18 @@ export class ApiService {
     const headers = {
       method: 'GET'
     };
+
     return this.http.get(this.baseUrl + route, { 
       headers,
-      params
+      params,
+      observe: 'response'
     })
     .pipe(
-      map((res: any) => {
+      map((res: HttpResponse<any>) => {
+        
+        if (res.status >= 400) {
+          throwError(() => "There was an error"); // revisit this to see how best to handle different kinds of errors
+        }
 
         return res.body;
       }),

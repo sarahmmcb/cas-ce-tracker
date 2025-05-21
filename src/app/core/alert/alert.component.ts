@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Alert, AlertButton } from '../../models/alert';
+import { Alert } from '../../models/alert';
 import { AlertService } from '../../services/alert.service';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
@@ -15,8 +15,7 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 export class AlertComponent implements OnInit, OnDestroy {
 
   public alert: Alert;
-
-  public alertSub: Subscription;
+  private alertSub: Subscription;
 
   constructor(private alertService: AlertService) {}
 

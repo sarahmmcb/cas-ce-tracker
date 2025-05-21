@@ -11,107 +11,109 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <ion-card>
-          <!-- TODO: Write a Notification Banner component for displaying error messages -->
-          <!-- TODO: Write a loading component to show while data is loading -->
-          <p *ngIf="fetchError">{{ fetchError }}</p>
-          <form *ngIf="!isLoading && !fetchError" [formGroup]="addForm" (ngSubmit)="onSubmit()">
-            <div class="div-form-control">
-              <ion-label>Date of CE:*</ion-label>
-              <ion-datetime-button
-                [ngClass]="{'input-error': submitted && addForm.get('startDate').invalid}"
-                datetime="startDatePicker">
-              </ion-datetime-button>
-              <ion-modal [keepContentsMounted]="true">
-                <ng-template>
-                  <ion-datetime
-                    id="startDatePicker"
-                    formControlName="startDate"
-                    name="startDate"
-                    presentation="date-time"
-                    [formatOptions]="{
-                      date: {
-                        weekday: 'short',
-                        month: 'long',
-                        day: '2-digit',
-                      },
-                      time: {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      },
-                    }"
-                  ></ion-datetime>
-                </ng-template>
-              </ion-modal>
-              <div class="error-message" *ngIf="submitted && addForm.get('startDate').errors?.required">
-                Date is required.
+        @if (fetchError) {
+          <app-error [errorText]="fetchError"></app-error>
+        }
+        @else if (!isLoading) {
+          <ion-card>
+            <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+              <div class="div-form-control">
+                <ion-label>Date of CE:*</ion-label>
+                <ion-datetime-button
+                  [ngClass]="{'input-error': submitted && addForm.get('startDate').invalid}"
+                  datetime="startDatePicker">
+                </ion-datetime-button>
+                <ion-modal [keepContentsMounted]="true">
+                  <ng-template>
+                    <ion-datetime
+                      id="startDatePicker"
+                      formControlName="startDate"
+                      name="startDate"
+                      presentation="date-time"
+                      [formatOptions]="{
+                        date: {
+                          weekday: 'short',
+                          month: 'long',
+                          day: '2-digit',
+                        },
+                        time: {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        },
+                      }"
+                    ></ion-datetime>
+                  </ng-template>
+                </ion-modal>
+                <div class="error-message" *ngIf="submitted && addForm.get('startDate').errors?.required">
+                  Date is required.
+                </div>
               </div>
-            </div>
-            <div class="div-form-control">
-              <ion-label>Location:</ion-label>
-              <ion-select formControlName="locationId" placeHolder="--Choose One--">
-                <ion-select-option *ngFor="let item of locations" [value]="item.locationId">{{ item.name }}
-                </ion-select-option>
-              </ion-select>
-            </div>
-            <div class="div-form-control">
-              <ion-label>Program Title:*</ion-label>
-              <ion-input [ngClass]="{'input-error': submitted && addForm.get('programTitle').invalid}"
-                formControlName="programTitle" name="programTitle" maxlength="200">
-              </ion-input>
-              <div class="error-message" *ngIf="submitted && addForm.get('programTitle').errors?.required">Program Title
-                is required.</div>
-            </div>
-            <div class="div-form-control">
-              <ion-label>Event Name:</ion-label>
-              <ion-input formControlName="eventName" maxlength="200">
-              </ion-input>
-            </div>
-            <div class="div-form-control">
-              <ion-label>Description:</ion-label>
-              <ion-textarea rows="5" formControlName="description" maxlength="500">
-              </ion-textarea>
-            </div>
-            <div class="div-form-control div-time-spent">
-              <div>
-                <ion-label>Time Spent ({{ parentUnit.unitPlural }}):*</ion-label>
-                <ion-input [ngClass]="{'input-error': submitted && addForm.get('timeSpentParent').invalid}"
-                  type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
+              <div class="div-form-control">
+                <ion-label>Location:</ion-label>
+                <ion-select formControlName="locationId" placeHolder="--Choose One--">
+                  <ion-select-option *ngFor="let item of locations" [value]="item.locationId">{{ item.name }}
+                  </ion-select-option>
+                </ion-select>
+              </div>
+              <div class="div-form-control">
+                <ion-label>Program Title:*</ion-label>
+                <ion-input [ngClass]="{'input-error': submitted && addForm.get('programTitle').invalid}"
+                  formControlName="programTitle" name="programTitle" maxlength="200">
                 </ion-input>
-                <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.required">Time
-                  Spent is required.</div>
-                <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.nonPositiveValue">
-                  Time Spent must be greater than zero.</div>
+                <div class="error-message" *ngIf="submitted && addForm.get('programTitle').errors?.required">Program Title
+                  is required.</div>
               </div>
-              <div>
-                <ion-label>Time Spent ({{ childUnit.unitPlural }}):</ion-label>
-                <ion-input type="number" formControlName="timeSpentChild">
+              <div class="div-form-control">
+                <ion-label>Event Name:</ion-label>
+                <ion-input formControlName="eventName" maxlength="200">
                 </ion-input>
               </div>
-            </div>
-            <div class="div-form-control" *ngFor="let catList of categoryLists; index as i">
-              <ion-label>{{ catList.displayQuestion }}:*</ion-label>
-              <ng-container
-                *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: i}">
-              </ng-container>
-            </div>
-            <div class="div-form-control carry-forward">
-              <ion-label>
-                Carry forward to {{ carryForwardYear }}
-              </ion-label>
-              <ion-toggle formControlName="carryForward" color="primary"></ion-toggle>
-            </div>
-            <div class="div-form-control">
-              <ion-label>Additional Notes:</ion-label>
-              <ion-textarea rows="5" formControlName="notes">
-              </ion-textarea>
-            </div>
-            <div class="error-message" *ngIf="submitted && addForm.invalid">There were errors found. Please review your
-              entries.</div>
-            <ion-button type="submit">{{ formTitle }}</ion-button>
-            <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
-          </form>
-        </ion-card>
+              <div class="div-form-control">
+                <ion-label>Description:</ion-label>
+                <ion-textarea rows="5" formControlName="description" maxlength="500">
+                </ion-textarea>
+              </div>
+              <div class="div-form-control div-time-spent">
+                <div>
+                  <ion-label>Time Spent ({{ parentUnit.unitPlural }}):*</ion-label>
+                  <ion-input [ngClass]="{'input-error': submitted && addForm.get('timeSpentParent').invalid}"
+                    type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
+                  </ion-input>
+                  <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.required">Time
+                    Spent is required.</div>
+                  <div class="error-message" *ngIf="submitted && addForm.get('timeSpentParent').errors?.nonPositiveValue">
+                    Time Spent must be greater than zero.</div>
+                </div>
+                <div>
+                  <ion-label>Time Spent ({{ childUnit.unitPlural }}):</ion-label>
+                  <ion-input type="number" formControlName="timeSpentChild">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="div-form-control" *ngFor="let catList of categoryLists; index as i">
+                <ion-label>{{ catList.displayQuestion }}:*</ion-label>
+                <ng-container
+                  *ngTemplateOutlet="(catList.categories.length > 1) ? (selectTemplate) : (checkboxTemplate); context: {cat: catList.categories, controlName: i}">
+                </ng-container>
+              </div>
+              <div class="div-form-control carry-forward">
+                <ion-label>
+                  Carry forward to {{ carryForwardYear }}
+                </ion-label>
+                <ion-toggle formControlName="carryForward" color="primary"></ion-toggle>
+              </div>
+              <div class="div-form-control">
+                <ion-label>Additional Notes:</ion-label>
+                <ion-textarea rows="5" formControlName="notes">
+                </ion-textarea>
+              </div>
+              <div class="error-message" *ngIf="submitted && addForm.invalid">There were errors found. Please review your
+                entries.</div>
+              <ion-button type="submit">{{ formTitle }}</ion-button>
+              <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
+            </form>
+          </ion-card>
+        }
       </ion-col>
     </ion-row>
   </ion-grid>
