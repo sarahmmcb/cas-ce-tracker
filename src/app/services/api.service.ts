@@ -10,7 +10,8 @@ export interface HttpParams {
   providedIn: 'root',
 })
 export class ApiService {
-  public baseUrl = 'api';
+
+  public baseUrl: string;
 
   constructor(private http: HttpClient) {}
 

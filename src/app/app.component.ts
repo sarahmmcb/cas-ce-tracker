@@ -5,13 +5,13 @@ import { environment } from 'src/environments/environment';
 
 import { AuthService } from './auth/auth.service';
 import { CEUser } from './models/user';
-import { ApiService } from './services/api.service';
 import { UserService } from './services/user.service';
 import { NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from './app.interceptor';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +22,8 @@ import { CustomHttpInterceptorService } from './app.interceptor';
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
 })
 export class AppComponent implements OnInit, OnDestroy {
+  
   public user: CEUser;
-
   private authUserSub: Subscription;
 
   constructor(
@@ -54,9 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private initializeApp(): void {
     if (environment.production) {
-      this.api.baseUrl = `https://wordapi20211030215150.azurewebsites.net/${this.api.baseUrl}`;
+      this.api.baseUrl = 'https://wordapi20211030215150.azurewebsites.net/api';
     } else {
-      this.api.baseUrl = `https://localhost:44381/${this.api.baseUrl}`;
+      this.api.baseUrl = 'https://localhost:44381/api';
       //this.api.baseUrl = `https://localhost:7248/${this.api.baseUrl}`;
     }
   }
