@@ -1,11 +1,22 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 import { CEUser } from '../models/user';
+import { environment } from 'src/environments/environment';
+import { ApiService } from '../services/api.service';
+import { HttpClient } from '@angular/common/http';
+import { LoginRequest, LoginResponse } from '../models/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+
+  public accessToken: string;
+  public errMessage: string;
+
+  private apiService: ApiService;
+
   private tempUserSpecific: CEUser = {
     userId: 1,
     firstName: 'Betty',
@@ -46,31 +57,62 @@ export class AuthService {
 
   private _userIsAuthenticated = false;
 
-  constructor() {}
+  constructor(
+    private injector: EnvironmentInjector,
+    private router: Router
+  ) {
+    // Create a separate instance of ApiService for Auth
+    // so it can use its own baseUrl
+    const childInjector = createEnvironmentInjector(
+      [{
+        provide: ApiService,
+        useClass: ApiService,
+        deps: [HttpClient]
+      }],
+      this.injector
+    );
 
-  /**
-   * Retrieve the current user.
-   */
+    this.apiService = childInjector.get(ApiService);
+    
+    if (environment.production) {
+
+    }
+    else {
+      this.apiService.baseUrl = "https://localhost:44370/api";
+    }
+  }
+
   get user() {
     return this.userSubject.asObservable();
   }
 
-  /**
-   * Return user is authenticated boolean.
-   */
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }
 
-  // TODO: make this async
   public login(email: string, password: string): void {
-    this._userIsAuthenticated = true;
-    this.userSubject.next(this.tempUserSpecific);
+    // login and get token
+    this.apiService.post(
+      '/session/login',
+      {
+        userName: email,
+        password
+      } as LoginRequest
+    ).subscribe({
+      next: (res: LoginResponse) => {
+        this.accessToken = res.token;
+        this._userIsAuthenticated = true;
+        // TODO fetch user by user name
+        this.userSubject.next(this.tempUserSpecific);
+        this.router.navigateByUrl('/overview');
+      },
+      error: res => { // TODO: check status code of response to determine if error vs. incorrect username/pw
+        this.errMessage = 'An error occurred, please try again later';
+        this._userIsAuthenticated = false;
+      }
+    });
   }
 
-  /**
-   * Log out method.
-   */
   public logout(): void {
     this._userIsAuthenticated = false;
   }
