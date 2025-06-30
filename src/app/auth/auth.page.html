@@ -34,6 +34,13 @@
           </ion-button>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="errMessage">
+        <ion-col sizeSm="6" offsetSm="3">
+          <p class="ion-text-center">
+            {{errMessage}}
+          </p>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
           <p class="ion-text-center cas-signup-link">

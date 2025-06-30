@@ -33,13 +33,13 @@ export class AuthPage implements OnInit {
     const password = form.value.password;
 
     this.auth.login(email, password)
-    .subscribe({
-      next: () => {
-        this.router.navigateByUrl('/overview');
-      },
-      error: err => {
-        this.errMessage = this.auth.getErrorMessage(err);
-      }
-    });
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/overview');
+        },
+        error: err => {
+          this.errMessage = this.auth.getErrorMessage(err);
+        }
+      });
   }
 }

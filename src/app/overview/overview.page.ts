@@ -6,12 +6,12 @@ import { Subscription } from 'rxjs';
 import { CEData } from '../models/cedata';
 import { CEDataService } from '../services/cedata.service';
 import { AddExperienceComponent } from './add-experience/add-experience.component';
-import { ErrorCodes } from '../utils/errors';
 import { UserService } from '../services/user.service';
 import { ComplianceGraphicComponent } from './compliance-graphic/compliance-graphic.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { ErrorStatus } from '../core/error/error';
 
 @Component({
     selector: 'app-overview',
@@ -97,7 +97,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   private handleError(error: HttpErrorResponse): void {
     const status = error.status;
     switch (status) {
-      case ErrorCodes.NotFound:
+      case ErrorStatus.NotFound:
         this.errorMessage = `No data found for ${this.selectedYear}`;
         break;
       default:

@@ -7,7 +7,7 @@ import { IonicRouteStrategy, IonicModule } from '@ionic/angular';
 import { RouteReuseStrategy, provideRouter, withDebugTracing } from '@angular/router';
 import { routes } from './app/app.routes';
 import { jsonIntercepter } from './app/core/interceptors/jsonInterceptor';
-import { authIntercepter } from './app/core/interceptors/authinterceptor';
+import { authIntercepter } from './app/core/interceptors/authInterceptor';
 
 if (environment.production) {
   enableProdMode();

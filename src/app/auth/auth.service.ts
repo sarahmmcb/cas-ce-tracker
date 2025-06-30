@@ -1,11 +1,10 @@
 import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, concatMap, map, mergeMap, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, concatMap, Observable, tap, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../services/api.service';
-import { HttpClient, HttpParams, HttpParamsOptions } from '@angular/common/http';
-import { LoginRequest, LoginResponse } from '../models/auth';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { LoginRequest } from '../models/auth';
 import { ErrorStatus } from '../core/error/error';
 
 @Injectable({
@@ -91,7 +90,7 @@ export class AuthService {
           return "An unexpected error occurred. Please try again later.";
       }
     } else {
-      return "An unexpected error occurred"
+      return "An unexpected error occurred. Please try again later."
     }
   }
 
