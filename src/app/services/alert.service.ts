@@ -26,10 +26,9 @@ export class AlertService {
   // This function wraps the button handlers with extra functionality
   // to clear the alert message
   private updateButtonHandlers(alert: Alert): void {
-    const ceAlertButtonRole = AlertButtonRole;
     for (const button of alert.buttons) {
       switch (button.role) {
-        case ceAlertButtonRole.confirm:
+        case AlertButtonRole.confirm:
           button.handler = () => {
             this.clearAlert();
             button.action();

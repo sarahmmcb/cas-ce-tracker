@@ -1,11 +1,11 @@
 import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
-import { CEUser } from '../models/user';
+import { BehaviorSubject, catchError, concatMap, Observable, tap, throwError } from 'rxjs';
+import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest, LoginResponse } from '../models/auth';
-import { Router } from '@angular/router';
+import { LoginRequest } from '../models/auth';
+import { ErrorStatus } from '../core/error/error';
 
 @Injectable({
   providedIn: 'root',
@@ -17,52 +17,16 @@ export class AuthService {
 
   private apiService: ApiService;
 
-  private tempUserSpecific: CEUser = {
-    userId: 1,
-    firstName: 'Betty',
-    lastName: 'Boop',
-    email: 'stuff@stuff.com',
-    title: 'Ms.',
-    nationalStandard: {
-      nationalStandardId: 1,
-      owningOrganizationId: 2,
-      longName: 'United States General Qualification Standard',
-      shortName: 'USQS General',
-    },
-    organizations: [
-      {
-        organizationId: 1,
-        longName: 'Casualty Actuarial Society',
-        shortName: 'CAS',
-      },
-      {
-        organizationId: 2,
-        longName: 'American Academy of Actuaries',
-        shortName: 'AAA',
-      },
-    ],
-    credentials: [
-      {
-        credentialId: 1,
-        organizationId: 1,
-        shortName: 'FCAS',
-        longName: 'Fellow of the Casualty Actuarial Society',
-      },
-    ],
-  };
-
-  private userSubject: BehaviorSubject<CEUser> = new BehaviorSubject<CEUser>(
-    null
+  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(
+    {} as User
   );
 
   private _userIsAuthenticated = false;
 
   constructor(
-    private injector: EnvironmentInjector,
-    private router: Router
+    private injector: EnvironmentInjector
   ) {
-    // Create a separate instance of ApiService for Auth
-    // so it can use its own baseUrl
+    // Create a separate instance of ApiService for Auth so it can use its own baseUrl
     const childInjector = createEnvironmentInjector(
       [{
         provide: ApiService,
@@ -75,7 +39,7 @@ export class AuthService {
     this.apiService = childInjector.get(ApiService);
     
     if (environment.production) {
-
+      // TODO
     }
     else {
       this.apiService.baseUrl = "https://localhost:44370/api";
@@ -90,30 +54,47 @@ export class AuthService {
     return this._userIsAuthenticated;
   }
 
-  public login(email: string, password: string): void {
-    // login and get token
-    this.apiService.post(
+  public login(email: string, password: string): Observable<User> {
+   return this.apiService.post(
       '/session/login',
       {
         userName: email,
         password
       } as LoginRequest
-    ).subscribe({
-      next: (res: LoginResponse) => {
+    ).pipe(
+      concatMap(res => {
         this.accessToken = res.token;
         this._userIsAuthenticated = true;
-        // TODO fetch user by user name
-        this.userSubject.next(this.tempUserSpecific);
-        this.router.navigateByUrl('/overview');
-      },
-      error: res => { // TODO: check status code of response to determine if error vs. incorrect username/pw
-        this.errMessage = 'An error occurred, please try again later';
-        this._userIsAuthenticated = false;
-      }
-    });
+        return this.fetchUser(email);
+      }),
+      tap(user => this.userSubject.next(user)),
+      catchError(err => throwError(() => err))
+    );
   }
 
   public logout(): void {
+    this.accessToken = '';
     this._userIsAuthenticated = false;
+  }
+
+  public getErrorMessage(err: any): string {
+    if (err.status) {
+      switch (err.status) {
+        case ErrorStatus.NotFound:
+          return "User not found. Please try again later.";
+        case ErrorStatus.BadRequest:
+          return "There was a problem with the request. Please reenter your credentials and try again.";
+        case ErrorStatus.Unauthorized:
+          return "Username or password incorrect.";
+        default:
+          return "An unexpected error occurred. Please try again later.";
+      }
+    } else {
+      return "An unexpected error occurred. Please try again later."
+    }
+  }
+
+  private fetchUser(username: string): Observable<any> {
+    return this.apiService.get('/user', {username});
   }
 }

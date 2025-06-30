@@ -14,7 +14,7 @@ import {
   IUpdateExperience,
 } from 'src/app/models/experience';
 import { Location } from 'src/app/models/location';
-import { CEUser } from 'src/app/models/user';
+import { User } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
@@ -23,6 +23,7 @@ import { NgIf, NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from 'src/app/app.interceptor';
 import { ErrorComponent } from 'src/app/core/error/error.component';
+import { AlertButtonRole, AlertType } from 'src/app/models/alert';
 
 @Component({
     selector: 'app-add-experience',
@@ -50,7 +51,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public carryForwardYear: number;
   public isLoading = false;
   public fetchError: string;
-  public user: CEUser;
+  public user: User;
 
   private loading: HTMLIonLoadingElement;
   private userSub: Subscription;
@@ -89,17 +90,17 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
-        type: 'confirm',
+        type: AlertType.confirm,
         buttons: [
           {
             text: 'OK',
-            role: 'confirm',
+            role: AlertButtonRole.confirm,
             id: 'confirmButton',
             action: () => this.modalCtrl.dismiss(),
           },
           {
             text: 'Cancel',
-            role: 'cancel',
+            role: AlertButtonRole.cancel,
             id: 'cancelButton',
             action: () => {},
           },
@@ -116,18 +117,21 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // send to server and return with updated experience object.
     if (this.experience.experienceId === 0) {
       this.experienceService
         .createExperience(this.prepareExperienceData())
-        .subscribe();
+        .subscribe({
+          next: () => this.onUpdateSuccess('added'),
+          error: err => this.onUpdateFailure()
+        });
     } else {
       this.experienceService
         .updateExperience(this.prepareExperienceData())
-        .subscribe();
+        .subscribe({
+          next: () => this.onUpdateSuccess('updated'),
+          error: err => this.onUpdateFailure()
+        });
     }
-
-    this.modalCtrl.dismiss();
   }
 
   public onAmountEdit(event: InputCustomEvent): void {
@@ -142,11 +146,39 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
+  private onUpdateSuccess(action: string): void {
+    this.alertService.showAlert({
+        title: 'Success',
+        content: `Experience ${action} successfully`,
+        buttons: [{
+          text: 'Ok',
+          role: AlertButtonRole.confirm,
+          id: 'alert-confirm',
+          action: () => this.modalCtrl.dismiss()
+        }],
+        type: AlertType.info,
+        routeOnClose: '/overview'
+    });
+  }
+
+  private onUpdateFailure(): void {
+        this.alertService.showAlert({
+        title: 'Error',
+        content: `An error occurred, please try again later`,
+        buttons: [{
+          text: 'Ok',
+          role: AlertButtonRole.confirm,
+          id: 'alert-confirm'
+        }],
+        type: AlertType.error,
+    });
+  }
+
   private prepareExperienceData(): IUpdateExperience {
     return {
       ...this.addForm.value,
       experienceId: this.experience.experienceId,
-      userId: this.user.userId,
+      userId: this.user.id,
       categories: [...this.addForm.value.categories],
       timeSpentChild: {
         experienceId: this.experience.experienceId,

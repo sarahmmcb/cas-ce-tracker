@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
 import { AlertService } from '../services/alert.service';
-import { CEUser, NationalStandard } from '../models/user';
+import { User, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
 import { NgIf, NgClass, NgFor, CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { EditProfilePageRoutingModule } from './edit-profile-routing.module';
+import { AlertButtonRole, AlertType } from '../models/alert';
 
 @Component({
     selector: 'app-edit-profile',
@@ -29,7 +30,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
   /**
    * User object.
    */
-  public user: CEUser;
+  public user: User;
 
   /**
    * Profile form group.
@@ -94,22 +95,21 @@ export class EditProfilePage implements OnInit, OnDestroy {
    * Logic executed when cancel button is pressed.
    */
   public onCancel(): Promise<boolean> | void {
-    // present confirmation modal
     if (this.profileForm.dirty) {
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
-        type: 'confirm',
+        type: AlertType.confirm,
         buttons: [
           {
             text: 'OK',
-            role: 'confirm',
+            role: AlertButtonRole.confirm,
             id: 'confirmButton',
             action: () => this.router.navigateByUrl('/overview'),
           },
           {
             text: 'Cancel',
-            role: 'cancel',
+            role: AlertButtonRole.cancel,
             id: 'cancelButton',
             action: () => {},
           },
