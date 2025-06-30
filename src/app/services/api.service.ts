@@ -44,13 +44,17 @@ export class ApiService {
     return this.http.post(this.baseUrl + route, JSON.stringify(body), {
       params,
       observe: 'response'
-    });
+    }).pipe(
+      map(res => res.body)
+    );
   }
 
   public put(route: string, body: any, params?: HttpParams): Observable<any> {
     return this.http.put(this.baseUrl + route, JSON.stringify(body), {
       params,
       observe: 'response'
-    });
+    }).pipe(
+      map(res => res.body)
+    );
   }
 }

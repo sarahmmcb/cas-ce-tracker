@@ -77,7 +77,7 @@ const getExperienceData = () =>
       body: [
         {
           experienceId: 1,
-          userId: 1,
+          id: 1,
           location: {
             locationId: 1,
             name: 'Home',
@@ -109,7 +109,7 @@ const getExperienceData = () =>
         },
         {
           experienceId: 2,
-          userId: 1,
+          id: 1,
           location: {
             locationId: 3,
             name: 'Other',
@@ -151,7 +151,7 @@ const getExperienceData = () =>
         },
         {
           experienceId: 3,
-          userId: 1,
+          id: 1,
           location: {
             locationId: 2,
             name: 'Work',
@@ -349,7 +349,7 @@ const addExperience = (body) => {
   const exp = JSON.parse(body);
   const newExp = {
     experienceId: id,
-    userId: 1,
+    id: 1,
     location: {
       locationId: exp.locationId,
       name: 'New Location',

@@ -56,7 +56,10 @@ export class ExperienceService {
       take(1),
       tap((experiences) =>
         this.experienceSub.next(experiences.concat(newExperience))
-      )
+      ),
+      catchError(err => {
+        return throwError(() => err)
+      })
     );
   }
 
@@ -102,7 +105,6 @@ export class ExperienceService {
     });
   }
 
-  
   private fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
     return this.api.get(`/units/nationalStandardId/${nationalStandardId}`).pipe(
       map(res => res.units),

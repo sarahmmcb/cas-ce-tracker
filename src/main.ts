@@ -1,12 +1,13 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
-import { withInterceptorsFromDi, provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { IonicRouteStrategy, IonicModule } from '@ionic/angular';
 import { RouteReuseStrategy, provideRouter, withDebugTracing } from '@angular/router';
 import { routes } from './app/app.routes';
-import { CustomHttpInterceptorService } from './app/app.interceptor';
+import { jsonIntercepter } from './app/core/interceptors/jsonInterceptor';
+import { authIntercepter } from './app/core/interceptors/authinterceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -17,12 +18,9 @@ bootstrapApplication(AppComponent, {
         importProvidersFrom(BrowserModule, IonicModule.forRoot()),
         provideRouter(routes, withDebugTracing()),
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-        provideHttpClient(withInterceptorsFromDi()),
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: CustomHttpInterceptorService,
-          multi: true,
-        }
+        provideHttpClient(
+          withInterceptors([jsonIntercepter, authIntercepter])
+        ),
     ]
 })
   .catch(err => console.log(err));

@@ -3,7 +3,7 @@ import { ModalController, IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Experience, IUnit } from 'src/app/models/experience';
-import { CEUser } from 'src/app/models/user';
+import { User } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
@@ -31,7 +31,7 @@ import { ErrorComponent } from 'src/app/core/error/error.component';
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
   public experiences: Experience[] = [];
-  public user: CEUser;
+  public user: User;
   public units: IUnit[] = [];
   public categories: ICategory[] = [];
   public year: number;
@@ -64,6 +64,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
         this.loadingError = "There are no experiences for the selected year. Why don't you add some?";
       }
       else {
+        this.loadingError = "";
         this.experiences = ex;
         this.assignUnitLabels();
       }
@@ -78,7 +79,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     this.experienceService
       .getExperiences(
         this.year,
-        this.user.userId,
+        this.user.id,
         this.user.nationalStandard.nationalStandardId
       )
       .subscribe({
@@ -109,7 +110,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  private initializeUserSpecificData(user: CEUser) {
+  private initializeUserSpecificData(user: User) {
     if (user != null) {
       this.user = user;
       const nationalStandardId = this.user.nationalStandard.nationalStandardId;
@@ -124,6 +125,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
             this.loadingError = "There was an error fetching user info. Please try again later."
           }
         });
+
     } else {
       this.loadingError = "User undefined! Please exit and retry."
     }

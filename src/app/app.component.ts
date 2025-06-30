@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { AuthService } from './auth/auth.service';
-import { CEUser } from './models/user';
+import { User } from './models/user';
 import { UserService } from './services/user.service';
 import { NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -23,7 +23,7 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   
-  public user: CEUser;
+  public user: User;
   private authUserSub: Subscription;
 
   constructor(

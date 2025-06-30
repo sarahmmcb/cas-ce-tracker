@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import {
-  CECredential,
-  CEUser,
+  Credential,
+  User,
   NationalStandard,
   Organization,
 } from '../models/user';
@@ -14,7 +14,7 @@ export class UserService {
   // This class can just house methods to fetch user-related info
   // Methods will take a user id provided by the auth service
   // The actual user object will be provided by auth
-  public user: CEUser;
+  public user: User;
 
   private _selectedYear: number;
 
@@ -32,7 +32,7 @@ export class UserService {
     this._selectedYear = year;
   }
 
-  public fetchCredentials(): CECredential[] {
+  public fetchCredentials(): Credential[] {
     return [
       {
         credentialId: 1,
