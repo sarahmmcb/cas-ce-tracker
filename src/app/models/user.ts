@@ -5,10 +5,17 @@ export class User {
   public lastName = '';
   public email = '';
   public userName = '';
-  public password = '';
   public accountStatus: AccountStatus;
   public title = '';
-  public role = new Role();
+  public canSignSAO = false;
+  public credentials = [] as Credential[];
+  public nationalStandard = new NationalStandard();
+}
+
+export class UserData {
+  public title = '';
+  public canSignSAO = false;
+  public credentials = [] as Credential[];
   public nationalStandard = new NationalStandard();
 }
 
@@ -18,13 +25,6 @@ export enum AccountStatus {
   Locked,
   Blocked,
   Unknown
-}
-
-export class Role {
-  public roleId = 0;
-  public nationalStandardId = 0;
-  public longName = '';
-  public shortName = '';
 }
 
 export class NationalStandard {

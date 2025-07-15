@@ -1,6 +1,6 @@
 import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, concatMap, Observable, tap, throwError } from 'rxjs';
-import { User } from '../models/user';
+import { BehaviorSubject, catchError, concatMap, map, Observable, tap, throwError } from 'rxjs';
+import { User, UserData } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +15,7 @@ export class AuthService {
   public accessToken: string;
   public errMessage: string;
 
-  private apiService: ApiService;
+  private authApiService: ApiService;
 
   private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(
     {} as User
@@ -24,7 +24,8 @@ export class AuthService {
   private _userIsAuthenticated = false;
 
   constructor(
-    private injector: EnvironmentInjector
+    private injector: EnvironmentInjector,
+    private apiService: ApiService
   ) {
     // Create a separate instance of ApiService for Auth so it can use its own baseUrl
     const childInjector = createEnvironmentInjector(
@@ -36,13 +37,13 @@ export class AuthService {
       this.injector
     );
 
-    this.apiService = childInjector.get(ApiService);
+    this.authApiService = childInjector.get(ApiService);
     
     if (environment.production) {
       // TODO
     }
     else {
-      this.apiService.baseUrl = "https://localhost:44370/api";
+      this.authApiService.baseUrl = "https://localhost:44370/api";
     }
   }
 
@@ -55,7 +56,8 @@ export class AuthService {
   }
 
   public login(email: string, password: string): Observable<User> {
-   return this.apiService.post(
+   let user = new User();
+   return this.authApiService.post(
       '/session/login',
       {
         userName: email,
@@ -67,7 +69,18 @@ export class AuthService {
         this._userIsAuthenticated = true;
         return this.fetchUser(email);
       }),
-      tap(user => this.userSubject.next(user)),
+      concatMap(userResp => {
+        user = {...userResp} as User;
+        return this.fetchUserData(user.id);
+      }),
+      map(userData => {
+        user = {
+          ...user,
+          ...userData
+        };
+        this.userSubject.next(user);
+        return user;
+      }),
       catchError(err => throwError(() => err))
     );
   }
@@ -94,7 +107,11 @@ export class AuthService {
     }
   }
 
-  private fetchUser(username: string): Observable<any> {
-    return this.apiService.get('/user', {username});
+  private fetchUser(username: string): Observable<User> {
+    return this.authApiService.get('/user', {username});
+  }
+
+  private fetchUserData(userId: number): Observable<UserData> {
+    return this.apiService.get(`/userData/userId/${userId}`);
   }
 }
