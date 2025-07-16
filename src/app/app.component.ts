@@ -9,8 +9,6 @@ import { UserService } from './services/user.service';
 import { NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomHttpInterceptorService } from './app.interceptor';
 import { ApiService } from './services/api.service';
 
 @Component({
@@ -18,8 +16,7 @@ import { ApiService } from './services/api.service';
   standalone: true,
   imports: [IonicModule, NgIf, AlertComponent],
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService }]
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
   
