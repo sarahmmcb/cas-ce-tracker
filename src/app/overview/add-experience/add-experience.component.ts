@@ -24,6 +24,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from 'src/app/app.interceptor';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { AlertButtonRole, AlertType } from 'src/app/models/alert';
+import { StaticDataService } from 'src/app/services/static-data.service';
 
 @Component({
     selector: 'app-add-experience',
@@ -63,7 +64,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private staticDataService: StaticDataService
   ) {}
 
   // Helper method to access category form group in the template.
@@ -201,12 +203,12 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     await this.loading.present();
 
     const dataCalls = forkJoin({
-      getCategoryLists: this.experienceService.getCategoryLists(
+      getCategoryLists: this.staticDataService.getCategoryLists(
         this.user.nationalStandard.nationalStandardId,
         this.userService.selectedYear
       ),
-      getLocations: this.experienceService.getLocations(),
-      getUnitInfo: this.experienceService.getUnits(
+      getLocations: this.staticDataService.getLocations(),
+      getUnitInfo: this.staticDataService.getUnits(
         this.user.nationalStandard.nationalStandardId
       )
     }).pipe(

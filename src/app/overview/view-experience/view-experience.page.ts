@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Experience, IUnit } from 'src/app/models/experience';
 import { User } from 'src/app/models/user';
@@ -12,6 +12,7 @@ import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorComponent } from 'src/app/core/error/error.component';
+import { StaticDataService } from 'src/app/services/static-data.service';
 
 @Component({
     selector: 'app-view-experience',
@@ -42,6 +43,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   constructor(
     private experienceService: ExperienceService,
+    private staticDataService: StaticDataService,
     private authService: AuthService,
     private modalCtrl: ModalController,
     private route: ActivatedRoute
@@ -59,20 +61,19 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.year = params['selectedYear'] || new Date().getFullYear()
     });
 
-    this.experienceSub = this.experienceService.experiences.subscribe(ex => {
-      if (!ex || ex.length === 0) {
-        this.loadingError = "There are no experiences for the selected year. Why don't you add some?";
-      }
-      else {
-        this.loadingError = "";
-        this.experiences = ex;
-        this.assignUnitLabels();
-      }
-    });
-
-    this.userSub = this.authService.user.subscribe((user) =>
-      this.initializeUserSpecificData(user)
-    );
+   this.userSub = this.authService.user.pipe(
+      tap(user => this.initializeUserSpecificData(user)),
+      tap(() => this.experienceSub = this.experienceService.experiences.subscribe(ex => {
+        if (!ex || ex.length === 0) {
+          this.loadingError = "There are no experiences for the selected year. Why don't you add some?";
+        }
+        else {
+          this.loadingError = "";
+          this.experiences = ex;
+          this.assignUnitLabels();
+        }
+      }))
+    ).subscribe();
   }
 
   public ionViewWillEnter(): void {
@@ -115,7 +116,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.user = user;
       const nationalStandardId = this.user.nationalStandard.nationalStandardId;
 
-      this.experienceService
+      this.staticDataService
         .getUnits(nationalStandardId)
         .subscribe({
           next: res => {
