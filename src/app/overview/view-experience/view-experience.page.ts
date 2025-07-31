@@ -126,7 +126,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
             this.loadingError = "There was an error fetching user info. Please try again later."
           }
         });
-
     } else {
       this.loadingError = "User undefined! Please exit and retry."
     }

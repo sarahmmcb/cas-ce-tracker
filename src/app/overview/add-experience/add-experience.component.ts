@@ -301,18 +301,20 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       categories: this.fb.array([]),
     });
 
-    // Add categorylist controls
     for (const catList of this.categoryLists) {
       const chosenCategory: IExperienceCategory = this.experience.categories.find(
         (c) => c.categoryListId === catList.categoryListId
       );
 
-      if (chosenCategory) {
-        // if we are updating, prepopulate with existing data.
+      if (this.experience.experienceId && chosenCategory) {
         this.categories.push(
           new FormControl(chosenCategory.categoryId, [Validators.required])
         );
-      } else {
+      }
+      else if (this.experience.experienceId) {
+        this.categories.push(new FormControl(0, [Validators.required]));
+      } 
+      else {
         this.categories.push(new FormControl(null, [Validators.required]));
       }
     }
