@@ -282,6 +282,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   private initializeFormControls(): void {
     const now = new Date();
     const defaultDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0));
+    
     this.addForm = this.fb.group({
       startDate: [this.experience.startDate || defaultDate.toISOString(), Validators.required],
       locationId: this.experience.location.locationId,
@@ -294,7 +295,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       ],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
-        disabled: this.childUnit?.isDisabled,  // TODO: make sure this is working
+        disabled: this.childUnit?.isDisabled,
       }),
       carryForward: this.experience.carryForward,
       notes: this.experience.notes,

@@ -24,18 +24,19 @@ export class StaticDataService {
         observer.next(this._units);
         observer.complete();
       }
-
-      this.fetchUnitInfo(nationalStandardId)
-      .subscribe({
-        next: (res) => {
-            this._units = res;
-            observer.next(this._units);
-            observer.complete();
-          },
-        error: err => {
-          observer.error(err)
-        }
-      });
+      else {
+        this.fetchUnitInfo(nationalStandardId)
+        .subscribe({
+          next: (res) => {
+              this._units = res;
+              observer.next(this._units);
+              observer.complete();
+            },
+          error: err => {
+            observer.error(err)
+          }
+        });
+      }
     });
   }
 
@@ -61,19 +62,20 @@ export class StaticDataService {
         observer.next(this._categoryLists);
         observer.complete();
       }
-
-      this.fetchCategoryLists(
-        nationalStandardId,
-        year).subscribe({
-          next: (res) => {
-              this._categoryLists = res;
-              observer.next(this._categoryLists);
-              observer.complete();
-            },
-          error: err => {
-            observer.error(err)
-          }
+      else {
+        this.fetchCategoryLists(
+          nationalStandardId,
+          year).subscribe({
+            next: (res) => {
+                this._categoryLists = res;
+                observer.next(this._categoryLists);
+                observer.complete();
+              },
+            error: err => {
+              observer.error(err)
+            }
         });
+      }
     });
   }
 
@@ -100,17 +102,18 @@ export class StaticDataService {
         observer.next(this._locations);
         observer.complete();
       }
-
-      this.fetchLocations().subscribe({
-        next: (res) => {
-            this._locations = res;
-            observer.next(this._locations);
-            observer.complete();
-          },
-        error: err => {
-          observer.error(err)
-        }
-      });
+      else {
+        this.fetchLocations().subscribe({
+          next: (res) => {
+              this._locations = res;
+              observer.next(this._locations);
+              observer.complete();
+            },
+          error: err => {
+            observer.error(err)
+          }
+        });
+      }
     });
   }
 
