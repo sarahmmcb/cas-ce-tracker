@@ -9,7 +9,6 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
     selector: 'app-alert',
     templateUrl: './alert.component.html',
     styleUrls: ['./alert.component.scss'],
-    standalone: true,
     imports: [NgIf, NgFor, NgClass]
 })
 export class AlertComponent implements OnInit, OnDestroy {
