@@ -67,8 +67,16 @@
             "dev": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.mock.ts",
+                  "replace": "src/environments/environment.iis.ts",
                   "with": "src/environments/environment.ts"
+                }
+              ]
+            },
+            "dev_iis": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.iis.ts"
                 }
               ]
             },
@@ -96,6 +104,9 @@
             },
             "dev": {
               "buildTarget": "app:build:dev"
+            },
+            "dev_iis": {
+              "buildTarget": "app:build:dev_iis"
             },
             "mock": {
               "buildTarget": "app:build:mock"

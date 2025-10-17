@@ -16,9 +16,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   public get(route: string, params?: HttpParams): Observable<any> {
-    const headers = {
-      method: 'GET'
-    };
+    const headers = { };
 
     return this.http.get(this.baseUrl + route, { 
       headers,

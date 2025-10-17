@@ -43,7 +43,12 @@ export class AuthService {
       // TODO
     }
     else {
-      this.authApiService.baseUrl = "https://localhost:44370/api";
+      if (environment.iis) {
+        this.authApiService.baseUrl = "https://localhost:7142/api";
+      }
+      else {
+        this.authApiService.baseUrl = "https://localhost:7143/api";
+      }
     }
   }
 

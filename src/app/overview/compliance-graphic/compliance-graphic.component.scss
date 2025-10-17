@@ -21,3 +21,32 @@ ion-card-title {
     vertical-align: middle;
   }
 }
+
+.progress-row {
+  
+  div {
+    display: inline-block;
+    height: 10px;
+  }
+
+  @keyframes requiredAnimation {
+    from {width: 0px;}
+    to {width: 30px;}
+  }
+
+  .required {
+    background-color: green;
+    width: 30px;
+    animation-name: requiredAnimation;
+    animation-duration: 2s;
+  }
+
+  .extra {
+    background-color: pink;
+    width: 30px;
+    animation-name: requiredAnimation;
+    animation-duration: 1s;
+    animation-delay: 2s;
+  }
+
+}
