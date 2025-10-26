@@ -12,11 +12,11 @@ import { AlertComponent } from './core/alert/alert.component';
 import { ApiService } from './services/api.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [IonicModule, NgIf, AlertComponent],
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+    selector: 'app-root',
+    imports: [IonicModule, NgIf, AlertComponent],
+    standalone: true,
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
   
@@ -53,8 +53,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if (environment.production) {
       this.api.baseUrl = 'https://wordapi20211030215150.azurewebsites.net/api';
     } else {
-      this.api.baseUrl = 'https://localhost:44381/api';
-      //this.api.baseUrl = `https://localhost:7248/${this.api.baseUrl}`;
+      if (environment.iis) {
+        this.api.baseUrl = `https://localhost:7248/api`;
+      }
+      else {
+        this.api.baseUrl = 'https://localhost:7249/api';
+      }
     }
   }
 }

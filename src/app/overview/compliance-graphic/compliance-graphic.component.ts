@@ -7,7 +7,6 @@ import { NgFor } from '@angular/common';
     selector: 'app-compliance-graphic',
     templateUrl: './compliance-graphic.component.html',
     styleUrls: ['./compliance-graphic.component.scss'],
-    standalone: true,
     imports: [IonicModule, NgFor]
 })
 export class ComplianceGraphicComponent implements OnInit {

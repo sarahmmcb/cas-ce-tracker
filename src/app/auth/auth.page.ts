@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
     selector: 'app-auth',
     templateUrl: './auth.page.html',
     styleUrls: ['./auth.page.scss'],
-    standalone: true,
     imports: [IonicModule, FormsModule, NgIf]
 })
 export class AuthPage implements OnInit {

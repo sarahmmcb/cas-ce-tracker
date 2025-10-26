@@ -16,7 +16,6 @@ import { AlertButtonRole, AlertType } from '../models/alert';
     selector: 'app-edit-profile',
     templateUrl: './edit-profile.page.html',
     styleUrls: ['./edit-profile.page.scss'],
-    standalone: true,
     imports: [
         CommonModule,
         ReactiveFormsModule,
