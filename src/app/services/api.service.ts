@@ -16,18 +16,17 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   public get(route: string, params?: HttpParams): Observable<any> {
-    const headers = { };
-
     return this.http.get(this.baseUrl + route, { 
-      headers,
       params,
-      observe: 'response'
+      observe: 'response',
+      withCredentials: true
     })
     .pipe(
       map((res: HttpResponse<any>) => {
-        
         if (res.status >= 400) {
-          throwError(() => "There was an error"); // revisit this to see how best to handle different kinds of errors
+          // TODO: figure out a response formate= that guarantees a message property
+          // so we can display it here
+          throw new Error("An unexpected error occurred");
         }
 
         return res.body;
@@ -41,7 +40,8 @@ export class ApiService {
   public post(route: string, body: any, params?: HttpParams): Observable<any> {
     return this.http.post(this.baseUrl + route, JSON.stringify(body), {
       params,
-      observe: 'response'
+      observe: 'response',
+      withCredentials: true
     }).pipe(
       map(res => res.body)
     );
@@ -50,7 +50,8 @@ export class ApiService {
   public put(route: string, body: any, params?: HttpParams): Observable<any> {
     return this.http.put(this.baseUrl + route, JSON.stringify(body), {
       params,
-      observe: 'response'
+      observe: 'response',
+      withCredentials: true
     }).pipe(
       map(res => res.body)
     );

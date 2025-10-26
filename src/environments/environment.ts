@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   mockApi: false,
-  iis: true,
+  iis: false,
 };
 
 /*

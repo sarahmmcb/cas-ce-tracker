@@ -28,6 +28,7 @@ import { StaticDataService } from 'src/app/services/static-data.service';
     selector: 'app-add-experience',
     templateUrl: './add-experience.component.html',
     styleUrls: ['./add-experience.component.scss'],
+    standalone: true,
     imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet, ErrorComponent]
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {

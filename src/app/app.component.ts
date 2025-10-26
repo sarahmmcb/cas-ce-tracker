@@ -14,6 +14,7 @@ import { ApiService } from './services/api.service';
 @Component({
     selector: 'app-root',
     imports: [IonicModule, NgIf, AlertComponent],
+    standalone: true,
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']
 })
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.api.baseUrl = `https://localhost:7248/api`;
       }
       else {
-        this.api.baseUrl = 'https://localhost:44381/api';
+        this.api.baseUrl = 'https://localhost:7249/api';
       }
     }
   }

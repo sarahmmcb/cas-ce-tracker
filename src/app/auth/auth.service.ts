@@ -6,6 +6,7 @@ import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest } from '../models/auth';
 import { ErrorStatus } from '../core/error/error';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,8 @@ export class AuthService {
 
   constructor(
     private injector: EnvironmentInjector,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private cookieService: CookieService
   ) {
     // Create a separate instance of ApiService for Auth so it can use its own baseUrl
     const childInjector = createEnvironmentInjector(
@@ -110,6 +112,34 @@ export class AuthService {
     } else {
       return "An unexpected error occurred. Please try again later."
     }
+  }
+
+  public refreshAccessToken(): Observable<void> {
+    let user = new User();
+    const userName = this.cookieService.get('userName');
+
+    return this.authApiService.get('/session/refresh')
+    .pipe(
+      concatMap(res => {
+        this.accessToken = res.token;
+        this._userIsAuthenticated = true;
+        return this.fetchUser(userName);
+      }),
+      concatMap(userResp => {
+        user = {...userResp} as User;
+        return this.fetchUserData(user.id);
+      }),
+      map(userData => {
+        user = {
+          ...user,
+          ...userData
+        };
+        this.userSubject.next(user);
+      }),
+      catchError(err => { 
+        return throwError(() => err)
+      })
+    );
   }
 
   private fetchUser(username: string): Observable<User> {
