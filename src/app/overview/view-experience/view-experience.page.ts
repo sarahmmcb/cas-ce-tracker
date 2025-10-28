@@ -18,6 +18,7 @@ import { StaticDataService } from 'src/app/services/static-data.service';
     selector: 'app-view-experience',
     templateUrl: './view-experience.page.html',
     styleUrls: ['./view-experience.page.scss'],
+    standalone: true,
     imports: [
         CommonModule,
         FormsModule,

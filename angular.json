@@ -64,14 +64,6 @@
                 }
               ]
             },
-            "dev": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.iis.ts",
-                  "with": "src/environments/environment.ts"
-                }
-              ]
-            },
             "dev_iis": {
               "fileReplacements": [
                 {
@@ -100,10 +92,7 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "app:build:production"
-            },
-            "dev": {
-              "buildTarget": "app:build:dev"
+              "buildTarget": "app:build:production",
             },
             "dev_iis": {
               "buildTarget": "app:build:dev_iis"
