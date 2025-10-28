@@ -6,14 +6,14 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from './auth/auth.service';
 import { User } from './models/user';
 import { UserService } from './services/user.service';
-import { NgIf } from '@angular/common';
+
 import { IonicModule } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
 import { ApiService } from './services/api.service';
 
 @Component({
     selector: 'app-root',
-    imports: [IonicModule, NgIf, AlertComponent],
+    imports: [IonicModule, AlertComponent],
     standalone: true,
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']

@@ -19,7 +19,7 @@ import { ExperienceService } from 'src/app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
 import { UserService } from 'src/app/services/user.service';
-import { NgIf, NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { AlertButtonRole, AlertType } from 'src/app/models/alert';
 import { StaticDataService } from 'src/app/services/static-data.service';
@@ -29,7 +29,7 @@ import { StaticDataService } from 'src/app/services/static-data.service';
     templateUrl: './add-experience.component.html',
     styleUrls: ['./add-experience.component.scss'],
     standalone: true,
-    imports: [IonicModule, NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, NgTemplateOutlet, ErrorComponent]
+    imports: [IonicModule, FormsModule, ReactiveFormsModule, NgClass, NgTemplateOutlet, ErrorComponent]
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
 

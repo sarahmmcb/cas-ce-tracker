@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 
 import { AuthService } from './auth.service';
-import { NgIf } from '@angular/common';
+
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     templateUrl: './auth.page.html',
     styleUrls: ['./auth.page.scss'],
     standalone: true,
-    imports: [IonicModule, FormsModule, NgIf]
+    imports: [IonicModule, FormsModule]
 })
 export class AuthPage implements OnInit {
 

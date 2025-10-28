@@ -3,9 +3,11 @@
   <ion-card-content>
     <div>
       <ion-select label="Select Year:" placeholder="year" (ionChange)="emitYearChanged($event)">
-        <ion-select-option *ngFor="let yearOption of allYears" [value]="yearOption">
-          {{ yearOption }}
-        </ion-select-option>
+        @for (yearOption of allYears; track yearOption) {
+          <ion-select-option [value]="yearOption">
+            {{ yearOption }}
+          </ion-select-option>
+        }
       </ion-select>
     </div>
     <div class="centered-error-message">{{ errorMessage }}</div>

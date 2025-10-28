@@ -8,7 +8,7 @@ import { CEDataService } from '../services/cedata.service';
 import { AddExperienceComponent } from './add-experience/add-experience.component';
 import { UserService } from '../services/user.service';
 import { ComplianceGraphicComponent } from './compliance-graphic/compliance-graphic.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ErrorStatus } from '../core/error/error';
@@ -18,13 +18,12 @@ import { ErrorStatus } from '../core/error/error';
     templateUrl: './overview.page.html',
     styleUrls: ['./overview.page.scss'],
     imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        IonicModule,
-        RouterModule,
-        ComplianceGraphicComponent
-    ]
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule,
+    RouterModule,
+    ComplianceGraphicComponent
+]
 })
 export class OverviewPage implements OnInit, OnDestroy {
   public ceData: CEData = new CEData();
