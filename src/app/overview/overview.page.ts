@@ -17,6 +17,7 @@ import { ErrorStatus } from '../core/error/error';
     selector: 'app-overview',
     templateUrl: './overview.page.html',
     styleUrls: ['./overview.page.scss'],
+    standalone: true,
     imports: [
     FormsModule,
     ReactiveFormsModule,

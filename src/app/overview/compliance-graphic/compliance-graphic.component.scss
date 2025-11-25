@@ -44,9 +44,14 @@ ion-card-title {
     animation-duration: 1s;
   }
 
-  .extra {
+  .extra-end {
     background-color: pink;
     width: 30px;
+  }
+
+  .extra-start {
+    background-color: pink;
+    width: 0px;
   }
   
   .extra-animation {

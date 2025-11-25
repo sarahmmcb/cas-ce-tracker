@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { CEData } from '../models/cedata';
@@ -18,42 +18,50 @@ export class CEDataService {
   private sampleCEData = {
     categoryGroups: [
       {
+        nationalStandardId: 1,
         title: 'General',
         categories: [
           {
+            categoryId: 2,
             displayName: 'Professionalism',
             minimum: 3,
-            maximum: -1,
+            maximum: 0,
             amountCompleted: 3,
-            percentCompleted: 100   
           },
           {
+            categoryId: 3,
             displayName: 'Bias Topics',
             minimum: 1,
-            maximum: -1,
+            maximum: 0,
             amountCompleted: 0,
-            percentCompleted: 0   
           },
           {
+            categoryId: 4,
             displayName: 'General Business',
             minimum: 0,
             maximum: 3,
             amountCompleted: 5,
-            percentCompleted: 166.67   
           },
           {
+            categoryId: 5,
+            displayName: 'Other Relevant',
+            minimum: 0,
+            maximum: 0,
+            amountCompleted: 10,
+          },
+          {
+            categoryId: 6,
             displayName: 'Organized',
             minimum: 6,
-            maximum: -1,
+            maximum: 0,
             amountCompleted: 2,
-            percentCompleted: 33.33   
           },
           {
+            categoryId: 1,
             displayName: 'Total CE',
             minimum: 30,
-            maximum: -1,
-            amountCompleted: 6,
-            percentCompleted: 20  
+            maximum: 0,
+            amountCompleted: 16,
           }
         ]
       }
@@ -67,14 +75,18 @@ export class CEDataService {
   }
 
   public getCEComplianceData(year?: number): Observable<CEData> {
-    return this.api
-      .get(`/ceData/${year || new Date().getFullYear()}`)
-      .pipe(
-        tap((ceData) => this.ceDataSubject.next(this.sampleCEData)),
-        catchError((err) => {
-          console.log('error on get'); // TODO: remove this after adding more accurate error messaging
-          return throwError(() => err);
-        })
-      );
+    return of(this.sampleCEData)
+    .pipe(
+      tap((ceData) => this.ceDataSubject.next(ceData))
+    );
+    // return this.api
+    //   .get(`/ceData/${year || new Date().getFullYear()}`)
+    //   .pipe(
+    //     tap((ceData) => this.ceDataSubject.next(this.ceData)),
+    //     catchError((err) => {
+    //       console.log('cedata error on get'); // TODO: remove this after adding more accurate error messaging
+    //       return throwError(() => err);
+    //     })
+    //   );
   }
 }

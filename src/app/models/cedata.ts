@@ -1,18 +1,10 @@
-/**
- * Interface for data to be fed into the
- * Compliance graphic
- */
 export class CEData {
   unitLongName = '';
   unitShortName = '';
-  categoryGroups = [];
+  categoryGroups = [] as CategoryGroup[];
   complianceStatus = '';
 }
 
-/**
- * Possible Compliance Statuses.
- * These should eventually be moved to a database.
- */
 export enum ComplianceStatus {
   compliant = 'Compliant',
   nonCompliant = 'Non-Compliant',
@@ -20,24 +12,17 @@ export enum ComplianceStatus {
   notActive = 'Not Currently Providing Actuarial Services'
 }
 
-/**
- * Interface for group of categories on
- * on the CEData graphic.
- * Ex. 'General' and 'Specific'.
- */
+// categories are grouped into two types: General and Specific
 export interface CategoryGroup {
+  nationalStandardId: number;
   title: string;
   categories: CategoryData[];
 }
 
-/**
- * Interface for CE data for each
- * category on the CEData graphic.
- */
 export interface CategoryData {
+  categoryId: number;
   displayName: string;
   minimum: number;
   maximum: number;
   amountCompleted: number;
-  percentCompleted: number;
 }
