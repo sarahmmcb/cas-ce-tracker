@@ -66,18 +66,20 @@ export class ProgressWheelComponent  implements OnInit, AfterViewInit {
 
   private animate = () => {
     const ctx = this.context;
+    const lineWidth = 60;
+    const extraLineWidth = 10;
+    const arcSpacing = 2;
     const maxIterations = this.maxIterations;
     const width = this.width;
-    const radius = width/2 - 70
+    const radius = width/2 - (lineWidth/2) - 2 * (extraLineWidth + arcSpacing);
 
     if (this.i <= maxIterations || this.j <= maxIterations) {
       
       ctx.save();
       ctx.clearRect(0, 0, width, width);
       ctx.translate(width/2, width/2);
-     // ctx.scale(0.7, 0.7);
       ctx.rotate(-Math.PI / 2);
-      ctx.lineWidth = 60;
+      ctx.lineWidth = lineWidth;
 
       if (this.i <= maxIterations) {
         ctx.beginPath();
@@ -93,8 +95,10 @@ export class ProgressWheelComponent  implements OnInit, AfterViewInit {
         ctx.stroke();
       
         ctx.beginPath();
-        ctx.strokeStyle = "#DC0073";
-        ctx.arc(0, 0, radius, this.progressAngle(), this.progressAngle() + (this.extraAngle())*(this.j/maxIterations), false);
+        ctx.strokeStyle = "#f0bf0e";
+        ctx.lineWidth = extraLineWidth;
+        const extraRadius = radius + lineWidth/2 + arcSpacing + (extraLineWidth/2);
+        ctx.arc(0, 0, extraRadius, this.progressAngle(), this.progressAngle() + (this.extraAngle())*(this.j/maxIterations), false);
         ctx.stroke();
         this.j++;
       }

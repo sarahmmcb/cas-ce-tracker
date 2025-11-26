@@ -1,14 +1,44 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button menu="m1" color="primary"></ion-menu-button>
     </ion-buttons>
     <ion-title>Overview</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
   <ion-grid>
+     <ion-row>
+      <ion-col size="4" offsetSm="2" sizeSm="2.67">
+        <ion-card class="ce-action-button" (click)="onAddCE()">
+        <ion-icon name="book-outline"></ion-icon>
+        <div>
+          add
+        </div>
+        </ion-card>
+        </ion-col>
+        <ion-col size="4" sizeSm="2.67">
+        <ion-card
+          class="ce-action-button"
+          [routerLink]="['/', 'overview', 'view-experience']"
+          [queryParams]="{ selectedYear }"
+        >
+          <ion-icon name="search"></ion-icon>
+          <div>
+            view
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col size="4" sizeSm="2.67">
+        <ion-card class="ce-action-button">
+          <ion-icon name="open-outline"></ion-icon>
+          <div>
+            export
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
         <app-compliance-graphic
@@ -18,36 +48,6 @@
           (yearChanged)="updateYear($event)"
         ></app-compliance-graphic>
         </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6" sizeSm="4" offsetSm="2" sizeMd="2.67">
-        <ion-card class="ce-action-button" (click)="onAddCE()">
-        <ion-icon name="book-outline"></ion-icon>
-        <div>
-          add ce
-        </div>
-        </ion-card>
-        </ion-col>
-        <ion-col size="6" sizeSm="4" sizeMd="2.67">
-        <ion-card
-          class="ce-action-button"
-          [routerLink]="['/', 'overview', 'view-experience']"
-          [queryParams]="{ selectedYear }"
-        >
-          <ion-icon name="search"></ion-icon>
-          <div>
-            view ce
-          </div>
-        </ion-card>
-      </ion-col>
-      <ion-col sizeSm="8" offsetSm="2" offsetMd="0" sizeMd="2.67">
-        <ion-card class="ce-action-button">
-          <ion-icon name="open-outline"></ion-icon>
-          <div>
-            export ce
-          </div>
-        </ion-card>
-      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

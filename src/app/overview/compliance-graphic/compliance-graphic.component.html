@@ -11,32 +11,31 @@
       </ion-select>
     </div>
     <div class="centered-error-message">{{ errorMessage() }}</div>
-
-    <div>
-
-    </div>
-    <div class="progress-container">
-      @for (catGroup of ceData().categoryGroups; track $index) {
-        <div>{{catGroup.title}}</div>
-        <ion-grid>
-          <ion-row>
-            @for (category of catGroup.categories; track category.categoryId; let idx = $index) {
-              <ion-col size="6" sizeMd="4">
-                <progress-indicator
-                [maxProgress]="category.maximum"
-                [minProgress]="category.minimum"
-                [completed]="category.amountCompleted"
-                [title]="category.displayName"
-                ></progress-indicator>
-              </ion-col>
-            }
-          </ion-row>
-        </ion-grid>
-      }
-    </div>
-    <div class="ion-text-right div-compliant-message">
-      {{ ceData().complianceStatus }}
-      <ion-icon name="checkmark-circle" color="green"></ion-icon>
-    </div>
-  </ion-card-content>
+      </ion-card-content>
 </ion-card>
+
+<div class="progress-container">
+  @for (catGroup of ceData().categoryGroups; track $index) {
+    <div>{{catGroup.title}}</div>
+    <ion-grid>
+      <ion-row>
+        @for (category of catGroup.categories; track category.categoryId; let idx = $index) {
+          <ion-col size="6" sizeLg="4">
+            <ion-card>
+              <progress-indicator
+              [maxProgress]="category.maximum"
+              [minProgress]="category.minimum"
+              [completed]="category.amountCompleted"
+              [title]="category.displayName"
+              ></progress-indicator>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  }
+</div>
+<div class="ion-text-right div-compliant-message">
+  {{ ceData().complianceStatus }}
+  <ion-icon name="checkmark-circle" color="green"></ion-icon>
+</div>
