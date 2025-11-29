@@ -2,9 +2,9 @@
   <ion-menu contentId="main" menuId="m1" type="reveal">
     <ion-header>
       <ion-title>
-        <ng-container *ngIf="user">
+        @if (user) {
           <p>{{user.firstName}} {{user.lastName}}</p>
-        </ng-container>
+        }
       </ion-title>
     </ion-header>
     <ion-content>
@@ -38,4 +38,31 @@
   </ion-menu>
   <app-alert></app-alert>
   <ion-router-outlet id="main"></ion-router-outlet>
+  <ion-footer>
+  <ion-toolbar>
+    <ion-buttons class="toolbar-buttons">
+      <ion-menu-button menu="m1" color="primary"></ion-menu-button>
+      <ion-button
+        color="primary"
+        [routerLink]="['/', 'overview']"
+        [queryParams]="{ selectedYear }"
+      >
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+      <ion-button color="primary" (click)="onAddCE()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+      <ion-button
+        color="primary"
+        [routerLink]="['/', 'overview', 'view-experience']"
+        [queryParams]="{ selectedYear }"
+      >
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <ion-button color="primary">
+        <ion-icon slot="icon-only" name="open-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
 </ion-app>

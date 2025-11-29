@@ -5,3 +5,8 @@ ion-menu::part(scroll) {
 div.inner-scroll {
   background-color:white;
 }
+
+.toolbar-buttons {
+  display: flex;
+  justify-content: space-around;
+}

@@ -1,24 +1,22 @@
-<ion-card>
-  <ion-card-title>CE Summary {{ year }}</ion-card-title>
-  <ion-card-content>
-    <div>
-      <ion-select label="Select Year:" placeholder="year" (ionChange)="emitYearChanged($event)">
-        <ion-select-option *ngFor="let yearOption of allYears" [value]="yearOption">
-          {{ yearOption }}
-        </ion-select-option>
-      </ion-select>
-    </div>
-    <div class="centered-error-message">{{ errorMessage }}</div>
-
-    <div>
-
-    </div>
-    <div class="progress-row">
-      <div class="required"></div><div class="extra"></div>
-    </div>
-    <div class="ion-text-right div-compliant-message">
-      {{ ceData.complianceStatus }}
-      <ion-icon name="checkmark-circle" color="green"></ion-icon>
-    </div>
-  </ion-card-content>
-</ion-card>
+<div class="progress-container">
+    <ion-grid>
+      <ion-row>
+        @for (category of ceData().categoryData; track category.categoryId) {
+          <ion-col size="6" sizeLg="4">
+            <ion-card>
+              <progress-indicator
+              [maxProgress]="category.maximum"
+              [minProgress]="category.minimum"
+              [completed]="category.amountCompleted"
+              [title]="category.displayName"
+              ></progress-indicator>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+</div>
+<div class="ion-text-right div-compliant-message">
+  {{ ceData().complianceStatus }}
+  <ion-icon name="checkmark-circle" color="green"></ion-icon>
+</div>

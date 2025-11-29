@@ -1,12 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button color="primary"></ion-back-button>
-    </ion-buttons>
-    <ion-title>View CE - {{ year }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-grid>
     <ion-row>
@@ -15,23 +6,30 @@
           <app-error [errorText]="loadingError"></app-error>
         }
         @else {
-          <ion-card *ngFor="let ex of experiences">
+        @for (ex of experiences; track ex.experienceId) {
+          <ion-card>
             <button (click)="onEditCE(ex)">
               <ion-icon color="primary" name="create"></ion-icon>
             </button>
             <ion-card-title>
               {{ ex.programTitle }}
             </ion-card-title>
-            <h2 *ngIf="ex.eventName && ex.eventName.length > 0">{{ ex.eventName }}</h2>
+            @if (ex.eventName && ex.eventName.length > 0) {
+              <h2>{{ ex.eventName }}</h2>
+            }
             <ion-grid>
-              <ion-row *ngIf="ex.description && ex.description.length > 0">
-                <ion-col>
-                  {{ ex.description | shortenText }}
-                </ion-col>
-              </ion-row>
+              @if (ex.description && ex.description.length > 0) {
+                <ion-row>
+                  <ion-col>
+                    {{ ex.description | shortenText }}
+                  </ion-col>
+                </ion-row>
+              }
               <ion-row>
                 <ion-col size="6">
-                  <p *ngFor="let am of ex.amounts"> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
+                  @for (am of ex.amounts; track am.experienceAmountId) {
+                    <p> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
+                  }
                 </ion-col>
                 <ion-col size="6">
                   <ion-label>Location: </ion-label>
@@ -50,19 +48,24 @@
                 <ion-col size="6">
                   <p>Categories: </p>
                   <p>
-                    <ng-container *ngFor="let cat of ex.categories">{{ cat.displayName }} <br /></ng-container>
+                    @for (cat of ex.categories; track cat.categoryId) {
+                      {{ cat.displayName }} <br />
+                    }
                   </p>
                 </ion-col>
               </ion-row>
-              <ion-row *ngIf="ex.notes && ex.notes.length > 0">
-                <ion-col>
-                  {{ ex.notes | shortenText }}
-                </ion-col>
-              </ion-row>
+              @if (ex.notes && ex.notes.length > 0) {
+                <ion-row>
+                  <ion-col>
+                    {{ ex.notes | shortenText }}
+                  </ion-col>
+                </ion-row>
+              }
             </ion-grid>
           </ion-card>
         }
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      }
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>

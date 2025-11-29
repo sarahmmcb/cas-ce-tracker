@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { AlertService } from '../services/alert.service';
 import { User, NationalStandard } from '../models/user';
 import { UserService } from '../services/user.service';
-import { NgIf, NgClass, NgFor, CommonModule } from '@angular/common';
+import { NgClass, CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { EditProfilePageRoutingModule } from './edit-profile-routing.module';
 import { AlertButtonRole, AlertType } from '../models/alert';
@@ -17,13 +17,13 @@ import { AlertButtonRole, AlertType } from '../models/alert';
     templateUrl: './edit-profile.page.html',
     styleUrls: ['./edit-profile.page.scss'],
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        IonicModule,
-        EditProfilePageRoutingModule,
-        NgIf, NgFor, NgClass
-    ]
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    IonicModule,
+    EditProfilePageRoutingModule,
+    NgClass
+]
 })
 export class EditProfilePage implements OnInit, OnDestroy {
   /**

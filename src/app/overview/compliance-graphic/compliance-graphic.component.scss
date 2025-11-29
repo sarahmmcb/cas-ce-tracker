@@ -37,16 +37,27 @@ ion-card-title {
   .required {
     background-color: green;
     width: 30px;
-    animation-name: requiredAnimation;
-    animation-duration: 2s;
   }
-
-  .extra {
-    background-color: pink;
-    width: 30px;
+  
+  .required-animation {
     animation-name: requiredAnimation;
     animation-duration: 1s;
-    animation-delay: 2s;
+  }
+
+  .extra-end {
+    background-color: pink;
+    width: 30px;
+  }
+
+  .extra-start {
+    background-color: pink;
+    width: 0px;
+  }
+  
+  .extra-animation {
+    animation-name: requiredAnimation;
+    animation-duration: 1s;
+    animation-delay: 1s;
   }
 
 }

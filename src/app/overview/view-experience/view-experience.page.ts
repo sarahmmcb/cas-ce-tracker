@@ -7,7 +7,7 @@ import { User } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
-import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -18,16 +18,15 @@ import { StaticDataService } from 'src/app/services/static-data.service';
     selector: 'app-view-experience',
     templateUrl: './view-experience.page.html',
     styleUrls: ['./view-experience.page.scss'],
+    standalone: true,
     imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        ShortenTextPipe,
-        DatePipe,
-        NgFor,
-        NgIf,
-        ErrorComponent
-    ]
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    ShortenTextPipe,
+    DatePipe,
+    ErrorComponent
+]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
   public experiences: Experience[] = [];
