@@ -138,7 +138,7 @@
     <div formArrayName="categories">
       <ion-select [ngClass]="{'input-error': submitted && categories.controls[controlName].errors?.required}"
         [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--">
-        @for (item of cat; track item.id) {
+        @for (item of cat; track item.categoryId) {
           <ion-select-option [value]="item.categoryId">{{ item.displayName }}
           </ion-select-option>
         }

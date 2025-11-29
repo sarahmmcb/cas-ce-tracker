@@ -1,8 +1,10 @@
 export class CEData {
   unitLongName = '';
   unitShortName = '';
-  categoryGroups = [] as CategoryGroup[];
+  categoryData = [] as CategoryData[];
   complianceStatus = '';
+  nationalStandardId: number;
+  title: string;
 }
 
 export enum ComplianceStatus {
@@ -10,13 +12,6 @@ export enum ComplianceStatus {
   nonCompliant = 'Non-Compliant',
   naic = 'Compliant - NAIC Statement of Actuarial Opinion',
   notActive = 'Not Currently Providing Actuarial Services'
-}
-
-// categories are grouped into two types: General and Specific
-export interface CategoryGroup {
-  nationalStandardId: number;
-  title: string;
-  categories: CategoryData[];
 }
 
 export interface CategoryData {

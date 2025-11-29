@@ -24,13 +24,18 @@ import { ErrorStatus } from '../core/error/error';
     IonicModule,
     RouterModule,
     ComplianceGraphicComponent
-]
+  ]
 })
 export class OverviewPage implements OnInit, OnDestroy {
-  public ceData: CEData = new CEData();
+  public ceData: CEData[] = [];
+  public displayedCeData : CEData = new CEData();
   public showError = false;
   public errorMessage: string;
   private ceDataSub: Subscription;
+  
+  public minYear = 2022;
+
+  public allYears: number[];
 
   get selectedYear(): number {
     return this.userService.selectedYear;
@@ -43,10 +48,20 @@ export class OverviewPage implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    this.allYears = Array.from(
+      { length: (new Date()).getFullYear() - this.minYear + 1 },
+      (_, i) => i + this.minYear
+    );
+
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
-          this.ceData = ceData;
-          this.errorMessage = '';
+          this.ceData = ceData; // TODO: check for data existence
+          if (!this.ceData || this.ceData.length === 0) {
+            this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
+          }
+          else {
+            this.displayedCeData = this.ceData[0];
+          }
         },
         error: (error) => {
           this.handleError(error);
@@ -81,7 +96,8 @@ export class OverviewPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  public updateYear(year: number) {
+  public updateYear(event: any) {
+    const year = event.detail.value;
     this.userService.selectedYear = year;
     this.ceDataService.getCEComplianceData(year).subscribe({
         next: () => {},

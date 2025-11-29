@@ -13,16 +13,16 @@ import { ProgressIndicatorComponent } from './progress-indicator/progress-indica
 })
 export class ComplianceGraphicComponent implements OnInit, OnDestroy {
 
-  public year = input<number>();
+  //public year = input<number>();
   public ceData = input<CEData>();
   public errorMessage = input<string>();
   
-  @Output()
-  public yearChanged = new EventEmitter();
+  // @Output()
+  // public yearChanged = new EventEmitter();
   
-  public minYear = 2022; // TODO: put somewhere more central?
+  // public minYear = 2022; // TODO: put somewhere more central?
 
-  public allYears: number[];
+  // public allYears: number[];
 
  // private extra = viewChild<ElementRef<any>>('extra');
 
@@ -30,10 +30,10 @@ export class ComplianceGraphicComponent implements OnInit, OnDestroy {
   constructor() {}
 
   public ngOnInit(): void {
-    this.allYears = Array.from(
-      { length: this.year() - this.minYear + 1 },
-      (_, i) => i + this.minYear
-    );
+    // this.allYears = Array.from(
+    //   { length: this.year() - this.minYear + 1 },
+    //   (_, i) => i + this.minYear
+    // );
 
     // this.extra()?.nativeElement.addEventListener('animationend', (ev) => {
     //   this.extra()?.nativeElement.classList.remove('extra-start');
@@ -45,7 +45,7 @@ export class ComplianceGraphicComponent implements OnInit, OnDestroy {
     // this.extra()?.nativeElement.removeEventListener('animationend');
   }
 
-  public emitYearChanged(event: any) {
-    this.yearChanged.emit(event.detail.value);
-  }
+  // public emitYearChanged(event: any) {
+  //   this.yearChanged.emit(event.detail.value);
+  // }
 }

@@ -1,20 +1,28 @@
-.card-overview-buttons {
-  padding: 10px;
-  text-align: center;
+.overview-options {
+  background-color: white;
+  padding: 7px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  font-size: 1.3em;
+  color: var(--ion-color-primary);
 }
 
-.ce-action-button {
-  text-align: center;
-  margin-top: 0;
-  font-variant: small-caps;
-  padding: 15px;
-  cursor: pointer;
+.overview-select-year {
+  border-bottom: 1px solid var(--ion-color-secondary);
 }
 
-ion-icon {
-  color: var(--ion-color-secondary);
-  font-size: 3em;
-  margin-bottom: 10px;
+.overview-single-standard {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.overview-select-standard{
+  border: 3px solid var(--ion-color-secondary);
+  background-color: rgba(var(--ion-color-secondary-rgb), 0.1);
+  color: black;
 }
 
 ion-content {
