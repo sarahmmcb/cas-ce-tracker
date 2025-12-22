@@ -26,27 +26,22 @@
                 </ion-row>
               }
               <ion-row>
-                <ion-col size="6">
-                  @for (am of ex.amounts; track am.experienceAmountId) {
-                    <p> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
-                  }
+                <ion-col size="3" sizeMd="2" class="left-col">
+                  <span>{{ ex.startDate | date:'shortDate' }}</span>
                 </ion-col>
-                <ion-col size="6">
-                  <ion-label>Location: </ion-label>
+                <ion-col size="9" sizeMd="10" class="right-col">
+                  <h4>Location</h4>
                   {{ ex.location.name }}
                 </ion-col>
               </ion-row>
               <ion-row>
-                <ion-col size="6">
-                  <p>
-                    CE Date
-                  </p>
-                  <p>
-                    {{ ex.startDate | date:'shortDate' }}
-                  </p>
+                <ion-col size="3" sizeMd="2" class="left-col">
+                  @for (am of ex.amounts; track am.experienceAmountId) {
+                    <p> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
+                  }
                 </ion-col>
-                <ion-col size="6">
-                  <p>Categories: </p>
+                <ion-col size="9" sizeMd="10" class="right-col">
+                  <h4>Categories </h4>
                   <p>
                     @for (cat of ex.categories; track cat.categoryId) {
                       {{ cat.displayName }} <br />

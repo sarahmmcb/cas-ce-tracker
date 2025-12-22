@@ -83,14 +83,14 @@ export class ProgressWheelComponent  implements OnInit, AfterViewInit {
 
       if (this.i <= maxIterations) {
         ctx.beginPath();
-        ctx.strokeStyle = "#00A1E4";
+        ctx.strokeStyle = "#031ba1";
         ctx.arc(0, 0, radius, 0, (this.progressAngle())*(this.i/maxIterations), false);
         ctx.stroke();
         this.i++;
       }
       else {
         ctx.beginPath();
-        ctx.strokeStyle = "#00A1E4";
+        ctx.strokeStyle = "#031ba1";
         ctx.arc(0, 0, radius, 0, (this.progressAngle())*(this.i/maxIterations), false);
         ctx.stroke();
       

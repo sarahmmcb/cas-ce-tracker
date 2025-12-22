@@ -1,7 +1,3 @@
-ion-content {
-  --background: var(--ion-color-primary);
-}
-
 ion-card {
   --color: var(--app-card-color);
   margin-bottom: var(--app-card-margin-bottom);
@@ -22,4 +18,25 @@ button {
 
 ion-icon {
   font-size: 18pt;
+}
+
+ion-row {
+  margin-bottom: 20px;
+}
+
+.left-col {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-right: 2px solid var(--ion-color-secondary);
+}
+
+.left-col > p {
+  margin: 0px;
+}
+
+.right-col {
+  padding-left: 20px;
 }

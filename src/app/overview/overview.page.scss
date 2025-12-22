@@ -1,12 +1,12 @@
 .overview-options {
-  background-color: white;
+  background-color: var(--ion-color-primary);
   padding: 7px;
   position: sticky;
   top: 0;
   left: 0;
   z-index: 999;
   font-size: 1.3em;
-  color: var(--ion-color-primary);
+  color: white;
 }
 
 .overview-select-year {
@@ -23,8 +23,4 @@
   border: 3px solid var(--ion-color-secondary);
   background-color: rgba(var(--ion-color-secondary-rgb), 0.1);
   color: black;
-}
-
-ion-content {
-  --background: var(--ion-color-primary);
 }
