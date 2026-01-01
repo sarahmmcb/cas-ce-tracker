@@ -15,38 +15,38 @@
               {{ ex.programTitle }}
             </ion-card-title>
             @if (ex.eventName && ex.eventName.length > 0) {
-              <h2>{{ ex.eventName }}</h2>
+              <p>{{ ex.eventName }}</p>
+            }
+            @if (ex.description && ex.description.length > 0) {
+                  <p>
+                    {{ ex.description | shortenText }}
+                  </p>
             }
             <ion-grid>
-              @if (ex.description && ex.description.length > 0) {
-                <ion-row>
-                  <ion-col>
-                    {{ ex.description | shortenText }}
-                  </ion-col>
-                </ion-row>
-              }
               <ion-row>
-                <ion-col size="3" sizeMd="2" class="left-col">
-                  <span>{{ ex.startDate | date:'shortDate' }}</span>
+                <ion-col size="3.5" sizeMd="2" class="left-col">
+                  <app-date-block [dateInput]="ex.startDate"></app-date-block>
                 </ion-col>
-                <ion-col size="9" sizeMd="10" class="right-col">
-                  <h4>Location</h4>
-                  {{ ex.location.name }}
+                <ion-col size="8.5" sizeMd="10" class="right-col">
+                  <span>Location</span>
+                  <ul>
+                    <li>{{ ex.location.name }}</li>
+                  </ul>
                 </ion-col>
               </ion-row>
               <ion-row>
-                <ion-col size="3" sizeMd="2" class="left-col">
-                  @for (am of ex.amounts; track am.experienceAmountId) {
+                <ion-col size="3.5" sizeMd="2" class="left-col">
+                  @for (am of ex.amounts; track am.unitId) {
                     <p> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
                   }
                 </ion-col>
-                <ion-col size="9" sizeMd="10" class="right-col">
-                  <h4>Categories </h4>
-                  <p>
-                    @for (cat of ex.categories; track cat.categoryId) {
-                      {{ cat.displayName }} <br />
-                    }
-                  </p>
+                <ion-col size="8.5" sizeMd="10" class="right-col">
+                  <span>Categories </span>
+                    <ul>
+                      @for (cat of ex.categories; track cat.categoryId) {
+                        <li>{{ cat.displayName }}</li>
+                      }
+                    </ul>
                 </ion-col>
               </ion-row>
               @if (ex.notes && ex.notes.length > 0) {

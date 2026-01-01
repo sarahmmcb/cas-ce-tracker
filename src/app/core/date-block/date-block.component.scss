@@ -1,0 +1,22 @@
+:host {
+    color: black;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 5px 0;
+    background-color: lightblue;
+    border-radius: 7px;
+}
+
+.month {
+    letter-spacing: 2pt;
+    font-weight: 900;
+}
+
+.year {
+    letter-spacing: 1pt;
+}
+
+span {
+    display: block;
+}

@@ -6,7 +6,7 @@ ion-card {
 
 ion-card-title {
   font-size: 1.5em;
-  margin-top: 16px;
+  margin: 20px 0;
 }
 
 button {
@@ -24,13 +24,18 @@ ion-row {
   margin-bottom: 20px;
 }
 
+ul {
+  padding-inline-start: 15px;
+}
+
 .left-col {
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  border-right: 2px solid var(--ion-color-secondary);
+  border-right: 3px solid var(--ion-color-secondary);
+  padding-right: 15px;
 }
 
 .left-col > p {
@@ -38,5 +43,14 @@ ion-row {
 }
 
 .right-col {
-  padding-left: 20px;
+  padding-left: 15px;
+
+  & > span:first-child {
+    background: var(--ion-color-primary);
+    color: white;
+    padding: 3px 9px;
+    border-radius: 3px;
+    letter-spacing: 1pt;
+    font-weight: 700;
+  }
 }

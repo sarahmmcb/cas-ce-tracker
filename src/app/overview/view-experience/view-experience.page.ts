@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { StaticDataService } from 'src/app/services/static-data.service';
+import { DateBlockComponent } from "src/app/core/date-block/date-block.component";
 
 @Component({
     selector: 'app-view-experience',
@@ -24,8 +25,8 @@ import { StaticDataService } from 'src/app/services/static-data.service';
     FormsModule,
     IonicModule,
     ShortenTextPipe,
-    DatePipe,
-    ErrorComponent
+    ErrorComponent,
+    DateBlockComponent
 ]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
