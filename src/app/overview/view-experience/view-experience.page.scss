@@ -28,6 +28,10 @@ ul {
   padding-inline-start: 15px;
 }
 
+.event-name {
+  font-size: 1.25em;
+}
+
 .left-col {
   display: flex;
   align-items: center;
@@ -52,5 +56,30 @@ ul {
     border-radius: 3px;
     letter-spacing: 1pt;
     font-weight: 700;
+  }
+}
+
+.amount-block {
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #91c7b1;
+  border-radius: 7px;
+
+  & span:first-child {
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
+  & > span:nth-child(2) {
+    font-variant: small-caps;
+    font-size: 1.2em;
+  }
+
+  & > span {
+    text-align: center;
+    display: block;
   }
 }

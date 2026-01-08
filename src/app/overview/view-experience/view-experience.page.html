@@ -15,12 +15,14 @@
               {{ ex.programTitle }}
             </ion-card-title>
             @if (ex.eventName && ex.eventName.length > 0) {
-              <p>{{ ex.eventName }}</p>
+              <p class="event-name">
+                {{ ex.eventName }}
+              </p>
             }
             @if (ex.description && ex.description.length > 0) {
-                  <p>
-                    {{ ex.description | shortenText }}
-                  </p>
+              <p>
+                {{ ex.description | shortenText }}
+              </p>
             }
             <ion-grid>
               <ion-row>
@@ -36,9 +38,14 @@
               </ion-row>
               <ion-row>
                 <ion-col size="3.5" sizeMd="2" class="left-col">
-                  @for (am of ex.amounts; track am.unitId) {
-                    <p> {{ am.amount }} {{ am.amount === 1 ? am.unitSingular : am.unitPlural }}</p>
-                  }
+                  <div class="amount-block">
+                    @for(amount of ex.amounts; track $index) {
+                      @if (amount.isComplianceUnit) {
+                        <span>{{amount.amount}}</span>
+                        <span>{{amount.amount > 1 ? amount.unitPlural : amount.unitSingular}}</span>
+                      }
+                    }
+                  </div>
                 </ion-col>
                 <ion-col size="8.5" sizeMd="10" class="right-col">
                   <span>Categories </span>

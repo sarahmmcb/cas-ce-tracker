@@ -25,6 +25,7 @@ export class ExperienceAmount {
   public unitId = 0;
   public nationalStandardId = 0;
   public amount = 0.0;
+  public isComplianceUnit = false;
   public unitSingular? = '';
   public unitPlural? = '';
 }
