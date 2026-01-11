@@ -9,4 +9,9 @@ div.inner-scroll {
 .toolbar-buttons {
   display: flex;
   justify-content: space-around;
+  background-color: var(--ion-color-primary);
+}
+
+ion-button, ion-menu-button {
+  color: white;
 }

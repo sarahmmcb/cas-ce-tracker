@@ -41,25 +41,25 @@
   <ion-footer>
   <ion-toolbar>
     <ion-buttons class="toolbar-buttons">
-      <ion-menu-button menu="m1" color="primary"></ion-menu-button>
+      <ion-menu-button menu="m1"></ion-menu-button>
       <ion-button
-        color="primary"
+      
         [routerLink]="['/', 'overview']"
         [queryParams]="{ selectedYear }"
       >
         <ion-icon slot="icon-only" name="home"></ion-icon>
       </ion-button>
-      <ion-button color="primary" (click)="onAddCE()">
+      <ion-button (click)="onAddCE()">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
       <ion-button
-        color="primary"
+      
         [routerLink]="['/', 'overview', 'view-experience']"
         [queryParams]="{ selectedYear }"
       >
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-      <ion-button color="primary">
+      <ion-button>
         <ion-icon slot="icon-only" name="open-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
