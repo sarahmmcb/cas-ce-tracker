@@ -2,22 +2,27 @@ ion-card {
   --color: var(--app-card-color);
   margin-bottom: var(--app-card-margin-bottom);
   margin-top: var(--app-card-margin-top);
+  padding: 0px;
 }
 
 ion-card-title {
   font-size: 1.5em;
-  margin: 20px 0;
+  font-weight: bold;
+  border-bottom: 3px solid #b33951;
+  padding: 10px;
+  background: rgb(179, 57, 81, 0.2);
+  margin-bottom: 20px;
 }
 
 button {
   background-color: transparent;
   position: absolute;
-  top: 5px;
-  right: 3px;
+  bottom: 9px;
+  right: 6px;
 }
 
 ion-icon {
-  font-size: 18pt;
+  font-size: 22pt;
 }
 
 ion-row {
@@ -26,6 +31,14 @@ ion-row {
 
 ul {
   padding-inline-start: 15px;
+}
+
+.outer-grid {
+  margin-bottom: 20px;
+}
+
+.card-content {
+  padding: 0 10px;
 }
 
 .event-name {

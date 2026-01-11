@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid>
+  <ion-grid class="outer-grid">
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
         @if (loadingError) {
@@ -12,58 +12,62 @@
               <ion-icon color="primary" name="create"></ion-icon>
             </button>
             <ion-card-title>
+              <span>
               {{ ex.programTitle }}
+              </span>
             </ion-card-title>
-            @if (ex.eventName && ex.eventName.length > 0) {
-              <p class="event-name">
-                {{ ex.eventName }}
-              </p>
-            }
-            @if (ex.description && ex.description.length > 0) {
-              <p>
-                {{ ex.description | shortenText }}
-              </p>
-            }
-            <ion-grid>
-              <ion-row>
-                <ion-col size="3.5" sizeMd="2" class="left-col">
-                  <app-date-block [dateInput]="ex.startDate"></app-date-block>
-                </ion-col>
-                <ion-col size="8.5" sizeMd="10" class="right-col">
-                  <span>Location</span>
-                  <ul>
-                    <li>{{ ex.location.name }}</li>
-                  </ul>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col size="3.5" sizeMd="2" class="left-col">
-                  <div class="amount-block">
-                    @for(amount of ex.amounts; track $index) {
-                      @if (amount.isComplianceUnit) {
-                        <span>{{amount.amount}}</span>
-                        <span>{{amount.amount > 1 ? amount.unitPlural : amount.unitSingular}}</span>
-                      }
-                    }
-                  </div>
-                </ion-col>
-                <ion-col size="8.5" sizeMd="10" class="right-col">
-                  <span>Categories </span>
-                    <ul>
-                      @for (cat of ex.categories; track cat.categoryId) {
-                        <li>{{ cat.displayName }}</li>
-                      }
-                    </ul>
-                </ion-col>
-              </ion-row>
-              @if (ex.notes && ex.notes.length > 0) {
+            <div class="card-content">
+              @if (ex.eventName && ex.eventName.length > 0) {
+                <p class="event-name">
+                  {{ ex.eventName }}
+                </p>
+              }
+              @if (ex.description && ex.description.length > 0) {
+                <p>
+                  {{ ex.description | shortenText }}
+                </p>
+              }
+              <ion-grid>
                 <ion-row>
-                  <ion-col>
-                    {{ ex.notes | shortenText }}
+                  <ion-col size="3.5" sizeMd="2" class="left-col">
+                    <app-date-block [dateInput]="ex.startDate"></app-date-block>
+                  </ion-col>
+                  <ion-col size="8.5" sizeMd="10" class="right-col">
+                    <span>Location</span>
+                    <ul>
+                      <li>{{ ex.location.name }}</li>
+                    </ul>
                   </ion-col>
                 </ion-row>
-              }
-            </ion-grid>
+                <ion-row>
+                  <ion-col size="3.5" sizeMd="2" class="left-col">
+                    <div class="amount-block">
+                      @for(amount of ex.amounts; track $index) {
+                        @if (amount.isComplianceUnit) {
+                          <span>{{amount.amount}}</span>
+                          <span>{{amount.amount > 1 ? amount.unitPlural : amount.unitSingular}}</span>
+                        }
+                      }
+                    </div>
+                  </ion-col>
+                  <ion-col size="8.5" sizeMd="10" class="right-col">
+                    <span>Categories </span>
+                      <ul>
+                        @for (cat of ex.categories; track cat.categoryId) {
+                          <li>{{ cat.displayName }}</li>
+                        }
+                      </ul>
+                  </ion-col>
+                </ion-row>
+                @if (ex.notes && ex.notes.length > 0) {
+                  <ion-row>
+                    <ion-col size="11">
+                      {{ ex.notes | shortenText }}
+                    </ion-col>
+                  </ion-row>
+                }
+              </ion-grid>
+            </div>
           </ion-card>
         }
       }
