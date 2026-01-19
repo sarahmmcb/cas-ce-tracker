@@ -24,7 +24,7 @@ export class ApiService {
     .pipe(
       map((res: HttpResponse<any>) => {
         if (res.status >= 400) {
-          // TODO: figure out a response formate= that guarantees a message property
+          // TODO: figure out a response format that guarantees a message property
           // so we can display it here
           throw new Error("An unexpected error occurred");
         }
