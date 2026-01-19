@@ -8,9 +8,9 @@ ion-card {
 ion-card-title {
   font-size: 1.5em;
   font-weight: bold;
-  border-bottom: 3px solid #b33951;
   padding: 10px;
-  background: rgb(179, 57, 81, 0.2);
+  background: var(--ion-color-primary);
+  color: white;
   margin-bottom: 20px;
 }
 
@@ -63,7 +63,7 @@ ul {
   padding-left: 15px;
 
   & > span:first-child {
-    background: var(--ion-color-primary);
+    background: #b33951;
     color: white;
     padding: 3px 9px;
     border-radius: 3px;

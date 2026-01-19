@@ -90,7 +90,7 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "app:build:production",
+              "buildTarget": "app:build:production"
             },
             "dev_iis": {
               "buildTarget": "app:build:dev_iis"

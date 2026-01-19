@@ -138,11 +138,10 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.addForm.patchValue({
-      timeSpentChild: math.evaluate(
-        event.target.value.toString() + this.childUnit.conversionFormula
-      ),
-    });
+    const newValue = math.evaluate(
+        event.target.value.toString() + this.childUnit.conversionFormula);
+
+    this.addForm.controls['timeSpentChild'].setValue( newValue );
   }
 
   private onUpdateSuccess(action: string): void {
@@ -295,7 +294,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
       ],
       timeSpentChild: new FormControl({
         value: this.childAmount.amount,
-        disabled: this.childUnit?.isDisabled,
+        disabled: false,
       }),
       carryForward: this.experience.carryForward,
       notes: this.experience.notes,
