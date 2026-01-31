@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { CEData, ComplianceStatus } from '../models/cedata';
 import { ApiService, HttpParams } from './api.service';
@@ -13,9 +13,9 @@ export interface ICEDataRequestParams extends HttpParams {
   providedIn: 'root',
 })
 export class CEDataService {
-  private ceDataSubject: Subject<CEData[]> = new BehaviorSubject<CEData[]>([]);
+  private ceDataSubject: Subject<CEData> = new BehaviorSubject<CEData>({} as CEData);
 
-  private sampleCEData = [{
+  private sampleCEData = {
     nationalStandardId: 1,
     title: 'USQS General',
     unitLongName:'Credits',
@@ -65,7 +65,7 @@ export class CEDataService {
           amountCompleted: 16,
         }
     ]
-  }] as CEData[];
+  } as CEData;
 
   constructor(private api: ApiService) {}
 
@@ -73,19 +73,19 @@ export class CEDataService {
     return this.ceDataSubject.asObservable();
   }
 
-  public getCEComplianceData(year?: number): Observable<CEData[]> {
-    return of(this.sampleCEData)
-    .pipe(
-      tap((ceData) => this.ceDataSubject.next(ceData))
-    );
-    // return this.api
-    //   .get(`/ceData/${year || new Date().getFullYear()}`)
-    //   .pipe(
-    //     tap((ceData) => this.ceDataSubject.next(this.ceData)),
-    //     catchError((err) => {
-    //       console.log('cedata error on get'); // TODO: remove this after adding more accurate error messaging
-    //       return throwError(() => err);
-    //     })
-    //   );
+  public getCEComplianceData(year: number, userId: number, nationalStandardId: number): Observable<CEData> {
+    // return of(this.sampleCEData)
+    // .pipe(
+    //   tap((ceData) => this.ceDataSubject.next(ceData))
+    // );
+    return this.api
+      .get(`/ceData/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`)
+      .pipe(
+        tap((ceData) => this.ceDataSubject.next(ceData)),
+        catchError((err) => {
+          console.log('Error fetching CeData'); // TODO: remove this after adding more accurate error messaging
+          return throwError(() => err);
+        })
+      );
   }
 }

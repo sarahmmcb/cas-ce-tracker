@@ -27,7 +27,7 @@ import { ErrorStatus } from '../core/error/error';
   ]
 })
 export class OverviewPage implements OnInit, OnDestroy {
-  public ceData: CEData[] = [];
+  public ceData: CEData = {} as CEData;
   public displayedCeData : CEData = new CEData();
   public showError = false;
   public errorMessage: string;
@@ -56,11 +56,11 @@ export class OverviewPage implements OnInit, OnDestroy {
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
           this.ceData = ceData; // TODO: check for data existence
-          if (!this.ceData || this.ceData.length === 0) {
+          if (!this.ceData) {
             this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
           }
           else {
-            this.displayedCeData = this.ceData[0];
+            this.displayedCeData = this.ceData;
           }
         },
         error: (error) => {
@@ -72,7 +72,11 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
-    this.ceDataService.getCEComplianceData(this.selectedYear).subscribe({
+    this.ceDataService.getCEComplianceData(
+      this.selectedYear,
+      this.userService.user.id,
+      this.userService.user.nationalStandard.nationalStandardId
+    ).subscribe({
         next: () => {},
         error: (error) => {
           this.handleError(error);
@@ -99,7 +103,11 @@ export class OverviewPage implements OnInit, OnDestroy {
   public updateYear(event: any) {
     const year = event.detail.value;
     this.userService.selectedYear = year;
-    this.ceDataService.getCEComplianceData(year).subscribe({
+    this.ceDataService.getCEComplianceData(
+      year,
+      this.userService.user.id,
+      this.userService.user.nationalStandard.nationalStandardId
+    ).subscribe({
         next: () => {},
         error: (error) => {
           this.handleError(error);
