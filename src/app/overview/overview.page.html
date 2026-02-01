@@ -15,11 +15,18 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <app-compliance-graphic
-          [ceData]="displayedCeData"
-          [errorMessage]="errorMessage"
-        ></app-compliance-graphic>
-        </ion-col>
+        @if (showError) {
+          <div>
+            There was a problem fetching CE Data <br />
+            Please try again later
+          </div>
+        }
+        @else {
+          <app-compliance-graphic
+            [ceData]="displayedCeData"
+          ></app-compliance-graphic>
+        }
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

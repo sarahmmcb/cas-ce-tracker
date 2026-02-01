@@ -55,7 +55,7 @@ export class OverviewPage implements OnInit, OnDestroy {
 
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
-          this.ceData = ceData; // TODO: check for data existence
+          this.ceData = ceData;
           if (!this.ceData) {
             this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
           }
