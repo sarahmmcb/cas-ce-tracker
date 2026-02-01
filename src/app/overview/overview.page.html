@@ -7,31 +7,26 @@
         </ion-select-option>
       }
     </ion-select>
-
-    @if (ceData.length > 1) {
-      <ion-select class="overview-select-year" label="CE Standard" placeholder="{{ceData[0].title}}">
-        @for (data of ceData; track data.nationalStandardId) {
-          <ion-select-option [value]="data.nationalStandardId">
-            {{ data.title }}
-          </ion-select-option>
-        }
-      </ion-select>
-    }
-    @else {
       <div class="overview-single-standard">
         <span>CE Standard</span>
         <span>{{displayedCeData.title}}</span>
       </div>
-    }
   </div>
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        <app-compliance-graphic
-          [ceData]="displayedCeData"
-          [errorMessage]="errorMessage"
-        ></app-compliance-graphic>
-        </ion-col>
+        @if (showError) {
+          <div>
+            There was a problem fetching CE Data <br />
+            Please try again later
+          </div>
+        }
+        @else {
+          <app-compliance-graphic
+            [ceData]="displayedCeData"
+          ></app-compliance-graphic>
+        }
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

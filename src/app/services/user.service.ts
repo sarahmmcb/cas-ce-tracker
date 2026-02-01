@@ -11,9 +11,8 @@ import {
   providedIn: 'root',
 })
 export class UserService {
-  // This class can just house methods to fetch user-related info
-  // Methods will take a user id provided by the auth service
-  // The actual user object will be provided by auth
+ 
+  // This is hydrated by the auth service
   public user: User;
 
   private _selectedYear: number;

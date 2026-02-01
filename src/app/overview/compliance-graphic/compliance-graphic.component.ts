@@ -15,7 +15,6 @@ export class ComplianceGraphicComponent implements OnInit, OnDestroy {
 
   //public year = input<number>();
   public ceData = input<CEData>();
-  public errorMessage = input<string>();
   
   // @Output()
   // public yearChanged = new EventEmitter();
