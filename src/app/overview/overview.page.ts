@@ -55,12 +55,13 @@ export class OverviewPage implements OnInit, OnDestroy {
 
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
-          this.ceData = ceData;
-          if (!this.ceData) {
+          if (!ceData) {
             this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
+            this.showError = true;
           }
           else {
-            this.displayedCeData = this.ceData;
+            this.ceData = ceData;
+            this.showError = false;
           }
         },
         error: (error) => {
@@ -90,14 +91,6 @@ export class OverviewPage implements OnInit, OnDestroy {
     if (this.ceDataSub) {
       this.ceDataSub.unsubscribe();
     }
-  }
-
-  public async onAddCE(): Promise<void> {
-    const modal = await this.modalCtrl.create({
-      component: AddExperienceComponent,
-    });
-
-    return await modal.present();
   }
 
   public updateYear(event: any) {

@@ -11,6 +11,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
 import { ApiService } from './services/api.service';
 import { AddExperienceComponent } from './overview/add-experience/add-experience.component';
+import { CEDataService } from './services/cedata.service';
 
 @Component({
     selector: 'app-root',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: ApiService,
     private userService: UserService,
+    private ceDataService: CEDataService,
     private modalCtrl: ModalController
   ) {
     this.initializeApp();
@@ -60,7 +62,20 @@ export class AppComponent implements OnInit, OnDestroy {
         component: AddExperienceComponent,
       });
   
-      return await modal.present();
+      await modal.present();
+
+      return await modal.onDidDismiss().then(() => {
+        this.ceDataService.getCEComplianceData(
+          this.userService.selectedYear,
+          this.userService.user.id,
+          this.userService.user.nationalStandard.nationalStandardId
+        ).subscribe({
+            next: () => {},
+            error: (error) => {
+            }
+          }
+        );
+      });
     }
 
   private initializeApp(): void {
