@@ -74,10 +74,6 @@ export class CEDataService {
   }
 
   public getCEComplianceData(year: number, userId: number, nationalStandardId: number): Observable<CEData> {
-    // return of(this.sampleCEData)
-    // .pipe(
-    //   tap((ceData) => this.ceDataSubject.next(ceData))
-    // );
     return this.api
       .get(`/ceData/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`)
       .pipe(

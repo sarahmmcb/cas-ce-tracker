@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, computed, ElementRef, input, OnInit, Signal, ViewChild, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, input, OnInit, Signal, ViewChild, signal, effect, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-progress-wheel',
   templateUrl: './progress-wheel.component.html',
   styleUrls: ['./progress-wheel.component.scss'],
 })
-export class ProgressWheelComponent  implements OnInit, AfterViewInit {
+export class ProgressWheelComponent  implements OnInit, AfterViewInit, OnChanges {
 
   public maxProgress = input<number>(1);
   public minProgress = input<number>(1);
@@ -28,20 +28,32 @@ export class ProgressWheelComponent  implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit(): void {
+    this.runAnimation()
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.canvas) {
+      this.initializeAngles();
+      this.runAnimation();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+  }
+
+  private runAnimation() {
     this.context = this.canvas.nativeElement.getContext('2d');
     this.width = this.canvas.nativeElement.width;
     this.canvas.nativeElement.setAttribute('height', this.width.toString() + 'px');
     this.animationId = requestAnimationFrame(this.animate);
   }
 
-    ngOnDestroy(): void {
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-    }
-  }
-
   private initializeAngles(): void {
-    
+    this.i = this.j = 0;
+
     if (this.minProgress() > 0 || this.maxProgress() > 0) {
       const goal = Math.max(this.minProgress(), this.maxProgress());
       const extraCompleted = computed(() => Math.max(this.completed() - goal, 0));
@@ -49,19 +61,10 @@ export class ProgressWheelComponent  implements OnInit, AfterViewInit {
       const extraCompletedFraction = computed(() => extraCompleted()/goal) ;
       this.progressAngle.update(() => amountCompletedFraction() * this.twoPi);
       this.extraAngle.update(() => extraCompletedFraction() * this.twoPi);
-
-      console.log(`amountCompletedFraction: ${amountCompletedFraction()}`);
     }
     else {
       this.extraAngle.update(() => this.twoPi);
     }
-
-
-    console.log(`MinProgress: ${this.minProgress()}`);
-    console.log(`MaxProgress: ${this.maxProgress()}`);
-    console.log(`completed: ${this.completed()}`);
-    console.log(`progressAngle: ${this.progressAngle()}`);
-    console.log(`extraAngle: ${this.extraAngle()}`);
   }
 
   private animate = () => {

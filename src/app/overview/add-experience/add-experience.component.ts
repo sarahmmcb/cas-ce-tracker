@@ -158,7 +158,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         routeOnClose: '/overview'
     });
   }
-
+  
   private onUpdateFailure(): void {
         this.alertService.showAlert({
         title: 'Error',
