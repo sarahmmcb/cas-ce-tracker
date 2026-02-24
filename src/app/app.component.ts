@@ -12,10 +12,11 @@ import { AlertComponent } from './core/alert/alert.component';
 import { ApiService } from './services/api.service';
 import { AddExperienceComponent } from './overview/add-experience/add-experience.component';
 import { CEDataService } from './services/cedata.service';
+import { LoadingComponent } from './core/loading/loading.component';
 
 @Component({
     selector: 'app-root',
-    imports: [IonicModule, AlertComponent, RouterModule],
+    imports: [IonicModule, AlertComponent, LoadingComponent, RouterModule],
     standalone: true,
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']
