@@ -4,10 +4,12 @@ import { Component, OnInit } from '@angular/core';
     selector: 'app-loading',
     templateUrl: './loading.component.html',
     styleUrls: ['./loading.component.scss'],
-    standalone: false
+    standalone: true
 })
 export class LoadingComponent implements OnInit {
 
+  public isLoading = false;
+  
   constructor() { }
 
   ngOnInit() {}
