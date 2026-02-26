@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, InputSignal, OnInit, Signal } from '@angular/core';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
     selector: 'app-loading',
@@ -8,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoadingComponent implements OnInit {
 
-  public isLoading = false;
-  
+  private loadingService = inject(LoadingService);
+  public isLoading: Signal<boolean>;
+
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isLoading = this.loadingService.isLoading;
+  }
 
 }

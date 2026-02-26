@@ -1,17 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController, IonicModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { CEData } from '../models/cedata';
 import { CEDataService } from '../services/cedata.service';
-import { AddExperienceComponent } from './add-experience/add-experience.component';
 import { UserService } from '../services/user.service';
 import { ComplianceGraphicComponent } from './compliance-graphic/compliance-graphic.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ErrorStatus } from '../core/error/error';
+import { LoadingService } from '../services/loading.service';
 
 @Component({
     selector: 'app-overview',
@@ -43,8 +43,8 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   constructor(
     private ceDataService: CEDataService,
-    private modalCtrl: ModalController,
-    private userService: UserService
+    private userService: UserService,
+    private loadingService: LoadingService
   ) {}
 
   public ngOnInit(): void {
@@ -73,12 +73,15 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
+   // this.loadingService.showLoadingControl();
     this.ceDataService.getCEComplianceData(
       this.selectedYear,
       this.userService.user.id,
       this.userService.user.nationalStandard.nationalStandardId
     ).subscribe({
-        next: () => {},
+        next: () => {
+          //this.loadingService.dismissLoadingControl();
+        },
         error: (error) => {
           this.handleError(error);
           this.showError = true;
