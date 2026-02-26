@@ -1,6 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
+<<<<<<< Updated upstream
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+=======
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { ModalController, IonicModule } from '@ionic/angular';
+>>>>>>> Stashed changes
 import { Subscription } from 'rxjs';
 
 import { CEData } from '../models/cedata';
@@ -29,7 +34,7 @@ import { LoadingService } from '../services/loading.service';
 export class OverviewPage implements OnInit, OnDestroy {
   public ceData: CEData = {} as CEData;
   public displayedCeData : CEData = new CEData();
-  public showError = false;
+  public showError = signal(false);
   public errorMessage: string;
   private ceDataSub: Subscription;
   
@@ -43,8 +48,12 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   constructor(
     private ceDataService: CEDataService,
+<<<<<<< Updated upstream
     private userService: UserService,
     private loadingService: LoadingService
+=======
+    private userService: UserService
+>>>>>>> Stashed changes
   ) {}
 
   public ngOnInit(): void {
@@ -55,18 +64,18 @@ export class OverviewPage implements OnInit, OnDestroy {
 
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
-          if (!ceData) {
+          if (!ceData || !ceData.categoryData || !ceData.categoryData.length) {
             this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
-            this.showError = true;
+            this.showError.set(true);
           }
           else {
             this.ceData = ceData;
-            this.showError = false;
+            this.showError.set(false);
           }
         },
         error: (error) => {
           this.handleError(error);
-          this.showError = true;
+          this.showError.set(true);
         }
       }
     );
@@ -84,7 +93,7 @@ export class OverviewPage implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.handleError(error);
-          this.showError = true;
+          this.showError.set(true);
         }
       }
     );
@@ -107,7 +116,7 @@ export class OverviewPage implements OnInit, OnDestroy {
         next: () => {},
         error: (error) => {
           this.handleError(error);
-          this.showError = true;
+          this.showError.set(true);
         }
       }
     );

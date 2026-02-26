@@ -15,7 +15,7 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        @if (showError) {
+        @if (showError()) {
           <div>
             There was a problem fetching CE Data <br />
             Please try again later
