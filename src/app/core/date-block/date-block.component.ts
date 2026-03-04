@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'app-date-block',
@@ -10,10 +10,10 @@ export class DateBlockComponent implements OnInit {
 
   public dateInput = input<string>();
 
-  public month: string;
-  public day: string;
-  public year: string;
-  private date: Date;
+  public month = signal<string>('');
+  public day = signal<string>('');
+  public year = signal<string>('');
+  private date = signal<Date>(null);
 
   private months = [
     "January", "February", "March", "April",
@@ -25,10 +25,10 @@ export class DateBlockComponent implements OnInit {
 
   ngOnInit() {
     if(this.dateInput()) {
-      this.date = new Date(this.dateInput());
-      this.month = this.getMonthShortName(this.date);
-      this.day = this.date.getDate().toString();
-      this.year = this.date.getFullYear().toString();
+      this.date.set(new Date(this.dateInput()));
+      this.month.set(this.getMonthShortName(this.date()));
+      this.day.set(this.date().getDate().toString());
+      this.year.set(this.date().getFullYear().toString());
     }
   }
 

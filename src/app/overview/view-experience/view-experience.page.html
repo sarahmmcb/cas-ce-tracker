@@ -2,11 +2,11 @@
   <ion-grid class="outer-grid">
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        @if (loadingError) {
-          <app-error [errorText]="loadingError"></app-error>
+        @if (loadingError()) {
+          <app-error [errorText]="loadingError()"></app-error>
         }
         @else {
-        @for (ex of experiences; track ex.experienceId) {
+        @for (ex of experiences(); track ex.experienceId) {
           <ion-card>
             <button (click)="onEditCE(ex)">
               <ion-icon color="primary" name="create"></ion-icon>

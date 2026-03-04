@@ -1,7 +1,7 @@
 <ion-content>
   <div class="overview-options">
     <ion-select class="overview-select-year" label="Current Year" placeholder="{{selectedYear}}" (ionChange)="updateYear($event)">
-      @for (yearOption of allYears; track yearOption) {
+      @for (yearOption of allYears(); track yearOption) {
         <ion-select-option [value]="yearOption">
           {{ yearOption }}
         </ion-select-option>
@@ -15,7 +15,7 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        @if (showError) {
+        @if (showError()) {
           <div>
             There was a problem fetching CE Data <br />
             Please try again later
@@ -23,7 +23,7 @@
         }
         @else {
           <app-compliance-graphic
-            [ceData]="ceData"
+            [ceData]="ceData()"
           ></app-compliance-graphic>
         }
       </ion-col>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -7,13 +7,14 @@ import { User } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { StaticDataService } from 'src/app/services/static-data.service';
-import { DateBlockComponent } from "src/app/core/date-block/date-block.component";
+import { DateBlockComponent } from 'src/app/core/date-block/date-block.component';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
     selector: 'app-view-experience',
@@ -30,12 +31,12 @@ import { DateBlockComponent } from "src/app/core/date-block/date-block.component
 ]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
-  public experiences: Experience[] = [];
-  public user: User;
-  public units: IUnit[] = [];
-  public categories: ICategory[] = [];
-  public year: number;
-  public loadingError: string;
+  public experiences = signal<Experience[]>([]);
+  public user = signal<User>(null);
+  public units = signal<IUnit[]>([]);
+  public categories = signal<ICategory[]>([]);;
+  public year = signal(0);
+  public loadingError = signal('');
 
   private experienceSub: Subscription;
   private userSub: Subscription;
@@ -45,7 +46,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     private staticDataService: StaticDataService,
     private authService: AuthService,
     private modalCtrl: ModalController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
   ) {}
 
   /*************************
@@ -57,18 +59,18 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
    */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.year = params['selectedYear'] || new Date().getFullYear()
+      this.year.set(params['selectedYear'] || new Date().getFullYear())
     });
 
    this.userSub = this.authService.user.pipe(
       tap(user => this.initializeUserSpecificData(user)),
       tap(() => this.experienceSub = this.experienceService.experiences.subscribe(ex => {
         if (!ex || ex.length === 0) {
-          this.loadingError = "There are no experiences for the selected year. Why don't you add some?";
+          this.loadingError.set('There are no experiences for the selected year. Why don\'t you add some?');
         }
         else {
-          this.loadingError = "";
-          this.experiences = ex;
+          this.loadingError.set('');
+          this.experiences.set(ex);
           this.assignUnitLabels();
         }
       }))
@@ -76,15 +78,17 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
+    this.loadingService.showLoadingControl();
     this.experienceService
       .getExperiences(
-        this.year,
-        this.user.id,
-        this.user.nationalStandard.nationalStandardId
+        this.year(),
+        this.user().id,
+        this.user().nationalStandard.nationalStandardId
       )
       .subscribe({
+          next: () => this.loadingService.dismissLoadingControl(), 
           error: err => {
-          this.loadingError = "There was an error loading experience data. Please try again later."
+          this.loadingError.set('There was an error loading experience data. Please try again later.');
         }
       });
   }
@@ -112,30 +116,30 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   private initializeUserSpecificData(user: User) {
     if (user != null) {
-      this.user = user;
-      const nationalStandardId = this.user.nationalStandard.nationalStandardId;
+      this.user.set(user);
+      const nationalStandardId = this.user().nationalStandard.nationalStandardId;
 
       this.staticDataService
         .getUnits(nationalStandardId)
         .subscribe({
           next: res => {
-            this.units = res;
+            this.units.set(res);
           },
           error: err => {
-            this.loadingError = "There was an error fetching user info. Please try again later."
+            this.loadingError.set('There was an error fetching user info. Please try again later.');
           }
         });
     } else {
-      this.loadingError = "User undefined! Please exit and retry."
+      this.loadingError.set('User undefined! Please exit and retry.');
     }
   }
 
   // TODO: consider moving this to the backend
   private assignUnitLabels(): void {
-    for (const exp of this.experiences) {
+    for (const exp of this.experiences()) {
       for (const am of exp.amounts) {
         if (!am.unitSingular || !am.unitPlural) {
-          const unit = this.units.find((u) => u.unitId === am.unitId);
+          const unit = this.units().find((u) => u.unitId === am.unitId);
           am.unitPlural = unit.unitPlural;
           am.unitSingular = unit.unitSingular;
         }

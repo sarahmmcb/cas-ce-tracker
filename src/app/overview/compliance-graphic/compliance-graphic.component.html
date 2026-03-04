@@ -1,7 +1,7 @@
 <div class="progress-container">
     <ion-grid>
       <ion-row>
-        @for (category of ceData().categoryData; track category.categoryId) {
+        @for (category of ceData()?.categoryData; track category.categoryId) {
           <ion-col size="6" sizeLg="4">
             <ion-card>
               <progress-indicator

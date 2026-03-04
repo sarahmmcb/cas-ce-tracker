@@ -1,7 +1,7 @@
 
-export interface Alert {
-  title: string;
-  content: string;
+export class Alert {
+  title: string = '';
+  content: string = '';
   buttons: AlertButton[];
   type: AlertType;
   routeOnClose?: string;
