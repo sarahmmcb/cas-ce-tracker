@@ -32,9 +32,9 @@ import { LoadingService } from 'src/app/services/loading.service';
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
   public experiences = signal<Experience[]>([]);
-  public user: User;
-  public units: IUnit[] = [];
-  public categories: ICategory[] = [];
+  public user = signal<User>(null);
+  public units = signal<IUnit[]>([]);
+  public categories = signal<ICategory[]>([]);;
   public year = signal(0);
   public loadingError = signal('');
 
@@ -82,8 +82,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     this.experienceService
       .getExperiences(
         this.year(),
-        this.user.id,
-        this.user.nationalStandard.nationalStandardId
+        this.user().id,
+        this.user().nationalStandard.nationalStandardId
       )
       .subscribe({
           next: () => this.loadingService.dismissLoadingControl(), 
@@ -116,14 +116,14 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   private initializeUserSpecificData(user: User) {
     if (user != null) {
-      this.user = user;
-      const nationalStandardId = this.user.nationalStandard.nationalStandardId;
+      this.user.set(user);
+      const nationalStandardId = this.user().nationalStandard.nationalStandardId;
 
       this.staticDataService
         .getUnits(nationalStandardId)
         .subscribe({
           next: res => {
-            this.units = res;
+            this.units.set(res);
           },
           error: err => {
             this.loadingError.set('There was an error fetching user info. Please try again later.');
@@ -139,7 +139,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     for (const exp of this.experiences()) {
       for (const am of exp.amounts) {
         if (!am.unitSingular || !am.unitPlural) {
-          const unit = this.units.find((u) => u.unitId === am.unitId);
+          const unit = this.units().find((u) => u.unitId === am.unitId);
           am.unitPlural = unit.unitPlural;
           am.unitSingular = unit.unitSingular;
         }

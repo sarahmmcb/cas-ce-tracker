@@ -1,4 +1,4 @@
-import { Component, inject, InputSignal, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
