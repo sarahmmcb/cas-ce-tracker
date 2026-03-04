@@ -1,7 +1,7 @@
 <ion-content>
   <div class="overview-options">
     <ion-select class="overview-select-year" label="Current Year" placeholder="{{selectedYear}}" (ionChange)="updateYear($event)">
-      @for (yearOption of allYears; track yearOption) {
+      @for (yearOption of allYears(); track yearOption) {
         <ion-select-option [value]="yearOption">
           {{ yearOption }}
         </ion-select-option>
@@ -23,7 +23,7 @@
         }
         @else {
           <app-compliance-graphic
-            [ceData]="ceData"
+            [ceData]="ceData()"
           ></app-compliance-graphic>
         }
       </ion-col>

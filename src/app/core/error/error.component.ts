@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 
@@ -11,11 +11,9 @@ import { IonicModule } from '@ionic/angular';
 })
 export class ErrorComponent implements OnInit {
 
-  @Input()
-  public errorText: string;
+  public errorText = input<string>();
 
   constructor() {}
 
   public ngOnInit(): void {}
 }
-

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
@@ -27,15 +27,15 @@ import { ErrorStatus } from '../core/error/error';
   ]
 })
 export class OverviewPage implements OnInit, OnDestroy {
-  public ceData: CEData = {} as CEData;
+  public ceData = signal<CEData>({} as CEData);
   public displayedCeData : CEData = new CEData();
   public showError = signal(false);
-  public errorMessage: string;
+  public errorMessage = signal<string>(undefined);
   private ceDataSub: Subscription;
   
   public minYear = 2022;
 
-  public allYears: number[];
+  public allYears = signal<number[]>([]);
 
   get selectedYear(): number {
     return this.userService.selectedYear;
@@ -48,19 +48,19 @@ export class OverviewPage implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.allYears = Array.from(
+    this.allYears.set(Array.from(
       { length: (new Date()).getFullYear() - this.minYear + 1 },
       (_, i) => i + this.minYear
-    );
+    ));
 
     this.ceDataSub = this.ceDataService.ceData.subscribe({
         next: (ceData) => {
           if (!ceData || !ceData.categoryData || !ceData.categoryData.length) {
-            this.errorMessage = `Couldn't Find Any CE Data for ${this.selectedYear}`;
+            this.errorMessage.set(`Couldn't Find Any CE Data for ${this.selectedYear}`);
             this.showError.set(true);
           }
           else {
-            this.ceData = ceData;
+            this.ceData.set(ceData);
             this.showError.set(false);
           }
         },
@@ -117,10 +117,10 @@ export class OverviewPage implements OnInit, OnDestroy {
     const status = error.status;
     switch (status) {
       case ErrorStatus.NotFound:
-        this.errorMessage = `No data found for ${this.selectedYear}`;
+        this.errorMessage.set(`No data found for ${this.selectedYear}`);
         break;
       default:
-        this.errorMessage = 'An error occurred, please try again';
+        this.errorMessage.set('An error occurred, please try again');
     }
   }
 }

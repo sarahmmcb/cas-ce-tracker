@@ -16,5 +16,5 @@ export interface ICategoryList {
   name: string;
   displayQuestion?: string;
   displayOrder?: number;
-  categories?: ICategory[];
+  categories: ICategory[];
 }

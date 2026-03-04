@@ -3,7 +3,7 @@
     <ion-icon color="primary" name="close"></ion-icon>
   </button>
   <h2>
-    {{ formTitle }}
+    {{ formTitle() }}
   </h2>
 </ion-header>
 
@@ -11,16 +11,16 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="8" offsetSm="2">
-        @if (fetchError) {
-          <app-error [errorText]="fetchError"></app-error>
+        @if (fetchError()) {
+          <app-error [errorText]="fetchError()"></app-error>
         }
-        @else if (!isLoading) {
+        @else if(addForm()) {
         <ion-card>
-          <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="addForm()" (ngSubmit)="onSubmit()">
             <div class="div-form-control">
               <ion-label>Date of CE:*</ion-label>
               <ion-datetime-button
-                [ngClass]="{'input-error': submitted && addForm.get('startDate').invalid}"
+                [ngClass]="{'input-error': submitted() && addForm().get('startDate')?.invalid}"
                 datetime="startDatePicker">
               </ion-datetime-button>
               <ion-modal [keepContentsMounted]="true">
@@ -44,7 +44,7 @@
                   ></ion-datetime>
                 </ng-template>
               </ion-modal>
-              @if (submitted && addForm.get('startDate').errors?.required) {
+              @if (submitted() && addForm().get('startDate')?.errors?.required) {
                 <div class="error-message">
                   Date is required.
                 </div>
@@ -53,7 +53,7 @@
             <div class="div-form-control">
               <ion-label>Location:</ion-label>
               <ion-select formControlName="locationId" placeHolder="--Choose One--">
-                @for (item of locations; track item.locationId) {
+                @for (item of locations(); track item.locationId) {
                   <ion-select-option [value]="item.locationId">{{ item.name }}
                   </ion-select-option>
                 }
@@ -61,10 +61,10 @@
             </div>
             <div class="div-form-control">
               <ion-label>Program Title:*</ion-label>
-              <ion-input [ngClass]="{'input-error': submitted && addForm.get('programTitle').invalid}"
+              <ion-input [ngClass]="{'input-error': submitted() && addForm().get('programTitle')?.invalid}"
                 formControlName="programTitle" name="programTitle" maxlength="200">
               </ion-input>
-              @if (submitted && addForm.get('programTitle').errors?.required) {
+              @if (submitted() && addForm().get('programTitle')?.errors?.required) {
                 <div class="error-message">Program Title
                 is required.</div>
               }
@@ -81,26 +81,26 @@
             </div>
             <div class="div-form-control div-time-spent">
               <div>
-                <ion-label>Time Spent ({{ parentUnit.unitPlural }}):*</ion-label>
-                <ion-input [ngClass]="{'input-error': submitted && addForm.get('timeSpentParent').invalid}"
+                <ion-label>Time Spent ({{ parentUnit().unitPlural }}):*</ion-label>
+                <ion-input [ngClass]="{'input-error': submitted() && addForm().get('timeSpentParent')?.invalid}"
                   type="number" min="0" formControlName="timeSpentParent" (ionChange)="onAmountEdit($event)">
                 </ion-input>
-                @if (submitted && addForm.get('timeSpentParent').errors?.required) {
+                @if (submitted() && addForm().get('timeSpentParent')?.errors?.required) {
                   <div class="error-message">Time
                   Spent is required.</div>
                 }
-                @if (submitted && addForm.get('timeSpentParent').errors?.nonPositiveValue) {
+                @if (submitted() && addForm().get('timeSpentParent')?.errors?.nonPositiveValue) {
                   <div class="error-message">
                   Time Spent must be greater than zero.</div>
                 }
               </div>
               <div>
-                <ion-label>Time Spent ({{ childUnit.unitPlural }}):</ion-label>
+                <ion-label>Time Spent ({{ childUnit().unitPlural }}):</ion-label>
                 <ion-input readonly="true" type="number" formControlName="timeSpentChild">
                 </ion-input>
               </div>
             </div>
-            @for (catList of categoryLists; track catList.categoryListId; let i = $index) {
+            @for (catList of categoryLists(); track catList.categoryListId; let i = $index) {
               <div class="div-form-control">
                 <ion-label>{{ catList.displayQuestion }}:*</ion-label>
                 <ng-container
@@ -110,7 +110,7 @@
             }
             <div class="div-form-control carry-forward">
               <ion-label>
-                Carry forward to {{ carryForwardYear }}
+                Carry forward to {{ carryForwardYear() }}
               </ion-label>
               <ion-toggle formControlName="carryForward" color="primary"></ion-toggle>
             </div>
@@ -119,11 +119,11 @@
               <ion-textarea rows="5" formControlName="notes">
               </ion-textarea>
             </div>
-            @if (submitted && addForm.invalid) {
+            @if (submitted() && addForm().invalid) {
               <div class="error-message">There were errors found. Please review your
               entries.</div>
             }
-            <ion-button type="submit">{{ formTitle }}</ion-button>
+            <ion-button type="submit">{{ formTitle() }}</ion-button>
             <ion-button type="button" fill="outline" (click)="onCancel()">Cancel</ion-button>
           </form>
         </ion-card>
@@ -134,9 +134,9 @@
 </ion-content>
 
 <ng-template #selectTemplate let-cat="cat" let-controlName="controlName">
-  <div [formGroup]="addForm" class="div-single-category">
+  <div [formGroup]="addForm()" class="div-single-category">
     <div formArrayName="categories">
-      <ion-select [ngClass]="{'input-error': submitted && categories.controls[controlName].errors?.required}"
+      <ion-select [ngClass]="{'input-error': submitted() && categories.controls[controlName].errors?.required}"
         [formControlName]="controlName" [name]="controlName" placeholder="--Choose One--">
         @for (item of cat; track item.categoryId) {
           <ion-select-option [value]="item.categoryId">{{ item.displayName }}
@@ -144,7 +144,7 @@
         }
       </ion-select>
     </div>
-    @if (submitted && categories.controls[controlName].errors?.required) {
+    @if (submitted() && categories.controls[controlName].errors?.required) {
       <div class="error-message">
         This field is required.
       </div>
@@ -153,7 +153,7 @@
 </ng-template>
 
 <ng-template #checkboxTemplate let-cat="cat" let-controlName="controlName">
-  <div [formGroup]="addForm" class="div-single-category">
+  <div [formGroup]="addForm()" class="div-single-category">
     <div formArrayName="categories">
       <ion-radio-group [formControlName]="controlName">
         <ion-label>Yes</ion-label>
@@ -162,7 +162,7 @@
         <ion-radio [value]="0"></ion-radio>
       </ion-radio-group>
     </div>
-    @if (submitted && categories.controls[controlName].errors?.required) {
+    @if (submitted() && categories.controls[controlName].errors?.required) {
       <div class="error-message">
         This field is required.
       </div>

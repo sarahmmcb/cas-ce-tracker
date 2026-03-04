@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
 import { Alert } from '../../models/alert';
@@ -14,14 +15,14 @@ import { NgClass } from '@angular/common';
 })
 export class AlertComponent implements OnInit, OnDestroy {
 
-  public alert: Alert;
+  public alert = signal<Alert>(null);
   private alertSub: Subscription;
 
   constructor(private alertService: AlertService) {}
 
   public ngOnInit(): void {
    this.alertSub = this.alertService.alert.subscribe((alert: Alert) => {
-      this.alert = alert;
+      this.alert.set(alert);
     });
   }
 

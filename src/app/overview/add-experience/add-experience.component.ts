@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, input, Input, OnDestroy, OnInit, Signal, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputCustomEvent, LoadingController, ModalController, IonicModule } from '@ionic/angular';
+import { InputCustomEvent, ModalController, IonicModule } from '@ionic/angular';
 import * as math from 'mathjs';
 import { catchError, forkJoin, Subscription, throwError } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -23,6 +23,7 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { AlertButtonRole, AlertType } from 'src/app/models/alert';
 import { StaticDataService } from 'src/app/services/static-data.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
     selector: 'app-add-experience',
@@ -33,25 +34,24 @@ import { StaticDataService } from 'src/app/services/static-data.service';
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
 
-  @Input()
-  public experience: Experience;
-  public formTitle: string;
-  public categoryLists: ICategoryList[] = [];
-  public locations: Location[] = [];
-  public ceUnits: IUnit[] = [];
-  public parentUnit: IUnit;
-  public childUnit: IUnit;
-  public addForm: FormGroup;
-  public submitted = false;
-  public parentAmount: ExperienceAmount;
+  public experienceInput = input<Experience>();
+  public experience: Signal<Experience>;
+  public formTitle = signal<string>(undefined);
+  public categoryLists = signal<ICategoryList[]>([]);
+  public locations = signal<Location[]>([]);
+  public ceUnits = signal<IUnit[]>([]);
+  public parentUnit = signal<IUnit>(null);
+  public childUnit = signal<IUnit>(null);
+  public addForm = signal<FormGroup>(null);
+  public submitted = signal(false);
+  public parentAmount = signal<ExperienceAmount>(null);
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
-  public childAmount: ExperienceAmount;
-  public carryForwardYear: number;
-  public isLoading = false;
-  public fetchError: string;
-  public user: User;
+  public childAmount = signal<ExperienceAmount>(null);
+  public carryForwardYear = signal<number>(undefined);
+  public fetchError = signal<string>(undefined);
+  public user = signal<User>(null);
+  public isLoading: Signal<boolean>;
 
-  private loading: HTMLIonLoadingElement;
   private userSub: Subscription;
 
   constructor(
@@ -59,21 +59,21 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private experienceService: ExperienceService,
     private alertService: AlertService,
-    private loadingCtrl: LoadingController,
     private authService: AuthService,
     private userService: UserService,
-    private staticDataService: StaticDataService
+    private staticDataService: StaticDataService,
+    private loadingService: LoadingService
   ) {}
 
   // Helper method to access category form group in the template.
   public get categories(): FormArray {
-    return this.addForm.get('categories') as FormArray;
+    return this.addForm().get('categories') as FormArray;
   }
 
   public ngOnInit(): void {
-    // subscribe to the user subject from auth service
     this.userSub = this.authService.user.subscribe((user) => {
-      this.user = user;
+      this.user.set(user);
+      this.isLoading = this.loadingService.isLoading;
       this.fetchData();
     });
   }
@@ -85,7 +85,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   public onCancel(): Promise<boolean> | void {
-    if (this.addForm && this.addForm.dirty) {
+    if (this.addForm && this.addForm().dirty) {
       this.alertService.showAlert({
         title: 'Confirm',
         content: 'Are you you want to quit? Your changes will not be saved.',
@@ -111,24 +111,34 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    this.submitted = true;
-    if (!this.addForm.valid) {
+    this.submitted.set(true);
+    if (!this.addForm().valid) {
       return;
     }
 
-    if (this.experience.experienceId === 0) {
+    this.loadingService.showLoadingControl();
+    if (this.experience().experienceId === 0) {
       this.experienceService
         .createExperience(this.prepareExperienceData())
         .subscribe({
-          next: () => this.onUpdateSuccess('added'),
+          next: () => {
+            this.loadingService.dismissLoadingControl();
+            this.onUpdateSuccess('added');
+          },
           error: err => this.onUpdateFailure()
         });
     } else {
       this.experienceService
         .updateExperience(this.prepareExperienceData())
         .subscribe({
-          next: () => this.onUpdateSuccess('updated'),
-          error: err => this.onUpdateFailure()
+          next: () => {
+            this.loadingService.dismissLoadingControl();
+            this.onUpdateSuccess('updated');
+           },
+          error: err => {
+            this.loadingService.dismissLoadingControl();
+            this.onUpdateFailure();
+          }
         });
     }
   }
@@ -139,9 +149,9 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     }
 
     const newValue = math.evaluate(
-        event.target.value.toString() + this.childUnit.conversionFormula);
+        event.target.value.toString() + this.childUnit().conversionFormula);
 
-    this.addForm.controls['timeSpentChild'].setValue( newValue );
+    this.addForm().controls['timeSpentChild'].setValue( newValue );
   }
 
   private onUpdateSuccess(action: string): void {
@@ -166,7 +176,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
         buttons: [{
           text: 'Ok',
           role: AlertButtonRole.confirm,
-          id: 'alert-confirm'
+          id: 'alert-confirm',
+          action: () => this.modalCtrl.dismiss()
         }],
         type: AlertType.error,
     });
@@ -174,38 +185,34 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   private prepareExperienceData(): IUpdateExperience {
     return {
-      ...this.addForm.value,
-      experienceId: this.experience.experienceId,
-      userId: this.user.id,
-      categories: [...this.addForm.value.categories],
+      ...this.addForm().value,
+      experienceId: this.experience().experienceId,
+      userId: this.user().id,
+      categories: [...this.addForm().value.categories],
       timeSpentChild: {
-        experienceId: this.experience.experienceId,
-        unitId: this.childUnit.unitId,
-        amount: this.addForm.value.timeSpentChild
+        experienceId: this.experience().experienceId,
+        unitId: this.childUnit().unitId,
+        amount: this.addForm().value.timeSpentChild
       },
       timeSpentParent: {
-        experienceId: this.experience.experienceId,
-        unitId: this.parentUnit.unitId,
-        amount: this.addForm.value.timeSpentParent
+        experienceId: this.experience().experienceId,
+        unitId: this.parentUnit().unitId,
+        amount: this.addForm().value.timeSpentParent
       }
     };
   }
 
   private async fetchData() {
-    this.isLoading = true;
-    this.loading = await this.loadingCtrl.create({
-      message: 'Loading form data',
-    });
-    await this.loading.present();
+    this.loadingService.showLoadingControl();
 
     const dataCalls = forkJoin({
       getCategoryLists: this.staticDataService.getCategoryLists(
-        this.user.nationalStandard.nationalStandardId,
+        this.user().nationalStandard.nationalStandardId,
         this.userService.selectedYear
       ),
       getLocations: this.staticDataService.getLocations(),
       getUnitInfo: this.staticDataService.getUnits(
-        this.user.nationalStandard.nationalStandardId
+        this.user().nationalStandard.nationalStandardId
       )
     }).pipe(
       catchError((err) => {
@@ -213,34 +220,30 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     );
 
     dataCalls.subscribe({
-      next: async (res) => {
-        if (res.getCategoryLists.length === 0 || 
+      next: (res) => {
+        if (!res.getCategoryLists ||
+            res.getCategoryLists.length === 0 || 
+            !res.getLocations ||
             res.getLocations.length === 0 ||
-            res.getUnitInfo.length === 0
-        ) {
+            !res.getUnitInfo ||
+            res.getUnitInfo.length === 0) {
           this.handleFormDataLoadError();
         } else {
-          this.categoryLists = res.getCategoryLists;
-          this.locations = res.getLocations;
-          this.ceUnits = res.getUnitInfo;
+          this.categoryLists.set(res.getCategoryLists);
+          this.locations.set(res.getLocations);
+          this.ceUnits.set(res.getUnitInfo);
   
           this.initializeData();
+          this.loadingService.dismissLoadingControl();
         }
-
-        await this.dismissLoading();
       },
-      error: async (err) => await this.handleFormDataLoadError()
+      error: (err) => this.handleFormDataLoadError()
     });
   }
 
-  private async handleFormDataLoadError(): Promise<boolean> {
-    this.fetchError = 'There was an error fetching the form data. Please try again later.'
-    return await this.dismissLoading();
-  }
-
-  private async dismissLoading(): Promise<boolean> {
-    this.isLoading = false;
-    return await this.loading.dismiss();
+  private handleFormDataLoadError() {
+    this.fetchError.set('There was an error fetching the form data. Please try again later.');
+    this.loadingService.dismissLoadingControl();
   }
 
   private initializeData(): void {
@@ -248,70 +251,67 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
     this.initializeExperienceData();
     this.initializeFormControls();
 
-    this.formTitle =
-      this.experience.experienceId !== 0 ? 'Update CE' : 'Add CE';
-    this.isLoading = false;
+    this.formTitle.set(
+      this.experience().experienceId !== 0 ? 'Update CE' : 'Add CE');
   }
 
   private initializeUnits() {
-    this.parentUnit = this.ceUnits.find((u) => u.parentUnitId === 0);
-    this.childUnit = this.ceUnits.find((u) => u.parentUnitId !== 0);
+    this.parentUnit.set(this.ceUnits().find((u) => u.parentUnitId === 0));
+    this.childUnit.set(this.ceUnits().find((u) => u.parentUnitId !== 0));
   }
 
   private initializeExperienceData(): void {
-    if (!this.experience) {
-      this.experience = new Experience();
-    }
+    this.experience = computed(() => this.experienceInput() || new Experience());
 
-    this.carryForwardYear =
-      new Date(this.experience.startDate).getFullYear() + 1 ||
-      new Date().getFullYear() + 1;
+    this.carryForwardYear.set(
+      new Date(this.experience().startDate).getFullYear() + 1 ||
+      new Date().getFullYear() + 1);
 
-    this.parentAmount =
-      this.experience.amounts.find(
-        (p) => p.unitId === this.parentUnit.unitId
-      ) || new ExperienceAmount();
+    this.parentAmount.set(
+      this.experience().amounts.find(
+        (p) => p.unitId === this.parentUnit().unitId
+      ) || new ExperienceAmount());
 
-    this.childAmount =
-      this.experience.amounts.find(
-        (p) => p.unitId === this.childUnit.unitId
-      ) || new ExperienceAmount();
+    this.childAmount.set(
+      this.experience().amounts.find(
+        (p) => p.unitId === this.childUnit().unitId
+      ) || new ExperienceAmount());
   }
 
   private initializeFormControls(): void {
     const now = new Date();
     const defaultDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0));
     
-    this.addForm = this.fb.group({
-      startDate: [this.experience.startDate || defaultDate.toISOString(), Validators.required],
-      locationId: this.experience.location.locationId,
-      programTitle: [this.experience.programTitle, Validators.required],
-      eventName: this.experience.eventName,
-      description: this.experience.description,
+    this.addForm.set(this.fb.group({
+      startDate: [this.experience().startDate || defaultDate.toISOString(), Validators.required],
+      locationId: this.experience().location.locationId,
+      programTitle: [this.experience().programTitle, Validators.required],
+      eventName: this.experience().eventName,
+      description: this.experience().description,
       timeSpentParent: [
-        this.parentAmount.amount,
+        this.parentAmount().amount,
         [Validators.required, positiveValueValidator()],
       ],
       timeSpentChild: new FormControl({
-        value: this.childAmount.amount,
+        value: this.childAmount().amount,
         disabled: false,
       }),
-      carryForward: this.experience.carryForward,
-      notes: this.experience.notes,
+      carryForward: this.experience().carryForward,
+      notes: this.experience().notes,
       categories: this.fb.array([]),
-    });
+    }));
 
-    for (const catList of this.categoryLists) {
-      const chosenCategory: IExperienceCategory = this.experience.categories.find(
+    for (const catList of this.categoryLists()) {
+      const chosenCategory: IExperienceCategory = this.experience().categories.find(
         (c) => c.categoryListId === catList.categoryListId
       );
 
-      if (this.experience.experienceId && chosenCategory) {
+      if (this.experience().experienceId && chosenCategory) {
         this.categories.push(
           new FormControl(chosenCategory.categoryId, [Validators.required])
         );
       }
-      else if (this.experience.experienceId) {
+      else if (this.experience().experienceId) {
         this.categories.push(new FormControl(0, [Validators.required]));
       } 
       else {

@@ -7,13 +7,14 @@ import { User } from 'src/app/models/user';
 import { ExperienceService } from 'src/app/services/experience.service';
 import { AddExperienceComponent } from '../add-experience/add-experience.component';
 import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ICategory } from 'src/app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorComponent } from 'src/app/core/error/error.component';
 import { StaticDataService } from 'src/app/services/static-data.service';
 import { DateBlockComponent } from 'src/app/core/date-block/date-block.component';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
     selector: 'app-view-experience',
@@ -30,11 +31,11 @@ import { DateBlockComponent } from 'src/app/core/date-block/date-block.component
 ]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {
-  public experiences: Experience[] = [];
+  public experiences = signal<Experience[]>([]);
   public user: User;
   public units: IUnit[] = [];
   public categories: ICategory[] = [];
-  public year: number;
+  public year = signal(0);
   public loadingError = signal('');
 
   private experienceSub: Subscription;
@@ -45,7 +46,8 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     private staticDataService: StaticDataService,
     private authService: AuthService,
     private modalCtrl: ModalController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
   ) {}
 
   /*************************
@@ -57,7 +59,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
    */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.year = params['selectedYear'] || new Date().getFullYear()
+      this.year.set(params['selectedYear'] || new Date().getFullYear())
     });
 
    this.userSub = this.authService.user.pipe(
@@ -68,7 +70,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
         }
         else {
           this.loadingError.set('');
-          this.experiences = ex;
+          this.experiences.set(ex);
           this.assignUnitLabels();
         }
       }))
@@ -76,13 +78,15 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
+    this.loadingService.showLoadingControl();
     this.experienceService
       .getExperiences(
-        this.year,
+        this.year(),
         this.user.id,
         this.user.nationalStandard.nationalStandardId
       )
       .subscribe({
+          next: () => this.loadingService.dismissLoadingControl(), 
           error: err => {
           this.loadingError.set('There was an error loading experience data. Please try again later.');
         }
@@ -132,7 +136,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
   // TODO: consider moving this to the backend
   private assignUnitLabels(): void {
-    for (const exp of this.experiences) {
+    for (const exp of this.experiences()) {
       for (const am of exp.amounts) {
         if (!am.unitSingular || !am.unitPlural) {
           const unit = this.units.find((u) => u.unitId === am.unitId);

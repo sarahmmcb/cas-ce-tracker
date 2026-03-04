@@ -6,7 +6,7 @@
           <app-error [errorText]="loadingError()"></app-error>
         }
         @else {
-        @for (ex of experiences; track ex.experienceId) {
+        @for (ex of experiences(); track ex.experienceId) {
           <ion-card>
             <button (click)="onEditCE(ex)">
               <ion-icon color="primary" name="create"></ion-icon>
