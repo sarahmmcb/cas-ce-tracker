@@ -29,15 +29,15 @@ export class AlertService {
     for (const button of alert.buttons) {
       switch (button.role) {
         case AlertButtonRole.confirm:
-          button.handler = () => {
+          button.handler = async () => {
+            await button.action();
             this.clearAlert();
-            button.action();
           };
         break;
         default: // cancel
-          button.handler = () => {
+          button.handler = async () => {
+            await button.action();
             this.clearAlert();
-            button.action();
           };
         break;
       }

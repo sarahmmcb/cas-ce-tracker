@@ -17,8 +17,17 @@ ion-card-title {
 button {
   background-color: transparent;
   position: absolute;
-  bottom: 9px;
   right: 6px;
+
+  &.edit-experience {
+    color: white;
+    top: 11px;
+    z-index: 1;
+  }
+
+  &.delete-experience {
+    bottom: 9px;
+  }
 }
 
 ion-icon {

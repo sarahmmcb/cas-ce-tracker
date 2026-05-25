@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start-mock": "ng serve --configuration mock",
-    "start-iis": "ng serve --configuration dev_iis"
+    "start-iis": "ng serve --configuration dev_iis",
+    "start-docker": "ng serve --configuration dev_docker"
   },
   "private": true,
   "dependencies": {

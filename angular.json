@@ -70,6 +70,14 @@
                 }
               ]
             },
+            "dev_docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ]
+            },
             "mock": {
               "fileReplacements": [
                 {
@@ -94,6 +102,9 @@
             },
             "dev_iis": {
               "buildTarget": "app:build:dev_iis"
+            },
+            "dev_docker": {
+              "buildTarget": "app:build:dev_docker"
             },
             "mock": {
               "buildTarget": "app:build:mock"

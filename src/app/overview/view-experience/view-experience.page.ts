@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
-import { Subscription, tap } from 'rxjs';
+import { firstValueFrom, Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Experience, IUnit } from 'src/app/models/experience';
 import { User } from 'src/app/models/user';
@@ -15,6 +15,8 @@ import { ErrorComponent } from 'src/app/core/error/error.component';
 import { StaticDataService } from 'src/app/services/static-data.service';
 import { DateBlockComponent } from 'src/app/core/date-block/date-block.component';
 import { LoadingService } from 'src/app/services/loading.service';
+import { AlertService } from 'src/app/services/alert.service';
+import { Alert, AlertButtonRole, AlertType } from 'src/app/models/alert';
 
 @Component({
     selector: 'app-view-experience',
@@ -47,16 +49,10 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     private authService: AuthService,
     private modalCtrl: ModalController,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private alertService: AlertService
   ) {}
 
-  /*************************
-   * TODOs
-   * 1. Message informing user if there are no experiences
-   * 2. Ability to select different years
-   *    a. Bonus if you can scroll through the years via side swiping
-   * 3. Handle the case where the user is both USQS General and USQS Specific
-   */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.year.set(params['selectedYear'] || new Date().getFullYear())
@@ -112,6 +108,40 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     });
 
     return await modal.present();
+  }
+
+  public async onDeleteCE(experience: Experience): Promise<void> {
+    this.alertService.showAlert({
+      title: 'Delete Experience',
+      content: 'Are you sure you want to delete this experience and all of its associated data?',
+      type: AlertType.confirm,
+      buttons: [
+        {
+          text: 'Yes',
+          role: AlertButtonRole.confirm,
+          id: 'confirmDelete',
+          action: async () => await this.onDeleteConfirmed(experience.experienceId)
+        },
+        {
+          text: 'No',
+          role: AlertButtonRole.cancel,
+          id: 'cancelDelete',
+          action: () => {}
+        }
+      ]
+    });
+  }
+
+  private async onDeleteConfirmed(experienceId: number) : Promise<any> {
+    const result = await firstValueFrom(this.experienceService.deleteExperience(experienceId));
+
+    // TODO: Loading controls
+    if (result) {
+      console.log('delete success');
+    }
+    else {
+      console.log('delete failed');
+    }
   }
 
   private initializeUserSpecificData(user: User) {

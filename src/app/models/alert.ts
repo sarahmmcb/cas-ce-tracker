@@ -2,8 +2,8 @@
 export class Alert {
   title: string = '';
   content: string = '';
-  buttons: AlertButton[];
-  type: AlertType;
+  buttons: AlertButton[] = [];
+  type?: AlertType;
   routeOnClose?: string;
 }
 
@@ -19,7 +19,7 @@ export interface AlertButton {
   role: AlertButtonRole;
   id: string;
   handler?: (input?: any) => any;
-  action?: (input?: any) => any;
+  action: (input?: any) => any;
 }
 
 export enum AlertButtonRole {
