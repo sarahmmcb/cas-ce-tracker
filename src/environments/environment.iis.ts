@@ -1,5 +1,6 @@
 
 export const environment = {
     production: false,
-    iis: true
+    iis: true,
+    docker: false
 }

@@ -1,22 +1,22 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { firstValueFrom, Subscription, tap } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { Experience, IUnit } from 'src/app/models/experience';
-import { User } from 'src/app/models/user';
-import { ExperienceService } from 'src/app/services/experience.service';
-import { AddExperienceComponent } from '../add-experience/add-experience.component';
-import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
+import { AuthService } from '@app/auth/auth.service';
+import { Experience, IUnit } from '@app/models/experience';
+import { User } from '@app/models/user';
+import { ExperienceService } from '@app/services/experience.service';
+import { AddExperienceComponent } from '@app/overview/add-experience/add-experience.component';
+import { ShortenTextPipe } from '@app/pipes/shorten-text.pipe';
 import { CommonModule } from '@angular/common';
-import { ICategory } from 'src/app/models/category';
+import { ICategory } from '@app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ErrorComponent } from 'src/app/core/error/error.component';
-import { StaticDataService } from 'src/app/services/static-data.service';
-import { DateBlockComponent } from 'src/app/core/date-block/date-block.component';
-import { LoadingService } from 'src/app/services/loading.service';
-import { AlertService } from 'src/app/services/alert.service';
-import { Alert, AlertButtonRole, AlertType } from 'src/app/models/alert';
+import { ErrorComponent } from '@app/core/error/error.component';
+import { StaticDataService } from '@app/services/static-data.service';
+import { DateBlockComponent } from '@app/core/date-block/date-block.component';
+import { LoadingService } from '@app/services/loading.service';
+import { AlertService } from '@app/services/alert.service';
+import { AlertButtonRole, AlertType } from '@app/models/alert';
 
 @Component({
     selector: 'app-view-experience',
@@ -133,15 +133,25 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   }
 
   private async onDeleteConfirmed(experienceId: number) : Promise<any> {
+    this.loadingService.showLoadingControl();
     const result = await firstValueFrom(this.experienceService.deleteExperience(experienceId));
 
-    // TODO: Loading controls
-    if (result) {
-      console.log('delete success');
-    }
-    else {
-      console.log('delete failed');
-    }
+    this.loadingService.dismissLoadingControl();
+
+    var resultText = result ? "Experience successfully deleted" : "An error occurred, please try again later";
+
+    this.alertService.showAlert({
+      content: resultText,
+      type: AlertType.info,
+      buttons: [
+        {
+          text: 'Ok',
+          role: AlertButtonRole.confirm,
+          id: 'confirmDeleteResult',
+          action: () => {}
+        }
+      ]
+    });
   }
 
   private initializeUserSpecificData(user: User) {

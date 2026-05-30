@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '@env/environment';
 
 import { AuthService } from './auth/auth.service';
 import { User } from './models/user';

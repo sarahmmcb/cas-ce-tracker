@@ -1,7 +1,7 @@
 import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, concatMap, map, Observable, tap, throwError } from 'rxjs';
 import { User, UserData } from '../models/user';
-import { environment } from 'src/environments/environment';
+import { environment } from '@env/environment';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest } from '../models/auth';

@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, input, Input, OnDestroy, OnInit, Output, signal, viewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { CEData } from 'src/app/models/cedata';
+import { CEData } from '@app/models/cedata';
 import { ProgressIndicatorComponent } from './progress-indicator/progress-indicator.component';
 
 

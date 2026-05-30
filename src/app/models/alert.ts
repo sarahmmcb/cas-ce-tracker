@@ -1,6 +1,6 @@
 
 export class Alert {
-  title: string = '';
+  title?: string;
   content: string = '';
   buttons: AlertButton[] = [];
   type?: AlertType;
