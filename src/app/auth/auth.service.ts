@@ -1,7 +1,7 @@
 import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, concatMap, map, Observable, tap, throwError } from 'rxjs';
 import { User, UserData } from '../models/user';
-import { environment } from 'src/environments/environment';
+import { environment } from '@env/environment';
 import { ApiService } from '../services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest } from '../models/auth';
@@ -44,13 +44,14 @@ export class AuthService {
     if (environment.production) {
       // TODO
     }
+    else if (environment.iis) {
+        this.authApiService.baseUrl = "https:/localhost:7142/api";
+    }
+    else if (environment.docker) {
+        this.authApiService.baseUrl = "https:/localhost:44370/api";
+    }
     else {
-      if (environment.iis) {
-        this.authApiService.baseUrl = "https://localhost:7142/api";
-      }
-      else {
-        this.authApiService.baseUrl = "https://localhost:7143/api";
-      }
+      this.authApiService.baseUrl = "https://localhost:7143/api";
     }
   }
 

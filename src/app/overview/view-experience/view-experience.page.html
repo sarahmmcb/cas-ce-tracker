@@ -8,8 +8,11 @@
         @else {
         @for (ex of experiences(); track ex.experienceId) {
           <ion-card>
-            <button (click)="onEditCE(ex)">
-              <ion-icon color="primary" name="create"></ion-icon>
+            <button class="edit-experience" (click)="onEditCE(ex)">
+              <ion-icon name="create-outline"></ion-icon>
+            </button>
+            <button class="delete-experience" (click)="onDeleteCE(ex)">
+              <ion-icon color="primary" name="trash"></ion-icon>
             </button>
             <ion-card-title>
               <span>

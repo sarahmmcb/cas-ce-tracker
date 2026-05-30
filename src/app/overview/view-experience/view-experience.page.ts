@@ -1,20 +1,22 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ModalController, IonicModule } from '@ionic/angular';
-import { Subscription, tap } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { Experience, IUnit } from 'src/app/models/experience';
-import { User } from 'src/app/models/user';
-import { ExperienceService } from 'src/app/services/experience.service';
-import { AddExperienceComponent } from '../add-experience/add-experience.component';
-import { ShortenTextPipe } from 'src/app/pipes/shorten-text.pipe';
+import { firstValueFrom, Subscription, tap } from 'rxjs';
+import { AuthService } from '@app/auth/auth.service';
+import { Experience, IUnit } from '@app/models/experience';
+import { User } from '@app/models/user';
+import { ExperienceService } from '@app/services/experience.service';
+import { AddExperienceComponent } from '@app/overview/add-experience/add-experience.component';
+import { ShortenTextPipe } from '@app/pipes/shorten-text.pipe';
 import { CommonModule } from '@angular/common';
-import { ICategory } from 'src/app/models/category';
+import { ICategory } from '@app/models/category';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ErrorComponent } from 'src/app/core/error/error.component';
-import { StaticDataService } from 'src/app/services/static-data.service';
-import { DateBlockComponent } from 'src/app/core/date-block/date-block.component';
-import { LoadingService } from 'src/app/services/loading.service';
+import { ErrorComponent } from '@app/core/error/error.component';
+import { StaticDataService } from '@app/services/static-data.service';
+import { DateBlockComponent } from '@app/core/date-block/date-block.component';
+import { LoadingService } from '@app/services/loading.service';
+import { AlertService } from '@app/services/alert.service';
+import { AlertButtonRole, AlertType } from '@app/models/alert';
 
 @Component({
     selector: 'app-view-experience',
@@ -47,16 +49,10 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     private authService: AuthService,
     private modalCtrl: ModalController,
     private route: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private alertService: AlertService
   ) {}
 
-  /*************************
-   * TODOs
-   * 1. Message informing user if there are no experiences
-   * 2. Ability to select different years
-   *    a. Bonus if you can scroll through the years via side swiping
-   * 3. Handle the case where the user is both USQS General and USQS Specific
-   */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.year.set(params['selectedYear'] || new Date().getFullYear())
@@ -112,6 +108,50 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     });
 
     return await modal.present();
+  }
+
+  public async onDeleteCE(experience: Experience): Promise<void> {
+    this.alertService.showAlert({
+      title: 'Delete Experience',
+      content: 'Are you sure you want to delete this experience and all of its associated data?',
+      type: AlertType.confirm,
+      buttons: [
+        {
+          text: 'Yes',
+          role: AlertButtonRole.confirm,
+          id: 'confirmDelete',
+          action: async () => await this.onDeleteConfirmed(experience.experienceId)
+        },
+        {
+          text: 'No',
+          role: AlertButtonRole.cancel,
+          id: 'cancelDelete',
+          action: () => {}
+        }
+      ]
+    });
+  }
+
+  private async onDeleteConfirmed(experienceId: number) : Promise<any> {
+    this.loadingService.showLoadingControl();
+    const result = await firstValueFrom(this.experienceService.deleteExperience(experienceId));
+
+    this.loadingService.dismissLoadingControl();
+
+    var resultText = result ? "Experience successfully deleted" : "An error occurred, please try again later";
+
+    this.alertService.showAlert({
+      content: resultText,
+      type: AlertType.info,
+      buttons: [
+        {
+          text: 'Ok',
+          role: AlertButtonRole.confirm,
+          id: 'confirmDeleteResult',
+          action: () => {}
+        }
+      ]
+    });
   }
 
   private initializeUserSpecificData(user: User) {

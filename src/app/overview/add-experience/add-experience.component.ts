@@ -3,27 +3,27 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule
 import { InputCustomEvent, ModalController, IonicModule } from '@ionic/angular';
 import * as math from 'mathjs';
 import { catchError, forkJoin, Subscription, throwError } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { AlertService } from 'src/app/services/alert.service';
-import { ICategoryList } from 'src/app/models/category';
+import { AuthService } from '@app/auth/auth.service';
+import { AlertService } from '@app/services/alert.service';
+import { ICategoryList } from '@app/models/category';
 import {
   Experience,
   ExperienceAmount,
   IExperienceCategory,
   IUnit,
   IUpdateExperience,
-} from 'src/app/models/experience';
-import { Location } from 'src/app/models/location';
-import { User } from 'src/app/models/user';
-import { ExperienceService } from 'src/app/services/experience.service';
+} from '@app/models/experience';
+import { Location } from '@app/models/location';
+import { User } from '@app/models/user';
+import { ExperienceService } from '@app/services/experience.service';
 
 import { positiveValueValidator } from './validators';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from '@app/services/user.service';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { ErrorComponent } from 'src/app/core/error/error.component';
-import { AlertButtonRole, AlertType } from 'src/app/models/alert';
-import { StaticDataService } from 'src/app/services/static-data.service';
-import { LoadingService } from 'src/app/services/loading.service';
+import { ErrorComponent } from '@app/core/error/error.component';
+import { AlertButtonRole, AlertType } from '@app/models/alert';
+import { StaticDataService } from '@app/services/static-data.service';
+import { LoadingService } from '@app/services/loading.service';
 
 @Component({
     selector: 'app-add-experience',
@@ -44,7 +44,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public childUnit = signal<IUnit>(null);
   public addForm = signal<FormGroup>(null);
   public submitted = signal(false);
-  public parentAmount = signal<ExperienceAmount>(null);
+  public parentAmount = signal<ExperienceAmount>({} as ExperienceAmount);
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
   public childAmount = signal<ExperienceAmount>(null);
   public carryForwardYear = signal<number>(undefined);

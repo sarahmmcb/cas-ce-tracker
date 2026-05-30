@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { Alert, AlertButtonRole } from '../models/alert';
 
@@ -8,7 +8,7 @@ import { Alert, AlertButtonRole } from '../models/alert';
 })
 export class AlertService {
 
-  private alertSubject: Subject<Alert> = new Subject<Alert>();
+  private alertSubject: BehaviorSubject<Alert[]> = new BehaviorSubject<Alert[]>([]);
 
   get alert() {
     return this.alertSubject.asObservable();
@@ -16,11 +16,17 @@ export class AlertService {
 
   public showAlert(alert: Alert): void {
     this.updateButtonHandlers(alert);
-    this.alertSubject.next(alert);
+    const curr = [...this.alertSubject.value];
+    curr.push(alert);
+    this.alertSubject.next(curr);
   }
 
-  public clearAlert(): void {
-    this.alertSubject.next(null);
+  public clearAlert(alert: Alert): void {
+    const curr = this.alertSubject.value;
+    const idx = curr.findIndex((al: Alert) => al === alert);
+    curr.splice(idx, 1);
+    
+    this.alertSubject.next(curr);
   }
 
   // This function wraps the button handlers with extra functionality
@@ -29,15 +35,15 @@ export class AlertService {
     for (const button of alert.buttons) {
       switch (button.role) {
         case AlertButtonRole.confirm:
-          button.handler = () => {
-            this.clearAlert();
-            button.action();
+          button.handler = async () => {
+            this.clearAlert(alert);
+            await button.action();
           };
         break;
         default: // cancel
-          button.handler = () => {
-            this.clearAlert();
-            button.action();
+          button.handler = async () => {
+            this.clearAlert(alert);
+            await button.action();
           };
         break;
       }

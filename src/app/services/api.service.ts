@@ -1,5 +1,5 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
+import { Injectable, resource } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 export interface HttpParams {
@@ -54,6 +54,15 @@ export class ApiService {
       withCredentials: true
     }).pipe(
       map(res => res.body)
+    );
+  }
+
+  public delete(route: string, resourceId: number): Observable<boolean> {
+    return this.http.delete(`${this.baseUrl}${route}/${resourceId}`, {
+      observe: 'response',
+      withCredentials: true
+    }).pipe (
+      map(res => res.status == HttpStatusCode.Ok)
     );
   }
 }

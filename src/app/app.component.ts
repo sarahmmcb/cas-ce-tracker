@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '@env/environment';
 
 import { AuthService } from './auth/auth.service';
 import { User } from './models/user';
@@ -82,13 +82,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private initializeApp(): void {
     if (environment.production) {
       this.api.baseUrl = 'https://wordapi20211030215150.azurewebsites.net/api';
-    } else {
-      if (environment.iis) {
+    } else if (environment.iis){
         this.api.baseUrl = `https://localhost:7248/api`;
-      }
-      else {
-        this.api.baseUrl = 'https://localhost:7249/api';
-      }
+    } else {
+      this.api.baseUrl = 'https://localhost:7249/api';
     }
   }
 }

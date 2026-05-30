@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   mockApi: false,
   iis: false,
+  docker: false
 };
 
 /*

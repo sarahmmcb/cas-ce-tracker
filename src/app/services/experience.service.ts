@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, switchMap, take, tap, map } from 'rxjs/operators';
 
 import { IUpdateExperience, Experience } from '../models/experience';
 import { ApiService } from './api.service';
@@ -76,7 +76,30 @@ export class ExperienceService {
       catchError(err => {
         return throwError(() => err)
       })
-  );
-}
+    );
+  }
+
+  public deleteExperience(experienceId: number): Observable<Experience[]> {
+    return this.apiService.delete('/experiences', experienceId)
+      .pipe(
+        switchMap(res => {
+          if (res) {
+            return this.experiences;
+          }
+          else {
+            return throwError(() => false)
+          }
+        }),
+        take(1),
+        tap(experiences => {
+          const expIndex = experiences.findIndex(exp => exp.experienceId === experienceId);
+          experiences.splice(expIndex, 1);
+          this.experienceSub.next(experiences);
+        }),
+        catchError(err => {
+          return throwError(() => false)
+        })
+      );
+  }
 
 }
