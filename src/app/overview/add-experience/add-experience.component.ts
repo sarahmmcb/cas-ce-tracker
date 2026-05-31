@@ -1,4 +1,4 @@
-import { Component, computed, input, Input, OnDestroy, OnInit, Signal, signal } from '@angular/core';
+import { Component, computed, Input, OnDestroy, OnInit, Signal, signal, input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputCustomEvent, ModalController, IonicModule } from '@ionic/angular';
 import * as math from 'mathjs';
@@ -34,8 +34,10 @@ import { LoadingService } from '@app/services/loading.service';
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
 
-  public experienceInput = input<Experience>();
-  public experience: Signal<Experience>;
+  @Input() // ion-modal doesn't place nice with input signals yet
+  public experienceInput: Experience;
+
+  public experience = signal<Experience>(null);
   public formTitle = signal<string>(undefined);
   public categoryLists = signal<ICategoryList[]>([]);
   public locations = signal<Location[]>([]);
@@ -44,7 +46,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public childUnit = signal<IUnit>(null);
   public addForm = signal<FormGroup>(null);
   public submitted = signal(false);
-  public parentAmount = signal<ExperienceAmount>({} as ExperienceAmount);
+  public parentAmount = signal<ExperienceAmount>(null);
   // Time spent in the standard's accepted unit, as calculated from the parent unit.
   public childAmount = signal<ExperienceAmount>(null);
   public carryForwardYear = signal<number>(undefined);
@@ -261,7 +263,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   private initializeExperienceData(): void {
-    this.experience = computed(() => this.experienceInput() || new Experience());
+    //this.experience = computed(() => this.experienceInput() || new Experience());
+    this.experience.set(this.experienceInput || new Experience());
 
     this.carryForwardYear.set(
       new Date(this.experience().startDate).getFullYear() + 1 ||
