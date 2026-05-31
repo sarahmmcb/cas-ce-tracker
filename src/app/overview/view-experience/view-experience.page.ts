@@ -103,7 +103,7 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     const modal = await this.modalCtrl.create({
       component: AddExperienceComponent,
       componentProps: {
-        experience
+        experienceInput: experience
       },
     });
 
