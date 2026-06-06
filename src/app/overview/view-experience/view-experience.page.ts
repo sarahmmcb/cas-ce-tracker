@@ -17,6 +17,7 @@ import { DateBlockComponent } from '@app/core/date-block/date-block.component';
 import { LoadingService } from '@app/services/loading.service';
 import { AlertService } from '@app/services/alert.service';
 import { AlertButtonRole, AlertType } from '@app/models/alert';
+import { FooterComponent } from '@app/core/footer/footer.component';
 
 @Component({
     selector: 'app-view-experience',
@@ -29,7 +30,8 @@ import { AlertButtonRole, AlertType } from '@app/models/alert';
     IonicModule,
     ShortenTextPipe,
     ErrorComponent,
-    DateBlockComponent
+    DateBlockComponent,
+    FooterComponent
 ]
 })
 export class ViewExperiencePage implements OnInit, OnDestroy {

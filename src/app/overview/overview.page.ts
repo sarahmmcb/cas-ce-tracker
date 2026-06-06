@@ -12,6 +12,7 @@ import { ComplianceGraphicComponent } from './compliance-graphic/compliance-grap
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ErrorStatus } from '../core/error/error';
+import { FooterComponent } from '@app/core/footer/footer.component';
 
 @Component({
     selector: 'app-overview',
@@ -23,7 +24,8 @@ import { ErrorStatus } from '../core/error/error';
     ReactiveFormsModule,
     IonicModule,
     RouterModule,
-    ComplianceGraphicComponent
+    ComplianceGraphicComponent,
+    FooterComponent
   ]
 })
 export class OverviewPage implements OnInit, OnDestroy {
@@ -73,21 +75,25 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
-    this.loadingService.showLoadingControl();
-    this.ceDataService.getCEComplianceData(
-      this.selectedYear,
-      this.userService.user.id,
-      this.userService.user.nationalStandard.nationalStandardId
-    ).subscribe({
-        next: () => {
-          this.loadingService.dismissLoadingControl();
-        },
-        error: (error) => {
-          this.handleError(error);
-          this.showError.set(true);
+    if (this.userService.user) {
+      
+      this.loadingService.showLoadingControl();
+      this.ceDataService.getCEComplianceData(
+        this.selectedYear,
+        this.userService.user.id,
+        this.userService.user.nationalStandard.nationalStandardId
+      ).subscribe({
+          next: () => {
+            this.loadingService.dismissLoadingControl();
+          },
+          error: (error) => {
+            this.handleError(error);
+            this.showError.set(true);
+            this.loadingService.dismissLoadingControl();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   public ngOnDestroy(): void {
