@@ -5,6 +5,7 @@
 
 ion-menu {
   z-index: 999999;
+  top: 0;
 }
 
 ion-menu::part(scroll) {

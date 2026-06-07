@@ -5,7 +5,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { AuthService } from '@app/auth/auth.service';
 import { AddExperienceComponent } from '@app/overview/add-experience/add-experience.component';
 import { UserService } from '@app/services/user.service';
-
+import { CEDataService } from '@app/services/cedata.service';
 
 @Component({
     selector: 'app-footer',
@@ -16,25 +16,15 @@ import { UserService } from '@app/services/user.service';
 })
 export class FooterComponent {
 
-  get user() {
-      return this.userService.user;
-  }
-
   get selectedYear() {
       return this.userService.selectedYear;
   }
 
   constructor(
-    private auth: AuthService,
-    private router: Router,
     private userService: UserService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ceDataService: CEDataService,
   ) {}
-
-  public onLogout(): void {
-    this.auth.logout();
-    this.router.navigateByUrl('/auth');
-  }
 
   public async onAddCE(): Promise<void> {
     const modal = await this.modalCtrl.create({
@@ -44,15 +34,11 @@ export class FooterComponent {
     await modal.present();
 
     return await modal.onDidDismiss().then(() => {
-        // this.ceDataService.getCEComplianceData(
-        //     this.userService.selectedYear,
-        //     this.userService.user.id,
-        //     this.userService.user.nationalStandard.nationalStandardId
-        // ).subscribe({
-        //     next: () => {},
-        //     error: (error) => {}
-        //   }
-        // );
+        this.ceDataService.getCEComplianceData(
+            this.userService.selectedYear,
+            this.userService.user.id,
+            this.userService.user.nationalStandard.nationalStandardId
+        ).subscribe();
     });
   }
 }

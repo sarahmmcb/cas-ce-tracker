@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 import { AuthService } from './auth.service';
 
-import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-auth',

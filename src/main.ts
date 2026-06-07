@@ -15,7 +15,9 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, IonicModule.forRoot()),
+        importProvidersFrom(BrowserModule, IonicModule.forRoot({
+          useSetInputAPI: true
+        })),
         provideRouter(routes, withDebugTracing()),
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         provideHttpClient(

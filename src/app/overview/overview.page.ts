@@ -89,7 +89,6 @@ export class OverviewPage implements OnInit, OnDestroy {
           error: (error) => {
             this.handleError(error);
             this.showError.set(true);
-            this.loadingService.dismissLoadingControl();
           }
         }
       );
@@ -120,6 +119,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   private handleError(error: HttpErrorResponse): void {
+    this.loadingService.dismissLoadingControl();
     const status = error.status;
     switch (status) {
       case ErrorStatus.NotFound:
