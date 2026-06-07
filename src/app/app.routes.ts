@@ -21,7 +21,7 @@ export const routes: Routes = [
   canLoad: [AuthGuard],
   children: [{
     path: 'view-experience',
-    loadChildren: () => import('./overview/view-experience/view-experience.routes').then( m => m.viewExperienceRoutes)
+    loadComponent: () => import('./overview/view-experience/view-experience.page').then( m => m.ViewExperiencePage)
   }]
 },
 {

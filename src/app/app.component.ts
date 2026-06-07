@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { environment } from '@env/environment';
-import { IonApp, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonList, IonMenu, IonMenuButton, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonTitle, IonToolbar, ModalController } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { chatbubbles, create, informationCircle, home, exit, addCircle, search, openOutline } from 'ionicons/icons'
+import { IonicModule, ModalController } from '@ionic/angular';
 
 import { AuthService } from './auth/auth.service';
 import { User } from './models/user';
@@ -17,24 +15,7 @@ import { LoadingComponent } from './core/loading/loading.component';
 
 @Component({
     selector: 'app-root',
-    imports: [
-      IonApp,
-      IonRouterLink,
-      IonContent,
-      IonMenu,
-      IonMenuToggle,
-      IonMenuButton,
-      IonHeader,
-      IonTitle,
-      IonList,
-      IonIcon,
-      IonItem,
-      IonRouterOutlet,
-      IonFooter,
-      IonToolbar,
-      IonButton,
-      IonButtons,
-      AlertComponent, LoadingComponent, RouterModule],
+    imports: [IonicModule, AlertComponent, LoadingComponent, RouterModule],
     standalone: true,
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss']
@@ -57,16 +38,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private modalCtrl: ModalController
   ) {
     this.initializeApp();
-    addIcons({ 
-      chatbubbles,
-      create,
-      informationCircle,
-      home,
-      exit,
-      addCircle,
-      search,
-      openOutline
-    });
   }
 
   public ngOnInit(): void {
