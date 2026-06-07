@@ -9,7 +9,7 @@ export const routes: Routes = [
 },
 {
   path: 'auth',
-  loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
+  loadComponent: () => import('./auth/auth.page').then( m => m.AuthPage)
 },
 {
   path: 'overview',
@@ -21,7 +21,7 @@ export const routes: Routes = [
   canLoad: [AuthGuard],
   children: [{
     path: 'view-experience',
-    loadChildren: () => import('./overview/view-experience/view-experience.routes').then( m => m.viewExperienceRoutes)
+    loadComponent: () => import('./overview/view-experience/view-experience.page').then( m => m.ViewExperiencePage)
   }]
 },
 {

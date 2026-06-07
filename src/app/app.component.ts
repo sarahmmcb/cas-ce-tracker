@@ -2,12 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from '@env/environment';
+import { IonicModule, ModalController } from '@ionic/angular';
 
 import { AuthService } from './auth/auth.service';
 import { User } from './models/user';
 import { UserService } from './services/user.service';
-
-import { IonicModule, ModalController } from '@ionic/angular';
 import { AlertComponent } from './core/alert/alert.component';
 import { ApiService } from './services/api.service';
 import { AddExperienceComponent } from './overview/add-experience/add-experience.component';
