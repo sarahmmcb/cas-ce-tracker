@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
+import { FooterComponent } from './core/footer/footer.component';
 
 export const routes: Routes = [
 {
@@ -23,6 +24,11 @@ export const routes: Routes = [
     path: 'view-experience',
     loadComponent: () => import('./overview/view-experience/view-experience.page').then( m => m.ViewExperiencePage)
   }]
+},
+{
+  path: 'footer',
+  component: FooterComponent,
+  outlet: 'footer'
 },
 {
   path: 'edit-profile',

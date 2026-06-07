@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -19,10 +19,12 @@ export class AuthPage implements OnInit {
   public password: string;
   public errMessage: string;
 
-  constructor(private auth: AuthService,
-              private router: Router) {}
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    console.log('current navigation: ', this.router.currentNavigation());
+  }
 
   public onSubmit(form: NgForm): void {
     if (!form.valid) {

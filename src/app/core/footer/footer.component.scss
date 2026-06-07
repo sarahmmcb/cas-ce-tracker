@@ -1,0 +1,27 @@
+:host {
+  position: sticky;
+  bottom: 0;
+}
+
+ion-menu {
+  z-index: 999999;
+  top: 0;
+}
+
+ion-menu::part(scroll) {
+  background-color: white;
+}
+
+div.inner-scroll {
+  background-color:white;
+}
+
+.toolbar-buttons {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--ion-color-primary);
+}
+
+ion-button, ion-menu-button {
+  color: white;
+}
