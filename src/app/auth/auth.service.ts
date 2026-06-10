@@ -45,10 +45,10 @@ export class AuthService {
       // TODO
     }
     else if (environment.iis) {
-        this.authApiService.baseUrl = "https:/localhost:7142/api";
+        this.authApiService.baseUrl = "https://localhost:7142/api";
     }
     else if (environment.docker) {
-        this.authApiService.baseUrl = "https:/localhost:44370/api";
+        this.authApiService.baseUrl = "https://localhost:44370/api";
     }
     else {
       this.authApiService.baseUrl = "https://localhost:7143/api";
