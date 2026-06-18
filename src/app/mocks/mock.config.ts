@@ -1,8 +1,8 @@
-import { HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
-import { ICategory } from '../models/category';
+import { HttpResponse } from '@angular/common/http'
+import { of } from 'rxjs'
+import { ICategory } from '../models/category'
 
-import { ComplianceStatus } from '../models/cedata';
+import { ComplianceStatus } from '../models/cedata'
 
 const getCEData = () =>
   of(
@@ -67,8 +67,8 @@ const getCEData = () =>
           complianceStatus: ComplianceStatus.compliant,
         },
       },
-    })
-  );
+    }),
+  )
 
 const getExperienceData = () =>
   of(
@@ -207,8 +207,8 @@ const getExperienceData = () =>
           ],
         },
       ],
-    })
-  );
+    }),
+  )
 
 const getUnitInfo = () =>
   of(
@@ -232,8 +232,8 @@ const getUnitInfo = () =>
           conversionFormula: '',
         },
       ],
-    })
-  );
+    }),
+  )
 
 const getCategoryLists = () =>
   of(
@@ -302,8 +302,7 @@ const getCategoryLists = () =>
         {
           categoryListId: 10,
           name: 'specific',
-          displayQuestion:
-            'Does this meet USQS Specific Education Requirements under Section 3.3?',
+          displayQuestion: 'Does this meet USQS Specific Education Requirements under Section 3.3?',
           displayOrder: 4,
           categories: [
             {
@@ -316,8 +315,8 @@ const getCategoryLists = () =>
           ],
         },
       ],
-    })
-  );
+    }),
+  )
 
 const getLocations = () =>
   of(
@@ -341,12 +340,12 @@ const getLocations = () =>
           name: 'Other',
         },
       ],
-    })
-  );
+    }),
+  )
 
 const addExperience = (body) => {
-  const id = Math.round(Math.random() * 10);
-  const exp = JSON.parse(body);
+  const id = Math.round(Math.random() * 10)
+  const exp = JSON.parse(body)
   const newExp = {
     experienceId: id,
     id: 1,
@@ -369,7 +368,7 @@ const addExperience = (body) => {
           categoryListId: 7,
           name: 'Test',
           displayName: 'Test',
-        } as ICategory)
+        }) as ICategory,
     ),
     amounts: [
       {
@@ -385,14 +384,14 @@ const addExperience = (body) => {
         amount: exp.timeSpentChild,
       },
     ],
-  };
+  }
   return of(
     new HttpResponse({
       status: 200,
       body: newExp,
-    })
-  );
-};
+    }),
+  )
+}
 
 export const mockEndpoints = {
   GET: {
@@ -417,4 +416,4 @@ export const mockEndpoints = {
       handler: addExperience,
     },
   },
-};
+}

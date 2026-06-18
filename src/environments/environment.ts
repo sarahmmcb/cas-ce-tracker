@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   mockApi: false,
   iis: false,
-  docker: false
-};
+  docker: false,
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

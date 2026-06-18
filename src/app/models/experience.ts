@@ -1,17 +1,17 @@
-import { Location } from './location';
+import { Location } from './location'
 
 export class Experience {
-  public experienceId = 0;
-  public userId = 0;
-  public location: Location = new Location();
-  public carryForward = false;
-  public programTitle = '';
-  public eventName? = '';
-  public startDate = '';
-  public description? = '';
-  public notes? = '';
-  public categories: IExperienceCategory[] = [];
-  public amounts: ExperienceAmount[] = [];
+  public experienceId = 0
+  public userId = 0
+  public location: Location = new Location()
+  public carryForward = false
+  public programTitle = ''
+  public eventName? = ''
+  public startDate = ''
+  public description? = ''
+  public notes? = ''
+  public categories: IExperienceCategory[] = []
+  public amounts: ExperienceAmount[] = []
 }
 
 /**
@@ -20,46 +20,46 @@ export class Experience {
  * are associated with each experience, i.e. hours and credits
  */
 export class ExperienceAmount {
-  public experienceAmountId = 0;
-  public experienceId = 0;
-  public unitId = 0;
-  public nationalStandardId = 0;
-  public amount = 0.0;
-  public isComplianceUnit = false;
-  public unitSingular? = '';
-  public unitPlural? = '';
+  public experienceAmountId = 0
+  public experienceId = 0
+  public unitId = 0
+  public nationalStandardId = 0
+  public amount = 0.0
+  public isComplianceUnit = false
+  public unitSingular? = ''
+  public unitPlural? = ''
 }
 
 export interface IExperienceCategory {
-  experienceId: number;
-  categoryId: number;
-  categoryListId: number;
-  displayName?: string;
+  experienceId: number
+  categoryId: number
+  categoryListId: number
+  displayName?: string
 }
 
 export interface IUnit {
-  unitId: number;
-  parentUnitId: number;
-  unitSingular: string;
-  unitPlural: string;
-  isDisabled: boolean;
-  conversionFormula: string;
+  unitId: number
+  parentUnitId: number
+  unitSingular: string
+  unitPlural: string
+  isDisabled: boolean
+  conversionFormula: string
 }
 
 export interface IUpdateExperience {
-  experienceId: number;
-  userId: number;
-  startDate: string;
-  carryForward: boolean;
-  categories: IExperienceCategory[];
-  amounts: ExperienceAmount[];
-  locationId: number;
-  description: string | null | undefined;
-  eventName: string | null | undefined;
-  notes: string | null | undefined;
-  programTitle: string | null | undefined;
-  timeSpentChild: number;
-  timeSpentParent: number;
-  childUnitId: number;
-  parentUnitId: number;
+  experienceId: number
+  userId: number
+  startDate: string
+  carryForward: boolean
+  categories: IExperienceCategory[]
+  amounts: ExperienceAmount[]
+  locationId: number
+  description: string | null | undefined
+  eventName: string | null | undefined
+  notes: string | null | undefined
+  programTitle: string | null | undefined
+  timeSpentChild: number
+  timeSpentParent: number
+  childUnitId: number
+  parentUnitId: number
 }

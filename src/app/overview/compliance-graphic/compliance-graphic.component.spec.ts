@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
+import { IonicModule } from '@ionic/angular'
 
-import { ComplianceGraphicComponent } from './compliance-graphic.component';
+import { ComplianceGraphicComponent } from './compliance-graphic.component'
 
 describe('ComplianceGraphicComponent', () => {
-  let component: ComplianceGraphicComponent;
-  let fixture: ComponentFixture<ComplianceGraphicComponent>;
+  let component: ComplianceGraphicComponent
+  let fixture: ComponentFixture<ComplianceGraphicComponent>
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [IonicModule.forRoot(), ComplianceGraphicComponent]
-}).compileComponents();
+      imports: [IonicModule.forRoot(), ComplianceGraphicComponent],
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(ComplianceGraphicComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+    fixture = TestBed.createComponent(ComplianceGraphicComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  }))
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

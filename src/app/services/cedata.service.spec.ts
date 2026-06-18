@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { CEDataService } from './cedata.service';
+import { CEDataService } from './cedata.service'
 
 describe('CEDataService', () => {
-  let service: CEDataService;
+  let service: CEDataService
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CEDataService);
-  });
+    TestBed.configureTestingModule({})
+    service = TestBed.inject(CEDataService)
+  })
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+    expect(service).toBeTruthy()
+  })
+})

@@ -1,34 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 
-import {
-  Credential,
-  User,
-  NationalStandard,
-  Organization,
-} from '../models/user';
+import { Credential, User, NationalStandard, Organization } from '../models/user'
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
- 
   // This is hydrated by the auth service
-  public user: User;
+  public user: User
 
-  private _selectedYear: number;
+  private _selectedYear: number
 
   constructor() {}
 
   get selectedYear(): number {
     if (!this._selectedYear) {
-      return new Date().getFullYear();
+      return new Date().getFullYear()
     }
 
-    return this._selectedYear;
+    return this._selectedYear
   }
 
   set selectedYear(year: number) {
-    this._selectedYear = year;
+    this._selectedYear = year
   }
 
   public fetchCredentials(): Credential[] {
@@ -45,7 +39,7 @@ export class UserService {
         longName: 'Associate of the Casualty Actuarial Society',
         shortName: 'ACAS',
       },
-    ];
+    ]
   }
 
   public fetchNationalStandards(): NationalStandard[] {
@@ -62,7 +56,7 @@ export class UserService {
         longName: 'United States Specific Qualification Standard',
         shortName: 'USQS Specific',
       },
-    ];
+    ]
   }
 
   public fetchOrganizations(): Organization[] {
@@ -77,6 +71,6 @@ export class UserService {
         longName: 'American Academy of Actuaries',
         shortName: 'AAA',
       },
-    ];
+    ]
   }
 }

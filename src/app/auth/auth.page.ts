@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { NgForm, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { Component, OnInit, inject, signal } from '@angular/core'
+import { NgForm, FormsModule } from '@angular/forms'
+import { Router } from '@angular/router'
+import { IonicModule } from '@ionic/angular'
 
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service'
 
 @Component({
   selector: 'app-auth',
@@ -13,30 +13,30 @@ import { AuthService } from './auth.service';
   imports: [IonicModule, FormsModule],
 })
 export class AuthPage implements OnInit {
-  public email: string;
-  public password: string;
-  public errMessage = signal('');
+  public email: string
+  public password: string
+  public errMessage = signal('')
 
-  private auth = inject(AuthService);
-  private router = inject(Router);
+  private auth = inject(AuthService)
+  private router = inject(Router)
 
   public ngOnInit(): void {}
 
   public onSubmit(form: NgForm): void {
     if (!form.valid) {
-      return;
+      return
     }
 
-    const email = form.value.email;
-    const password = form.value.password;
+    const email = form.value.email
+    const password = form.value.password
 
     this.auth.login(email, password).subscribe({
       next: () => {
-        this.router.navigateByUrl('/overview');
+        this.router.navigateByUrl('/overview')
       },
       error: (err) => {
-        this.errMessage.set(this.auth.getErrorMessage(err));
+        this.errMessage.set(this.auth.getErrorMessage(err))
       },
-    });
+    })
   }
 }

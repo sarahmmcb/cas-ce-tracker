@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms'
 
 // export const positiveValueValidator: ValidatorFn = () =>
 //   (control: AbstractControl): ValidationErrors | null => {
@@ -9,8 +9,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function positiveValueValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
+    const value = control.value
 
-    return value <= 0 ? { nonPositiveValue: true } : null;
-  };
-};
+    return value <= 0 ? { nonPositiveValue: true } : null
+  }
+}
