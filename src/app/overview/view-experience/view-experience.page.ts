@@ -84,10 +84,11 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
         this.user().nationalStandard.nationalStandardId
       )
       .subscribe({
-          next: () => this.loadingService.dismissLoadingControl(), 
           error: err => {
-          this.loadingError.set('There was an error loading experience data. Please try again later.');
-        }
+            this.loadingError.set('There was an error loading experience data. Please try again later.');
+            this.loadingService.dismissLoadingControl();
+          },
+          complete: () => this.loadingService.dismissLoadingControl()
       });
   }
 

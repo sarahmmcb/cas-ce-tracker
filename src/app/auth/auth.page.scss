@@ -1,8 +1,75 @@
-.cas-signup-link {
-  font-size: 8pt;
+form div {
+  margin-bottom: 20px;
+}
+
+div > label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 14pt;
+}
+
+input {
+  width: 100%;
+  padding: 15px 5px;
+  border-radius: 5px;
+}
+
+.error {
+  color: var(--ion-color-danger-shade);
+}
+
+.icon-container {
+    background-color: white;
+    margin-top: 20%;
+    margin-bottom: 30px;
+    display: inline-block;
+    width: 130px;
+    text-align: justify;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+}
+  
+.title-line-1 {
+    font-size: 25pt;
+}
+
+.title-line-2 {
+    font-size: 19pt;
 }
 
 img {
-  height: 120px;
-  margin-top: 10%;
+    height: 100px;
+    top: 50%;
+    left: 5px;
+    position: relative;
+    transform: translate(0, -50%);
+}
+
+.app-button {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  display: block;
+  width: 90%;
+  padding: 15px;
+  font-variant: all-small-caps;
+  font-size: 14pt;
+  border-radius: 5px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border: 2px solid var(--ion-color-primary);
+}
+
+.submit-button {
+  background-color: var(--ion-color-primary);
+  color: white;
+}
+
+.register-button {
+  color: var(--ion-color-primary);
+  background-color: white;
+}
+
+.cas-signup-link {
+  font-size: 11pt;
 }
