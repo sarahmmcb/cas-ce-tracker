@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { NgForm, FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
@@ -12,15 +12,13 @@ import { AuthService } from './auth.service'
   standalone: true,
   imports: [IonicModule, FormsModule],
 })
-export class AuthPage implements OnInit {
+export class AuthPage {
   public email: string
   public password: string
   public errMessage = signal('')
 
   private auth = inject(AuthService)
   private router = inject(Router)
-
-  public ngOnInit(): void {}
 
   public onSubmit(form: NgForm): void {
     if (!form.valid) {

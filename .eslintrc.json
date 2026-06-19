@@ -1,6 +1,16 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*", "dist"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
   "overrides": [
     {
       "files": ["*.ts"],
