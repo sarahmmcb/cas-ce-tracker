@@ -1,73 +1,77 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms'
+import { Router } from '@angular/router'
+import { Subscription } from 'rxjs'
 
-import { AuthService } from '../auth/auth.service';
-import { AlertService } from '../services/alert.service';
-import { User, NationalStandard } from '../models/user';
-import { UserService } from '../services/user.service';
-import { NgClass, CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { EditProfilePageRoutingModule } from './edit-profile-routing.module';
-import { AlertButtonRole, AlertType } from '../models/alert';
+import { AuthService } from '../auth/auth.service'
+import { AlertService } from '../services/alert.service'
+import { User, NationalStandard } from '../models/user'
+import { UserService } from '../services/user.service'
+import { NgClass, CommonModule } from '@angular/common'
+import { IonicModule } from '@ionic/angular'
+import { EditProfilePageRoutingModule } from './edit-profile-routing.module'
+import { AlertButtonRole, AlertType } from '../models/alert'
 
 @Component({
-    selector: 'app-edit-profile',
-    templateUrl: './edit-profile.page.html',
-    styleUrls: ['./edit-profile.page.scss'],
-    imports: [
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.page.html',
+  styleUrls: ['./edit-profile.page.scss'],
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     IonicModule,
     EditProfilePageRoutingModule,
-    NgClass
-]
+    NgClass,
+  ],
 })
 export class EditProfilePage implements OnInit, OnDestroy {
   /**
    * User object.
    */
-  public user: User;
+  public user: User
 
   /**
    * Profile form group.
    */
-  public profileForm: UntypedFormGroup;
+  public profileForm: UntypedFormGroup
 
   /**
    * Possible National Standards.
    */
-  public nationalStandards: NationalStandard[] = [];
+  public nationalStandards: NationalStandard[] = []
 
   /**
    * Flag indicating whether form has been submitted.
    */
-  public submitted = false;
+  public submitted = false
 
   /**
    * User object subscription.
    */
-  private userSub: Subscription;
+  private userSub: Subscription
 
   constructor(
     private authService: AuthService,
     private fb: UntypedFormBuilder,
     private userService: UserService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
   ) {}
 
   /**
    * On Init.
    */
   public ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(
-      (user) => (this.user = user)
-    );
-    this.initializeData();
-    this.initializeFormControls();
+    this.userSub = this.authService.user.subscribe((user) => (this.user = user))
+    this.initializeData()
+    this.initializeFormControls()
   }
 
   /**
@@ -75,7 +79,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
    */
   public ngOnDestroy(): void {
     if (this.userSub) {
-      this.userSub.unsubscribe();
+      this.userSub.unsubscribe()
     }
   }
 
@@ -83,10 +87,10 @@ export class EditProfilePage implements OnInit, OnDestroy {
    * On Submit.
    */
   public onSubmit(): void {
-    console.log(this.profileForm);
-    this.submitted = true;
+    console.log(this.profileForm)
+    this.submitted = true
     if (!this.profileForm.valid) {
-      return;
+      return
     }
   }
 
@@ -113,9 +117,9 @@ export class EditProfilePage implements OnInit, OnDestroy {
             action: () => {},
           },
         ],
-      });
+      })
     } else {
-      this.router.navigateByUrl('/overview');
+      this.router.navigateByUrl('/overview')
     }
   }
 
@@ -123,7 +127,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
    * Fetch data for form dropdowns.
    */
   private initializeData(): void {
-    this.nationalStandards = this.userService.fetchNationalStandards();
+    this.nationalStandards = this.userService.fetchNationalStandards()
   }
 
   /**
@@ -135,10 +139,7 @@ export class EditProfilePage implements OnInit, OnDestroy {
       lastName: [this.user.lastName, Validators.required],
       email: [this.user.email, Validators.required],
       title: this.user.title,
-      nationalStandard: [
-        this.user.nationalStandard.nationalStandardId,
-        Validators.required,
-      ],
-    });
+      nationalStandard: [this.user.nationalStandard.nationalStandardId, Validators.required],
+    })
   }
 }

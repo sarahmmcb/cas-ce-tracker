@@ -1,39 +1,25 @@
-import {
-  createEnvironmentInjector,
-  EnvironmentInjector,
-  Injectable,
-} from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  concatMap,
-  map,
-  Observable,
-  tap,
-  throwError,
-} from 'rxjs';
-import { User, UserData } from '../models/user';
-import { environment } from '@env/environment';
-import { ApiService } from '../services/api.service';
-import { HttpClient } from '@angular/common/http';
-import { LoginRequest } from '../models/auth';
-import { ErrorStatus } from '../core/error/error';
-import { CookieService } from 'ngx-cookie-service';
+import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core'
+import { BehaviorSubject, catchError, concatMap, map, Observable, tap, throwError } from 'rxjs'
+import { User, UserData } from '../models/user'
+import { environment } from '@env/environment'
+import { ApiService } from '../services/api.service'
+import { HttpClient } from '@angular/common/http'
+import { LoginRequest } from '../models/auth'
+import { ErrorStatus } from '../core/error/error'
+import { CookieService } from 'ngx-cookie-service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  public accessToken: string;
-  public errMessage: string;
+  public accessToken: string
+  public errMessage: string
 
-  private authApiService: ApiService;
+  private authApiService: ApiService
 
-  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(
-    {} as User,
-  );
+  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>({} as User)
 
-  private _userIsAuthenticated = false;
+  private _userIsAuthenticated = false
 
   constructor(
     private injector: EnvironmentInjector,
@@ -50,31 +36,31 @@ export class AuthService {
         },
       ],
       this.injector,
-    );
+    )
 
-    this.authApiService = childInjector.get(ApiService);
+    this.authApiService = childInjector.get(ApiService)
 
     if (environment.production) {
       // TODO
     } else if (environment.iis) {
-      this.authApiService.baseUrl = 'https://localhost:7142/api';
+      this.authApiService.baseUrl = 'https://localhost:7142/api'
     } else if (environment.docker) {
-      this.authApiService.baseUrl = 'https://localhost:44370/api';
+      this.authApiService.baseUrl = 'https://localhost:44370/api'
     } else {
-      this.authApiService.baseUrl = 'https://localhost:7143/api';
+      this.authApiService.baseUrl = 'https://localhost:7143/api'
     }
   }
 
   get user() {
-    return this.userSubject.asObservable();
+    return this.userSubject.asObservable()
   }
 
   get userIsAuthenticated() {
-    return this._userIsAuthenticated;
+    return this._userIsAuthenticated
   }
 
   public login(email: string, password: string): Observable<User> {
-    let user = new User();
+    let user = new User()
     return this.authApiService
       .post('/session/login', {
         userName: email,
@@ -82,82 +68,82 @@ export class AuthService {
       } as LoginRequest)
       .pipe(
         concatMap((res) => {
-          this.accessToken = res.token;
-          this._userIsAuthenticated = true;
-          return this.fetchUser(email);
+          this.accessToken = res.token
+          this._userIsAuthenticated = true
+          return this.fetchUser(email)
         }),
         concatMap((userResp) => {
-          user = { ...userResp } as User;
-          return this.fetchUserData(user.id);
+          user = { ...userResp } as User
+          return this.fetchUserData(user.id)
         }),
         map((userData) => {
           user = {
             ...user,
             ...userData,
-          };
-          this.userSubject.next(user);
-          return user;
+          }
+          this.userSubject.next(user)
+          return user
         }),
         catchError((err) => {
-          return throwError(() => err);
+          return throwError(() => err)
         }),
-      );
+      )
   }
 
   public logout(): void {
-    this.accessToken = '';
-    this._userIsAuthenticated = false;
+    this.accessToken = ''
+    this._userIsAuthenticated = false
   }
 
   public getErrorMessage(err: any): string {
     if (err.status) {
       switch (err.status) {
         case ErrorStatus.NotFound:
-          return 'User not found. Please try again later.';
+          return 'User not found. Please try again later.'
         case ErrorStatus.BadRequest:
-          return 'There was a problem with the request. Please reenter your credentials and try again.';
+          return 'There was a problem with the request. Please reenter your credentials and try again.'
         case ErrorStatus.Unauthorized:
-          return 'Username or password incorrect.';
+          return 'Username or password incorrect.'
         default:
-          return 'An unexpected error occurred. Please try again later.';
+          return 'An unexpected error occurred. Please try again later.'
       }
     } else {
-      return 'An unexpected error occurred. Please try again later.';
+      return 'An unexpected error occurred. Please try again later.'
     }
   }
 
   public refreshAccessToken(): Observable<void> {
-    let user = new User();
-    const userName = this.cookieService.get('userName');
+    let user = new User()
+    const userName = this.cookieService.get('userName')
 
     return this.authApiService.get('/session/refresh').pipe(
       concatMap((res) => {
-        this.accessToken = res.token;
-        this._userIsAuthenticated = true;
-        return this.fetchUser(userName);
+        this.accessToken = res.token
+        this._userIsAuthenticated = true
+        return this.fetchUser(userName)
       }),
       concatMap((userResp) => {
-        user = { ...userResp } as User;
-        return this.fetchUserData(user.id);
+        user = { ...userResp } as User
+        return this.fetchUserData(user.id)
       }),
       map((userData) => {
         user = {
           ...user,
           ...userData,
-        };
-        this.userSubject.next(user);
+        }
+        this.userSubject.next(user)
       }),
       catchError((err) => {
-        return throwError(() => err);
+        return throwError(() => err)
       }),
-    );
+    )
   }
 
   private fetchUser(username: string): Observable<User> {
-    return this.authApiService.get('/user', { username });
+    return this.authApiService.get('/user', { username })
   }
 
   private fetchUserData(userId: number): Observable<UserData> {
-    return this.apiService.get(`/userData/userId/${userId}`);
+    return this.apiService.get(`/userData/userId/${userId}`)
   }
 }

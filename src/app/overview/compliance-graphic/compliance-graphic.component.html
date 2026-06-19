@@ -4,12 +4,12 @@
         @for (category of ceData()?.categoryData; track $index) {
           <ion-col size="6" sizeLg="4">
             <ion-card>
-              <progress-indicator
+              <app-progress-indicator
               [maxProgress]="category.maximum"
               [minProgress]="category.minimum"
               [completed]="category.amountCompleted"
               [title]="category.displayName"
-              ></progress-indicator>
+              ></app-progress-indicator>
             </ion-card>
           </ion-col>
         }
