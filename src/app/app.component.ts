@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Router, RouterModule } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { environment } from '@env/environment'
-import { IonicModule, ModalController } from '@ionic/angular'
+import { IonicModule } from '@ionic/angular'
 
 import { AuthService } from './auth/auth.service'
 import { User } from './models/user'
@@ -36,10 +36,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.authUserSub = this.auth.user.subscribe((user) => (this.userService.user = user))
+    console.log('in onInit')
+    this.authUserSub = this.auth.user.subscribe((user) => {
+      this.userService.user = user // TODO: stop doing this, refactor so consumers get it from authservice
+      this.user = user
+    })
   }
 
   public ngOnDestroy(): void {
+    console.log('in on destory')
     if (this.authUserSub) {
       this.authUserSub.unsubscribe()
     }
