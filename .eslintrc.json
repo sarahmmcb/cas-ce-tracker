@@ -48,8 +48,7 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ],
-        "linebreak-style": 0
+        ]
       }
     },
     {
@@ -57,5 +56,11 @@
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
-  ]
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "linebreak-style": 0
+  }
 }

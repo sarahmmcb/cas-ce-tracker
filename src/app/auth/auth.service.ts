@@ -63,7 +63,6 @@ export class AuthService {
   private _user = signal(null)
 
   get user() {
-    // return this.userSubject.asObservable()
     return this._user()
   }
 
@@ -71,7 +70,7 @@ export class AuthService {
     return this._userIsAuthenticated
   }
 
-  public login(email: string, password: string): Promise<User> {
+  public login(email: string, password: string): Promise<void> {
     let user = new User()
     return firstValueFrom(
       this.authApiService
@@ -94,9 +93,7 @@ export class AuthService {
               ...user,
               ...userData,
             }
-            // this.userSubject.next(user)
             this._user.set(user)
-            return user
           }),
           catchError((err) => {
             return throwError(() => err)
@@ -146,7 +143,7 @@ export class AuthService {
           ...user,
           ...userData,
         }
-        //this.userSubject.next(user)
+        this._user.set(user)
       }),
       catchError((err) => {
         return throwError(() => err)

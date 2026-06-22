@@ -76,26 +76,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
           }
         })),
     })
-
-    // this.userSub = this.authService.user
-    //   .pipe(
-    //     tap((user) => this.initializeUserSpecificData(this.user())),
-    //     tap(
-    //       () =>
-    //         (this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
-    //           if (!ex || ex.length === 0) {
-    //             this.loadingError.set(
-    //               "There are no experiences for the selected year. Why don't you add some?",
-    //             )
-    //           } else {
-    //             this.loadingError.set('')
-    //             this.experiences.set(ex)
-    //             this.assignUnitLabels()
-    //           }
-    //         })),
-    //     ),
-    //   )
-    //   .subscribe()
   }
 
   public ionViewWillEnter(): void {
