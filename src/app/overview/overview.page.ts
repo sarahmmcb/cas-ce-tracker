@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { ErrorStatus } from '../core/error/error'
 import { FooterComponent } from '@app/core/footer/footer.component'
+import { AuthService } from '@app/auth/auth.service'
 
 @Component({
   selector: 'app-overview',
@@ -45,6 +46,7 @@ export class OverviewPage implements OnInit, OnDestroy {
 
   constructor(
     private ceDataService: CEDataService,
+    private authService: AuthService,
     private userService: UserService,
     private loadingService: LoadingService,
   ) {}
@@ -75,13 +77,13 @@ export class OverviewPage implements OnInit, OnDestroy {
   }
 
   public ionViewWillEnter(): void {
-    if (this.userService.user) {
+    if (this.authService.user) {
       this.loadingService.showLoadingControl()
       this.ceDataService
         .getCEComplianceData(
           this.selectedYear,
-          this.userService.user.id,
-          this.userService.user.nationalStandard.nationalStandardId,
+          this.authService.user.id,
+          this.authService.user.nationalStandard.nationalStandardId,
         )
         .subscribe({
           next: () => {
@@ -107,8 +109,8 @@ export class OverviewPage implements OnInit, OnDestroy {
     this.ceDataService
       .getCEComplianceData(
         year,
-        this.userService.user.id,
-        this.userService.user.nationalStandard.nationalStandardId,
+        this.authService.user.id,
+        this.authService.user.nationalStandard.nationalStandardId,
       )
       .subscribe({
         next: () => {},

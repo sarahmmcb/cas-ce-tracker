@@ -1,5 +1,14 @@
-import { createEnvironmentInjector, EnvironmentInjector, Injectable } from '@angular/core'
-import { BehaviorSubject, catchError, concatMap, map, Observable, tap, throwError } from 'rxjs'
+import { createEnvironmentInjector, EnvironmentInjector, Injectable, signal } from '@angular/core'
+import {
+  BehaviorSubject,
+  catchError,
+  concatMap,
+  map,
+  tap,
+  Observable,
+  firstValueFrom,
+  throwError,
+} from 'rxjs'
 import { User, UserData } from '../models/user'
 import { environment } from '@env/environment'
 import { ApiService } from '../services/api.service'
@@ -51,43 +60,46 @@ export class AuthService {
     }
   }
 
+  private _user = signal(null)
+
   get user() {
-    return this.userSubject.asObservable()
+    return this._user()
   }
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated
   }
 
-  public login(email: string, password: string): Observable<User> {
+  public login(email: string, password: string): Promise<void> {
     let user = new User()
-    return this.authApiService
-      .post('/session/login', {
-        userName: email,
-        password,
-      } as LoginRequest)
-      .pipe(
-        concatMap((res) => {
-          this.accessToken = res.token
-          this._userIsAuthenticated = true
-          return this.fetchUser(email)
-        }),
-        concatMap((userResp) => {
-          user = { ...userResp } as User
-          return this.fetchUserData(user.id)
-        }),
-        map((userData) => {
-          user = {
-            ...user,
-            ...userData,
-          }
-          this.userSubject.next(user)
-          return user
-        }),
-        catchError((err) => {
-          return throwError(() => err)
-        }),
-      )
+    return firstValueFrom(
+      this.authApiService
+        .post('/session/login', {
+          userName: email,
+          password,
+        } as LoginRequest)
+        .pipe(
+          concatMap((res) => {
+            this.accessToken = res.token
+            this._userIsAuthenticated = true
+            return this.fetchUser(email)
+          }),
+          concatMap((userResp) => {
+            user = { ...userResp } as User
+            return this.fetchUserData(user.id)
+          }),
+          map((userData) => {
+            user = {
+              ...user,
+              ...userData,
+            }
+            this._user.set(user)
+          }),
+          catchError((err) => {
+            return throwError(() => err)
+          }),
+        ),
+    )
   }
 
   public logout(): void {
@@ -131,7 +143,7 @@ export class AuthService {
           ...user,
           ...userData,
         }
-        this.userSubject.next(user)
+        this._user.set(user)
       }),
       catchError((err) => {
         return throwError(() => err)

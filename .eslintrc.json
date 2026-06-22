@@ -56,5 +56,11 @@
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
-  ]
+  ],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "linebreak-style": 0
+  }
 }

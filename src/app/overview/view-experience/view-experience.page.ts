@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core'
 import { ModalController, IonicModule } from '@ionic/angular'
-import { firstValueFrom, Subscription, tap } from 'rxjs'
+import { catchError, firstValueFrom, Observable, Subscription, tap, throwError } from 'rxjs'
 import { AuthService } from '@app/auth/auth.service'
 import { Experience, IUnit } from '@app/models/experience'
 import { User } from '@app/models/user'
@@ -60,25 +60,22 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       this.year.set(params['selectedYear'] || new Date().getFullYear())
     })
 
-    this.userSub = this.authService.user
-      .pipe(
-        tap((user) => this.initializeUserSpecificData(user)),
-        tap(
-          () =>
-            (this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
-              if (!ex || ex.length === 0) {
-                this.loadingError.set(
-                  "There are no experiences for the selected year. Why don't you add some?",
-                )
-              } else {
-                this.loadingError.set('')
-                this.experiences.set(ex)
-                this.assignUnitLabels()
-              }
-            })),
-        ),
-      )
-      .subscribe()
+    this.user.set(this.authService.user)
+
+    this.initializeUserSpecificData().subscribe({
+      next: () =>
+        (this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
+          if (!ex || ex.length === 0) {
+            this.loadingError.set(
+              "There are no experiences for the selected year. Why don't you add some?",
+            )
+          } else {
+            this.loadingError.set('')
+            this.experiences.set(ex)
+            this.assignUnitLabels()
+          }
+        })),
+    })
   }
 
   public ionViewWillEnter(): void {
@@ -163,22 +160,11 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     })
   }
 
-  private initializeUserSpecificData(user: User) {
-    if (user != null) {
-      this.user.set(user)
-      const nationalStandardId = this.user().nationalStandard.nationalStandardId
-
-      this.staticDataService.getUnits(nationalStandardId).subscribe({
-        next: (res) => {
-          this.units.set(res)
-        },
-        error: (err) => {
-          this.loadingError.set('There was an error fetching user info. Please try again later.')
-        },
-      })
-    } else {
-      this.loadingError.set('User undefined! Please exit and retry.')
-    }
+  private initializeUserSpecificData(): Observable<IUnit[]> {
+    const nationalStandardId = this.user().nationalStandard.nationalStandardId
+    return this.staticDataService
+      .getUnits(nationalStandardId)
+      .pipe(tap((res) => this.units.set(res)))
   }
 
   // TODO: consider moving this to the backend
