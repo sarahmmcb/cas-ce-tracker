@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit, signal } from '@angular/core'
 import { Router, RouterModule } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { environment } from '@env/environment'
@@ -19,7 +19,7 @@ import { LoadingComponent } from './core/loading/loading.component'
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public user: User
+  public user = signal<User>(null)
   private authUserSub: Subscription
 
   get selectedYear() {
@@ -36,11 +36,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    console.log('in onInit')
-    this.authUserSub = this.auth.user.subscribe((user) => {
-      this.userService.user = user // TODO: stop doing this, refactor so consumers get it from authservice
-      this.user = user
-    })
+    this.user.set(this.auth.user)
+    // this.authUserSub = this.auth.user.subscribe((user) => {
+    //   //this.userService.user = user // TODO: stop doing this, refactor so consumers get it from authservice
+    //   this.user.set(user)
+    // })
   }
 
   public ngOnDestroy(): void {

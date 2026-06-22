@@ -2,8 +2,8 @@
     <ion-menu contentId="main" menuId="m1" type="reveal">
     <ion-header>
       <ion-title>
-        @if (user) {
-          <p>{{user.firstName}} {{user.lastName}}</p>
+        @if (user()) {
+          <p>{{user().firstName}} {{user().lastName}}</p>
         }
       </ion-title>
     </ion-header>

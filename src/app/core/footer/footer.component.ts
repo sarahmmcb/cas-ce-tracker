@@ -20,6 +20,7 @@ export class FooterComponent {
   }
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private modalCtrl: ModalController,
     private ceDataService: CEDataService,
@@ -36,8 +37,8 @@ export class FooterComponent {
       this.ceDataService
         .getCEComplianceData(
           this.userService.selectedYear,
-          this.userService.user.id,
-          this.userService.user.nationalStandard.nationalStandardId,
+          this.authService.user.id,
+          this.authService.user.nationalStandard.nationalStandardId,
         )
         .subscribe()
     })

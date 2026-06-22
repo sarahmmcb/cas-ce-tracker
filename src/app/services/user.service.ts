@@ -7,7 +7,7 @@ import { Credential, User, NationalStandard, Organization } from '../models/user
 })
 export class UserService {
   // This is hydrated by the auth service
-  public user: User
+  //public user: User
 
   private _selectedYear: number
 
