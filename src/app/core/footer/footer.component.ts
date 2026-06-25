@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { Router, RouterModule } from '@angular/router'
 
 import { IonicModule, ModalController } from '@ionic/angular'
@@ -19,12 +19,10 @@ export class FooterComponent {
     return this.userService.selectedYear
   }
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private modalCtrl: ModalController,
-    private ceDataService: CEDataService,
-  ) {}
+  private authService = inject(AuthService)
+  private userService = inject(UserService)
+  private modalCtrl = inject(ModalController)
+  private ceDataService = inject(CEDataService)
 
   public async onAddCE(): Promise<void> {
     const modal = await this.modalCtrl.create({

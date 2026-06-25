@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, inject } from '@angular/core'
 import { Router, RouterModule } from '@angular/router'
 import { environment } from '@env/environment'
 import { IonicModule } from '@ionic/angular'
@@ -22,30 +22,30 @@ export class AppComponent {
   }
 
   get user() {
-    return this.auth.user
+    return this.authService.user
   }
 
-  constructor(
-    private auth: AuthService,
-    private router: Router,
-    private api: ApiService,
-    private userService: UserService,
-  ) {
+  private authService = inject(AuthService)
+  private router = inject(Router)
+  private apiService = inject(ApiService)
+  private userService = inject(UserService)
+
+  constructor() {
     this.initializeApp()
   }
 
   public onLogout(): void {
-    this.auth.logout()
+    this.authService.logout()
     this.router.navigateByUrl('/auth')
   }
 
   private initializeApp(): void {
     if (environment.production) {
-      this.api.baseUrl = 'https://wordapi20211030215150.azurewebsites.net/api'
+      this.apiService.baseUrl = 'https://wordapi20211030215150.azurewebsites.net/api'
     } else if (environment.iis) {
-      this.api.baseUrl = `https://localhost:7248/api`
+      this.apiService.baseUrl = `https://localhost:7248/api`
     } else {
-      this.api.baseUrl = 'https://localhost:7249/api'
+      this.apiService.baseUrl = 'https://localhost:7249/api'
     }
   }
 }

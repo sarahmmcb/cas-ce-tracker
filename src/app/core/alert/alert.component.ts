@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { Subscription } from 'rxjs'
 
 import { Alert } from '../../models/alert'
@@ -16,7 +16,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   public alerts = signal<Alert[]>([])
   private alertSub: Subscription
 
-  constructor(private alertService: AlertService) {}
+  private alertService = inject(AlertService)
 
   public ngOnInit(): void {
     this.alertSub = this.alertService.alert.subscribe((alerts: Alert[]) => {

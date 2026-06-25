@@ -29,8 +29,6 @@ export class DateBlockComponent implements OnInit {
     'December',
   ]
 
-  constructor() {}
-
   ngOnInit() {
     if (this.dateInput()) {
       this.date.set(new Date(this.dateInput()))
