@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { ModalController, IonicModule } from '@ionic/angular'
 import { catchError, firstValueFrom, Observable, Subscription, tap, throwError } from 'rxjs'
 import { AuthService } from '@app/auth/auth.service'
@@ -45,15 +45,13 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   private experienceSub: Subscription
   private userSub: Subscription
 
-  constructor(
-    private experienceService: ExperienceService,
-    private staticDataService: StaticDataService,
-    private authService: AuthService,
-    private modalCtrl: ModalController,
-    private route: ActivatedRoute,
-    private loadingService: LoadingService,
-    private alertService: AlertService,
-  ) {}
+  private experienceService = inject(ExperienceService)
+  private staticDataService = inject(StaticDataService)
+  private authService = inject(AuthService)
+  private modalCtrl = inject(ModalController)
+  private route = inject(ActivatedRoute)
+  private loadingService = inject(LoadingService)
+  private alertService = inject(AlertService)
 
   public ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {

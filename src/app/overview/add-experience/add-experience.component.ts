@@ -1,4 +1,14 @@
-import { Component, computed, Input, OnDestroy, OnInit, Signal, signal, input } from '@angular/core'
+import {
+  Component,
+  computed,
+  Input,
+  OnDestroy,
+  OnInit,
+  Signal,
+  signal,
+  input,
+  inject,
+} from '@angular/core'
 import {
   FormArray,
   FormBuilder,
@@ -48,8 +58,8 @@ import { LoadingService } from '@app/services/loading.service'
   ],
 })
 export class AddExperienceComponent implements OnInit, OnDestroy {
-  @Input() // ion-modal doesn't place nice with input signals yet
-  public experienceInput: Experience
+  // @Input() // ion-modal doesn't place nice with input signals yet
+  public experienceInput = input<Experience>()
 
   public experience = signal<Experience>(null)
   public formTitle = signal<string>(undefined)
@@ -70,16 +80,14 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
 
   private userSub: Subscription
 
-  constructor(
-    private modalCtrl: ModalController,
-    private fb: FormBuilder,
-    private experienceService: ExperienceService,
-    private alertService: AlertService,
-    private authService: AuthService,
-    private userService: UserService,
-    private staticDataService: StaticDataService,
-    private loadingService: LoadingService,
-  ) {}
+  private modalCtrl = inject(ModalController)
+  private fb = inject(FormBuilder)
+  private experienceService = inject(ExperienceService)
+  private alertService = inject(AlertService)
+  private authService = inject(AuthService)
+  private userService = inject(UserService)
+  private staticDataService = inject(StaticDataService)
+  private loadingService = inject(LoadingService)
 
   // Helper method to access category form group in the template.
   public get categories(): FormArray {

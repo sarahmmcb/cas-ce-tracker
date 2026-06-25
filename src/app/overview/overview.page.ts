@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { Component, OnDestroy, OnInit, Signal, signal } from '@angular/core'
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { IonicModule } from '@ionic/angular'
 import { Subscription } from 'rxjs'
 
@@ -44,12 +44,10 @@ export class OverviewPage implements OnInit, OnDestroy {
     return this.userService.selectedYear
   }
 
-  constructor(
-    private ceDataService: CEDataService,
-    private authService: AuthService,
-    private userService: UserService,
-    private loadingService: LoadingService,
-  ) {}
+  private ceDataService = inject(CEDataService)
+  private authService = inject(AuthService)
+  private userService = inject(UserService)
+  private loadingService = inject(LoadingService)
 
   public ngOnInit(): void {
     this.allYears.set(

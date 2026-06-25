@@ -11,8 +11,6 @@ export class LoadingComponent implements OnInit {
   private loadingService = inject(LoadingService)
   public isLoading: Signal<boolean>
 
-  constructor() {}
-
   ngOnInit() {
     this.isLoading = this.loadingService.isLoading
   }
