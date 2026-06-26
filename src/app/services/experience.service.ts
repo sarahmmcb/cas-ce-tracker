@@ -44,7 +44,10 @@ export class ExperienceService {
         return this.experiences
       }),
       take(1),
-      tap((experiences) => this.experienceSub.next(experiences.concat(newExperience))),
+      tap((experiences) => {
+        const expClone = [...experiences]
+        this.experienceSub.next(expClone.concat(newExperience))
+      }),
       catchError((err) => {
         return throwError(() => err)
       }),
@@ -60,11 +63,12 @@ export class ExperienceService {
       }),
       take(1),
       tap((experiences) => {
-        const expIndex = experiences.findIndex(
-          (exp) => exp.experienceId === updatedExperience.experienceId,
-        )
-        experiences.splice(expIndex, 1, updatedExperience)
-        this.experienceSub.next(experiences)
+        const updatedExperiences = experiences.map((ex) => {
+          if (ex.experienceId === updatedExperience.experienceId) return updatedExperience
+          else return ex
+        })
+
+        this.experienceSub.next(updatedExperiences)
       }),
       catchError((err) => {
         return throwError(() => err)
@@ -83,9 +87,10 @@ export class ExperienceService {
       }),
       take(1),
       tap((experiences) => {
+        const expClone = [...experiences]
         const expIndex = experiences.findIndex((exp) => exp.experienceId === experienceId)
-        experiences.splice(expIndex, 1)
-        this.experienceSub.next(experiences)
+        expClone.splice(expIndex, 1)
+        this.experienceSub.next(expClone)
       }),
       catchError((err) => {
         return throwError(() => false)

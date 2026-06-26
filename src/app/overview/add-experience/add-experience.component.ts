@@ -1,14 +1,4 @@
-import {
-  Component,
-  computed,
-  Input,
-  OnDestroy,
-  OnInit,
-  Signal,
-  signal,
-  input,
-  inject,
-} from '@angular/core'
+import { Component, OnInit, Signal, signal, input, inject } from '@angular/core'
 import {
   FormArray,
   FormBuilder,
@@ -20,7 +10,7 @@ import {
 } from '@angular/forms'
 import { InputCustomEvent, ModalController, IonicModule } from '@ionic/angular'
 import * as math from 'mathjs'
-import { catchError, forkJoin, Subscription, throwError } from 'rxjs'
+import { catchError, forkJoin, throwError } from 'rxjs'
 import { AuthService } from '@app/auth/auth.service'
 import { AlertService } from '@app/services/alert.service'
 import { ICategoryList } from '@app/models/category'
@@ -57,7 +47,7 @@ import { LoadingService } from '@app/services/loading.service'
     ErrorComponent,
   ],
 })
-export class AddExperienceComponent implements OnInit, OnDestroy {
+export class AddExperienceComponent implements OnInit {
   // @Input() // ion-modal doesn't place nice with input signals yet
   public experienceInput = input<Experience>()
 
@@ -78,8 +68,6 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   public user = signal<User>(null)
   public isLoading: Signal<boolean>
 
-  private userSub: Subscription
-
   private modalCtrl = inject(ModalController)
   private fb = inject(FormBuilder)
   private experienceService = inject(ExperienceService)
@@ -95,17 +83,8 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe((user) => {
-      this.user.set(user)
-      this.isLoading = this.loadingService.isLoading
-      this.fetchData()
-    })
-  }
-
-  public ngOnDestroy(): void {
-    if (this.userSub) {
-      this.userSub.unsubscribe()
-    }
+    this.user.set(this.authService.user)
+    this.fetchData()
   }
 
   public onCancel(): Promise<boolean> | void {
@@ -286,8 +265,7 @@ export class AddExperienceComponent implements OnInit, OnDestroy {
   }
 
   private initializeExperienceData(): void {
-    //this.experience = computed(() => this.experienceInput() || new Experience());
-    this.experience.set(this.experienceInput || new Experience())
+    this.experience.set(this.experienceInput() || new Experience())
 
     this.carryForwardYear.set(
       new Date(this.experience().startDate).getFullYear() + 1 || new Date().getFullYear() + 1,

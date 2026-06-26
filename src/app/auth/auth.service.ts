@@ -26,8 +26,6 @@ export class AuthService {
 
   private authApiService: ApiService
 
-  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>({} as User)
-
   private _userIsAuthenticated = false
 
   constructor(

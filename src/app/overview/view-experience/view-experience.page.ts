@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { ModalController, IonicModule } from '@ionic/angular'
-import { catchError, firstValueFrom, Observable, Subscription, tap, throwError } from 'rxjs'
+import { firstValueFrom, Observable, Subscription, switchMap, tap } from 'rxjs'
 import { AuthService } from '@app/auth/auth.service'
 import { Experience, IUnit } from '@app/models/experience'
 import { User } from '@app/models/user'
@@ -43,7 +43,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   public loadingError = signal('')
 
   private experienceSub: Subscription
-  private userSub: Subscription
 
   private experienceService = inject(ExperienceService)
   private staticDataService = inject(StaticDataService)
@@ -60,26 +59,32 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
 
     this.user.set(this.authService.user)
 
-    this.initializeUserSpecificData().subscribe({
-      next: () =>
-        (this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
-          if (!ex || ex.length === 0) {
-            this.loadingError.set(
-              "There are no experiences for the selected year. Why don't you add some?",
-            )
-          } else {
-            this.loadingError.set('')
-            this.experiences.set(ex)
-            this.assignUnitLabels()
-          }
-        })),
+    this.experienceSub = this.experienceService.experiences.subscribe((ex) => {
+      if (!ex || ex.length === 0) {
+        this.loadingError.set(
+          "There are no experiences for the selected year. Why don't you add some?",
+        )
+      } else {
+        this.loadingError.set('')
+        this.experiences.set(ex)
+        this.assignUnitLabels()
+      }
     })
-  }
 
-  public ionViewWillEnter(): void {
     this.loadingService.showLoadingControl()
-    this.experienceService
-      .getExperiences(this.year(), this.user().id, this.user().nationalStandard.nationalStandardId)
+
+    this.staticDataService
+      .getUnits(this.user().nationalStandard.nationalStandardId)
+      .pipe(
+        tap((res) => this.units.set(res)),
+        switchMap((res) =>
+          this.experienceService.getExperiences(
+            this.year(),
+            this.user().id,
+            this.user().nationalStandard.nationalStandardId,
+          ),
+        ),
+      )
       .subscribe({
         error: (err) => {
           this.loadingError.set(
@@ -94,10 +99,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.experienceSub) {
       this.experienceSub.unsubscribe()
-    }
-
-    if (this.userSub) {
-      this.userSub.unsubscribe()
     }
   }
 
@@ -158,23 +159,26 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
     })
   }
 
-  private initializeUserSpecificData(): Observable<IUnit[]> {
-    const nationalStandardId = this.user().nationalStandard.nationalStandardId
-    return this.staticDataService
-      .getUnits(nationalStandardId)
-      .pipe(tap((res) => this.units.set(res)))
-  }
-
-  // TODO: consider moving this to the backend
+  // TODO: move this to the backend
   private assignUnitLabels(): void {
-    for (const exp of this.experiences()) {
-      for (const am of exp.amounts) {
-        if (!am.unitSingular || !am.unitPlural) {
-          const unit = this.units().find((u) => u.unitId === am.unitId)
-          am.unitPlural = unit.unitPlural
-          am.unitSingular = unit.unitSingular
+    if (!this.units() || this.units().length == 0) {
+      return
+    }
+
+    const expClone = [...this.experiences()]
+
+    for (const exp of expClone) {
+      const amountsClone = [...exp.amounts]
+      for (const amount of amountsClone) {
+        if (!amount.unitSingular || !amount.unitPlural) {
+          const unit = this.units().find((u) => u.unitId === amount.unitId)
+          amount.unitPlural = unit.unitPlural
+          amount.unitSingular = unit.unitSingular
         }
       }
+      exp.amounts = amountsClone
     }
+
+    this.experiences.set(expClone)
   }
 }
