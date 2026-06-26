@@ -12,7 +12,7 @@
     <ion-row>
       <ion-col offsetSm="2" sizeSm="8">
         <ion-card>
-          @if (user) {
+          @if (user()) {
             <form (ngSubmit)="onSubmit()" [formGroup]="profileForm">
               <div class="div-form-control">
                 <ion-label>First Name:*</ion-label>

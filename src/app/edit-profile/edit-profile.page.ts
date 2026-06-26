@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnInit, signal } from '@angular/core'
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms'
 import { Router } from '@angular/router'
-import { Subscription } from 'rxjs'
 
 import { AuthService } from '../auth/auth.service'
 import { AlertService } from '../services/alert.service'
@@ -31,31 +30,14 @@ import { AlertButtonRole, AlertType } from '../models/alert'
     NgClass,
   ],
 })
-export class EditProfilePage implements OnInit, OnDestroy {
-  /**
-   * User object.
-   */
-  public user: User
+export class EditProfilePage implements OnInit {
+  public user = signal<User>(null)
 
-  /**
-   * Profile form group.
-   */
   public profileForm: UntypedFormGroup
 
-  /**
-   * Possible National Standards.
-   */
   public nationalStandards: NationalStandard[] = []
 
-  /**
-   * Flag indicating whether form has been submitted.
-   */
   public submitted = false
-
-  /**
-   * User object subscription.
-   */
-  private userSub: Subscription
 
   constructor(
     private authService: AuthService,
@@ -65,27 +47,12 @@ export class EditProfilePage implements OnInit, OnDestroy {
     private alertService: AlertService,
   ) {}
 
-  /**
-   * On Init.
-   */
   public ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe((user) => (this.user = user))
+    this.user.set(this.authService.user)
     this.initializeData()
     this.initializeFormControls()
   }
 
-  /**
-   * On Destroy.
-   */
-  public ngOnDestroy(): void {
-    if (this.userSub) {
-      this.userSub.unsubscribe()
-    }
-  }
-
-  /**
-   * On Submit.
-   */
   public onSubmit(): void {
     console.log(this.profileForm)
     this.submitted = true
@@ -94,9 +61,6 @@ export class EditProfilePage implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Logic executed when cancel button is pressed.
-   */
   public onCancel(): Promise<boolean> | void {
     if (this.profileForm.dirty) {
       this.alertService.showAlert({
@@ -123,23 +87,17 @@ export class EditProfilePage implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Fetch data for form dropdowns.
-   */
   private initializeData(): void {
     this.nationalStandards = this.userService.fetchNationalStandards()
   }
 
-  /**
-   * Set up form controls.
-   */
   private initializeFormControls(): void {
     this.profileForm = this.fb.group({
-      firstName: [this.user.firstName, Validators.required],
-      lastName: [this.user.lastName, Validators.required],
-      email: [this.user.email, Validators.required],
-      title: this.user.title,
-      nationalStandard: [this.user.nationalStandard.nationalStandardId, Validators.required],
+      firstName: [this.user().firstName, Validators.required],
+      lastName: [this.user().lastName, Validators.required],
+      email: [this.user().email, Validators.required],
+      title: this.user().title,
+      nationalStandard: [this.user().nationalStandard.nationalStandardId, Validators.required],
     })
   }
 }

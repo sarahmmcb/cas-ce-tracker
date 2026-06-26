@@ -28,15 +28,6 @@ export class AuthPage {
     const email = form.value.email
     const password = form.value.password
 
-    // this.auth.login(email, password).subscribe({
-    //   next: () => {
-    //     this.router.navigateByUrl('/overview')
-    //   },
-    //   error: (err) => {
-    //     this.errMessage.set(this.auth.getErrorMessage(err))
-    //   },
-    // })
-
     await this.auth
       .login(email, password)
       .catch((err) => this.errMessage.set(this.auth.getErrorMessage(err)))
