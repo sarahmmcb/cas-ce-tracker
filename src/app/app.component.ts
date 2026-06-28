@@ -26,7 +26,6 @@ export class AppComponent {
 
   private authService = inject(AuthService)
   private router = inject(Router)
-  private apiService = inject(ApiService)
   private userService = inject(UserService)
 
   public onLogout(): void {
