@@ -1,21 +1,11 @@
-import { createEnvironmentInjector, EnvironmentInjector, Injectable, signal } from '@angular/core'
-import {
-  BehaviorSubject,
-  catchError,
-  concatMap,
-  map,
-  tap,
-  Observable,
-  firstValueFrom,
-  throwError,
-} from 'rxjs'
-import { User, UserData } from '../models/user'
-import { environment } from '@env/environment'
-import { ApiService } from '../services/api.service'
-import { HttpClient } from '@angular/common/http'
-import { LoginRequest } from '../models/auth'
-import { ErrorStatus } from '../core/error/error'
+import { Injectable, inject, signal } from '@angular/core'
+import { catchError, concatMap, map, Observable, firstValueFrom, throwError } from 'rxjs'
+import { User, UserData } from '@app/models/user'
+import { ApiService } from '@app/services/api.service'
+import { LoginRequest } from '@app/models/auth'
+import { ErrorStatus } from '@app/core/error/error'
 import { CookieService } from 'ngx-cookie-service'
+import { AuthApiService } from '@app/services/authApi.service'
 
 @Injectable({
   providedIn: 'root',
@@ -23,42 +13,12 @@ import { CookieService } from 'ngx-cookie-service'
 export class AuthService {
   public accessToken: string
   public errMessage: string
-
-  private authApiService: ApiService
-
   private _userIsAuthenticated = false
-
-  constructor(
-    private injector: EnvironmentInjector,
-    private apiService: ApiService,
-    private cookieService: CookieService,
-  ) {
-    // Create a separate instance of ApiService for Auth so it can use its own baseUrl
-    const childInjector = createEnvironmentInjector(
-      [
-        {
-          provide: ApiService,
-          useClass: ApiService,
-          deps: [HttpClient],
-        },
-      ],
-      this.injector,
-    )
-
-    this.authApiService = childInjector.get(ApiService)
-
-    if (environment.production) {
-      // TODO
-    } else if (environment.iis) {
-      this.authApiService.baseUrl = 'https://localhost:7142/api'
-    } else if (environment.docker) {
-      this.authApiService.baseUrl = 'https://localhost:44370/api'
-    } else {
-      this.authApiService.baseUrl = 'https://localhost:7143/api'
-    }
-  }
-
   private _user = signal(null)
+
+  private authApiService = inject(AuthApiService)
+  private apiService = inject(ApiService)
+  private cookieService = inject(CookieService)
 
   get user() {
     return this._user()

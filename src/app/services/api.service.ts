@@ -1,5 +1,6 @@
 import { HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http'
-import { Injectable, resource } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
+import { API_URL } from '@app/core/tokens'
 import { catchError, map, Observable, throwError } from 'rxjs'
 
 export interface HttpParams {
@@ -10,7 +11,7 @@ export interface HttpParams {
   providedIn: 'root',
 })
 export class ApiService {
-  public baseUrl: string
+  protected baseUrl = inject(API_URL)
 
   constructor(private http: HttpClient) {}
 
