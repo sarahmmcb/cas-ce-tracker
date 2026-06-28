@@ -29,10 +29,6 @@ export class AppComponent {
   private apiService = inject(ApiService)
   private userService = inject(UserService)
 
-  constructor() {
-    // this.initializeApp()
-  }
-
   public onLogout(): void {
     this.authService.logout()
     this.router.navigateByUrl('/auth')
