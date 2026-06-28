@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular'
 import { AuthService } from './auth/auth.service'
 import { UserService } from './services/user.service'
 import { AlertComponent } from './core/alert/alert.component'
-import { ApiService } from './services/api.service'
 import { LoadingComponent } from './core/loading/loading.component'
 
 @Component({
