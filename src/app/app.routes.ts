@@ -14,20 +14,26 @@ export const routes: Routes = [
   {
     path: 'overview',
     canLoad: [AuthGuard],
-    loadChildren: () => import('./overview/overview.routes').then((m) => m.overviewRoutes),
+    loadComponent: () => import('./overview/overview.page').then((m) => m.OverviewPage),
   },
+  // {
+  //   path: 'overview',
+  //   canLoad: [AuthGuard],
+  //   children: [
+  //     {
+  //       path: 'view-experience',
+  //       loadComponent: () =>
+  //         import('./overview/view-experience/view-experience.page').then(
+  //           (m) => m.ViewExperiencePage,
+  //         ),
+  //     },
+  //   ],
+  // },
   {
-    path: 'overview',
+    path: 'view-experience',
+    loadComponent: () =>
+      import('./overview/view-experience/view-experience.page').then((m) => m.ViewExperiencePage),
     canLoad: [AuthGuard],
-    children: [
-      {
-        path: 'view-experience',
-        loadComponent: () =>
-          import('./overview/view-experience/view-experience.page').then(
-            (m) => m.ViewExperiencePage,
-          ),
-      },
-    ],
   },
   {
     path: 'edit-profile',

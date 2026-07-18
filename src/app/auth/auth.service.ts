@@ -2,7 +2,7 @@ import { Injectable, inject, signal } from '@angular/core'
 import { catchError, concatMap, map, Observable, firstValueFrom, throwError } from 'rxjs'
 import { User, UserData } from '@app/models/user'
 import { ApiService } from '@app/services/api.service'
-import { LoginRequest } from '@app/models/auth'
+import { LoginRequest, LoginResponse } from '@app/models/auth'
 import { ErrorStatus } from '@app/core/error/error'
 import { CookieService } from 'ngx-cookie-service'
 import { AuthApiService } from '@app/services/authApi.service'
@@ -32,7 +32,7 @@ export class AuthService {
     let user = new User()
     return firstValueFrom(
       this.authApiService
-        .post('/session/login', {
+        .post<LoginResponse>('/session/login', {
           userName: email,
           password,
         } as LoginRequest)
@@ -62,6 +62,7 @@ export class AuthService {
 
   public logout(): void {
     this.accessToken = ''
+    this.cookieService.delete('userName')
     this._userIsAuthenticated = false
   }
 
@@ -86,7 +87,7 @@ export class AuthService {
     let user = new User()
     const userName = this.cookieService.get('userName')
 
-    return this.authApiService.get('/session/refresh').pipe(
+    return this.authApiService.get<LoginResponse>('/session/refresh').pipe(
       concatMap((res) => {
         this.accessToken = res.token
         this._userIsAuthenticated = true

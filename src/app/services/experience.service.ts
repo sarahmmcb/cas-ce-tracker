@@ -25,8 +25,11 @@ export class ExperienceService {
     nationalStandardId: number,
   ): Observable<Experience[]> {
     return this.apiService
-      .get(`/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`)
+      .get<
+        Experience[]
+      >(`/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`)
       .pipe(
+        take(1),
         tap((experiences) => {
           this.experienceSub.next(experiences)
         }),
@@ -38,7 +41,7 @@ export class ExperienceService {
 
   public createExperience(exp: IUpdateExperience): Observable<Experience[]> {
     let newExperience: Experience
-    return this.apiService.put('/experiences', exp).pipe(
+    return this.apiService.put<Experience>('/experiences', exp).pipe(
       switchMap((newExp) => {
         newExperience = newExp
         return this.experiences
@@ -56,7 +59,7 @@ export class ExperienceService {
 
   public updateExperience(exp: IUpdateExperience): Observable<Experience[]> {
     let updatedExperience: Experience
-    return this.apiService.put('/experiences', exp).pipe(
+    return this.apiService.put<Experience>('/experiences', exp).pipe(
       switchMap((updatedExp) => {
         updatedExperience = updatedExp
         return this.experiences

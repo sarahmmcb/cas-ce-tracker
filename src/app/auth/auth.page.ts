@@ -25,13 +25,14 @@ export class AuthPage {
       return
     }
 
-    const email = form.value.email
-    const password = form.value.password
-
-    await this.auth
-      .login(email, password)
+    return await this.auth
+      .login(this.email, this.password)
+      .then(() => {
+        if (this.auth.userIsAuthenticated) {
+          this.router.navigateByUrl('/overview')
+        }
+      })
       .catch((err) => this.errMessage.set(this.auth.getErrorMessage(err)))
-
-    this.router.navigateByUrl('/overview')
+      .finally(() => form.resetForm())
   }
 }

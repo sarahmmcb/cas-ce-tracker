@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 import { ApiService } from './api.service'
-import { IUnit } from '../models/experience'
-import { ICategoryList } from '../models/category'
+import { IUnit, IUnitResponse } from '@app/models/experience'
+import { ICategoryList, ICategoryListResponse } from '@app/models/category'
 import { catchError, map, Observable, throwError } from 'rxjs'
-import { Location } from '../models/location'
+import { Location, ILocationResponse } from '@app/models/location'
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class StaticDataService {
   private _categoryLists: ICategoryList[]
   private _locations: Location[]
 
-  constructor(private api: ApiService) {}
+  private api = inject(ApiService)
 
   //#region Units
 
@@ -38,7 +38,7 @@ export class StaticDataService {
   }
 
   private fetchUnitInfo(nationalStandardId: number): Observable<IUnit[]> {
-    return this.api.get(`/units/nationalStandardId/${nationalStandardId}`).pipe(
+    return this.api.get<IUnitResponse>(`/units/nationalStandardId/${nationalStandardId}`).pipe(
       map((res) => res.units),
       catchError((err) => {
         return throwError(() => err)
@@ -75,7 +75,9 @@ export class StaticDataService {
     year: number,
   ): Observable<ICategoryList[]> {
     return this.api
-      .get(`/categoryLists/nationalStandardId/${nationalStandardId}/year/${year}`)
+      .get<ICategoryListResponse>(
+        `/categoryLists/nationalStandardId/${nationalStandardId}/year/${year}`,
+      )
       .pipe(
         map((res) => res.categoryLists),
         catchError((err) => throwError(() => err)),
@@ -107,7 +109,7 @@ export class StaticDataService {
   }
 
   private fetchLocations(): Observable<Location[]> {
-    return this.api.get('/locations').pipe(
+    return this.api.get<ILocationResponse>('/locations').pipe(
       map((res) => res.locations),
       catchError((err) => throwError(() => err)),
     )

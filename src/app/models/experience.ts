@@ -46,6 +46,10 @@ export interface IUnit {
   conversionFormula: string
 }
 
+export interface IUnitResponse {
+  units: IUnit[]
+}
+
 export interface IUpdateExperience {
   experienceId: number
   userId: number
