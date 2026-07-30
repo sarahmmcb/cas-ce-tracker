@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http'
 })
 export class AuthApiService extends ApiService {
   constructor() {
-    super(inject(HttpClient))
+    super()
     this.baseUrl = inject(AUTH_API_URL)
   }
 }

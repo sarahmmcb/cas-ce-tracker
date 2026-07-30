@@ -17,3 +17,7 @@ export interface ICategoryList {
   displayOrder?: number
   categories: ICategory[]
 }
+
+export interface ICategoryListResponse {
+  categoryLists: ICategoryList[]
+}

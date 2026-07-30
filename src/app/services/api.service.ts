@@ -13,9 +13,9 @@ export interface HttpParams {
 export class ApiService {
   protected baseUrl = inject(API_URL)
 
-  constructor(private http: HttpClient) {}
+  protected http = inject(HttpClient)
 
-  public get(route: string, params?: HttpParams): Observable<any> {
+  public get<T>(route: string, params?: HttpParams): Observable<T> {
     return this.http
       .get(this.baseUrl + route, {
         params,
@@ -23,7 +23,7 @@ export class ApiService {
         withCredentials: true,
       })
       .pipe(
-        map((res: HttpResponse<any>) => {
+        map((res: HttpResponse<T>) => {
           if (res.status >= 400) {
             // TODO: figure out a response format that guarantees a message property
             // so we can display it here
@@ -38,24 +38,24 @@ export class ApiService {
       )
   }
 
-  public post(route: string, body: any, params?: HttpParams): Observable<any> {
+  public post<T>(route: string, body: any, params?: HttpParams): Observable<T> {
     return this.http
       .post(this.baseUrl + route, JSON.stringify(body), {
         params,
         observe: 'response',
         withCredentials: true,
       })
-      .pipe(map((res) => res.body))
+      .pipe(map((res: HttpResponse<T>) => res.body))
   }
 
-  public put(route: string, body: any, params?: HttpParams): Observable<any> {
+  public put<T>(route: string, body: any, params?: HttpParams): Observable<T> {
     return this.http
       .put(this.baseUrl + route, JSON.stringify(body), {
         params,
         observe: 'response',
         withCredentials: true,
       })
-      .pipe(map((res) => res.body))
+      .pipe(map((res: HttpResponse<T>) => res.body))
   }
 
   public delete(route: string, resourceId: number): Observable<boolean> {

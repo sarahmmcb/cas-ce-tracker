@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router'
 import { ErrorStatus } from '../core/error/error'
 import { FooterComponent } from '@app/core/footer/footer.component'
 import { AuthService } from '@app/auth/auth.service'
+import { ExperienceService } from '@app/services/experience.service'
 
 @Component({
   selector: 'app-overview',
@@ -48,6 +49,7 @@ export class OverviewPage implements OnInit, OnDestroy {
   private authService = inject(AuthService)
   private userService = inject(UserService)
   private loadingService = inject(LoadingService)
+  private experienceService = inject(ExperienceService)
 
   public ngOnInit(): void {
     this.allYears.set(
@@ -56,6 +58,12 @@ export class OverviewPage implements OnInit, OnDestroy {
         (_, i) => i + this.minYear,
       ),
     )
+
+    this.experienceService.experiences.subscribe({
+      next: (res) => {
+        this.fetchCEData()
+      },
+    })
 
     this.ceDataSub = this.ceDataService.ceData.subscribe({
       next: (ceData) => {
@@ -74,7 +82,7 @@ export class OverviewPage implements OnInit, OnDestroy {
     })
   }
 
-  public ionViewWillEnter(): void {
+  public fetchCEData(): void {
     if (this.authService.user) {
       this.loadingService.showLoadingControl()
       this.ceDataService
