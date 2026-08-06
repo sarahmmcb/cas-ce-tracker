@@ -14,6 +14,10 @@ export class Experience {
   public amounts: ExperienceAmount[] = []
 }
 
+export interface ExperienceResponse {
+  experiences: Experience[]
+}
+
 /**
  * CE Experience time amounts. A single experience
  * may have more than one of these if multiple units
@@ -26,6 +30,7 @@ export class ExperienceAmount {
   public nationalStandardId = 0
   public amount = 0.0
   public isComplianceUnit = false
+  public unitLabel = ''
   public unitSingular? = ''
   public unitPlural? = ''
 }
