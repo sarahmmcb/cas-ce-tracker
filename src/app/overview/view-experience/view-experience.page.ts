@@ -12,7 +12,6 @@ import { ICategory } from '@app/models/category'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { ErrorComponent } from '@app/core/error/error.component'
-import { StaticDataService } from '@app/services/static-data.service'
 import { DateBlockComponent } from '@app/core/date-block/date-block.component'
 import { LoadingService } from '@app/services/loading.service'
 import { AlertService } from '@app/services/alert.service'
@@ -45,7 +44,6 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
   private experienceSub: Subscription
 
   private experienceService = inject(ExperienceService)
-  private staticDataService = inject(StaticDataService)
   private authService = inject(AuthService)
   private modalCtrl = inject(ModalController)
   private route = inject(ActivatedRoute)
@@ -67,24 +65,13 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
       } else {
         this.loadingError.set('')
         this.experiences.set(ex)
-        this.assignUnitLabels()
       }
     })
 
     this.loadingService.showLoadingControl()
 
-    this.staticDataService
-      .getUnits(this.user().nationalStandard.nationalStandardId)
-      .pipe(
-        tap((res) => this.units.set(res)),
-        switchMap((res) =>
-          this.experienceService.getExperiences(
-            this.year(),
-            this.user().id,
-            this.user().nationalStandard.nationalStandardId,
-          ),
-        ),
-      )
+    this.experienceService
+      .getExperiences(this.year(), this.user().id, this.user().nationalStandard.nationalStandardId)
       .subscribe({
         error: (err) => {
           this.loadingError.set(
@@ -157,28 +144,5 @@ export class ViewExperiencePage implements OnInit, OnDestroy {
         },
       ],
     })
-  }
-
-  // TODO: move this to the backend
-  private assignUnitLabels(): void {
-    if (!this.units() || this.units().length == 0) {
-      return
-    }
-
-    const expClone = [...this.experiences()]
-
-    for (const exp of expClone) {
-      const amountsClone = [...exp.amounts]
-      for (const amount of amountsClone) {
-        if (!amount.unitSingular || !amount.unitPlural) {
-          const unit = this.units().find((u) => u.unitId === amount.unitId)
-          amount.unitPlural = unit.unitPlural
-          amount.unitSingular = unit.unitSingular
-        }
-      }
-      exp.amounts = amountsClone
-    }
-
-    this.experiences.set(expClone)
   }
 }

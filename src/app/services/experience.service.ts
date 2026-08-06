@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, throwError } from 'rxjs'
 import { catchError, switchMap, take, tap, map } from 'rxjs/operators'
 
-import { IUpdateExperience, Experience } from '../models/experience'
+import { IUpdateExperience, Experience, ExperienceResponse } from '../models/experience'
 import { ApiService } from './api.service'
 
 @Injectable({
@@ -23,15 +23,15 @@ export class ExperienceService {
     year: number,
     userId: number,
     nationalStandardId: number,
-  ): Observable<Experience[]> {
+  ): Observable<ExperienceResponse> {
     return this.apiService
-      .get<
-        Experience[]
-      >(`/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`)
+      .get<ExperienceResponse>(
+        `/experiences/year/${year}/userId/${userId}/nationalStandardId/${nationalStandardId}`,
+      )
       .pipe(
         take(1),
-        tap((experiences) => {
-          this.experienceSub.next(experiences)
+        tap((expResponse) => {
+          this.experienceSub.next(expResponse.experiences)
         }),
         catchError((err) => {
           return throwError(() => err)

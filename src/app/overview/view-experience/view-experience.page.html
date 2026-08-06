@@ -48,7 +48,7 @@
                       @for(amount of ex.amounts; track $index) {
                         @if (amount.isComplianceUnit) {
                           <span>{{amount.amount}}</span>
-                          <span>{{amount.amount > 1 ? amount.unitPlural : amount.unitSingular}}</span>
+                          <span>{{amount.unitLabel}}</span>
                         }
                       }
                     </div>

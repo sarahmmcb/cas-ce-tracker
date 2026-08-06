@@ -17,16 +17,12 @@ export function withRequestStatus() {
   )
 }
 
-export const setPending = () => {
-  requestStatus: 'pending'
+export function setPending(): RequestStatusState {
+  return { requestStatus: 'pending' }
 }
-
-export const setFulfilled = () => {
-  requestStatus: 'fulfilled'
+export function setFulfilled(): RequestStatusState {
+  return { requestStatus: 'fulfilled' }
 }
-
-export const setError = (msg: string) => {
-  requestStatus: {
-    error: msg
-  }
+export function setError(error: string): RequestStatusState {
+  return { requestStatus: { error } }
 }
