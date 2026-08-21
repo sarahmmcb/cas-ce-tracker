@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { ModalController, IonicModule } from '@ionic/angular'
-import { firstValueFrom, Observable, Subscription, switchMap, tap } from 'rxjs'
+import { firstValueFrom, Subscription } from 'rxjs'
 import { AuthService } from '@app/auth/auth.service'
 import { Experience, IUnit } from '@app/models/experience'
 import { User } from '@app/models/user'
