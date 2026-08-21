@@ -284,9 +284,7 @@ export class AddExperienceComponent implements OnInit {
 
   private initializeFormControls(): void {
     const now = new Date()
-    const defaultDate = new Date(
-      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0),
-    )
+    const defaultDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0)
 
     this.addForm.set(
       this.fb.group({
