@@ -67,7 +67,7 @@
 
 <ng-template #validationErrors let-formField="formField">
     @if (formField.invalid() && formField.touched()) {
-        <div>
+        <div class="form-error">
             @for (error of formField.errors(); track error.kind) {
                 <span>{{ error.message }}</span>
             }

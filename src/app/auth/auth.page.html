@@ -16,7 +16,7 @@
             <input [(ngModel)]="email" required #emailCtrl="ngModel" id="email" name="email" type="email" />
           </div>
           @if (!emailCtrl.valid && emailCtrl.touched) {
-            <div class="error">
+            <div class="form-error">
               <label>Please enter a valid email address</label>
             </div>
           }
@@ -25,7 +25,7 @@
             <input [(ngModel)]="password" required id="password" name="password" type="password" minlength="6" #passwordCtrl="ngModel" />
           </div>
           @if (!passwordCtrl.valid && passwordCtrl.touched) {
-            <div class="error">
+            <div class="form-error">
               <label>Please enter a valid password</label>
             </div>
           }
@@ -33,7 +33,7 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <p class="ion-text-center error">
+          <p class="ion-text-center form-error">
             {{errMessage()}}
           </p>
         </ion-col>
