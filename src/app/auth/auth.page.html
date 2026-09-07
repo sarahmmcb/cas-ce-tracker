@@ -2,9 +2,9 @@
   <ion-grid>
     <ion-row>
       <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
-        <div class="icon-container">
-          <span class="title-line-1">CAS CE</span> <br />
-          <span class="title-line-2">TRACKER</span>
+        <div class="logo-container">
+          <span class="logo-line-1">CAS CE</span> <br />
+          <span class="logo-line-2">TRACKER</span>
         </div>
       </ion-col>
     </ion-row>
@@ -40,14 +40,14 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <button type="submit" class="app-button submit-button" [disabled]="!f.valid">
+          <button type="submit" class="app-button solid-button" [disabled]="!f.valid">
             Log in
           </button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <button type="button" class="app-button register-button" [disabled]="!f.valid">
+          <button [routerLink]="['/', 'register']" type="button" class="app-button outline-button">
             Register
           </button>
         </ion-col>

@@ -1,0 +1,77 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
+        <div class="logo-container">
+          <span class="logo-line-1">CAS CE</span> <br />
+          <span class="logo-line-2">TRACKER</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <form (submit)="onSubmit($event)" class="ion-text-center">
+      <ion-row>
+        <ion-col size="10" offset="1">
+          <div>
+            <label>First Name</label>
+            <input type="text" id="firstName" [formField]="registerForm.firstName" />
+            <ng-container *ngTemplateOutlet="validationErrors; context: {formField: registerForm.firstName()}" />
+          </div>
+          <div>
+            <label>Last Name</label>
+            <input type="text" id="lastName" [formField]="registerForm.lastName" />
+            <ng-container *ngTemplateOutlet="validationErrors; context: {formField: registerForm.lastName()}" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input [formField]="registerForm.email" id="email" type="email" />
+            <ng-container *ngTemplateOutlet="validationErrors; context: {formField: registerForm.email()}" />
+          </div>
+
+          <div>
+            <label>Password</label>
+            <input id="password" type="password" [formField]="registerForm.password" />
+            <ng-container *ngTemplateOutlet="validationErrors; context: {formField: registerForm.password()}" />
+          </div>
+
+          <div>
+            <label>Verify Password</label>
+            <input type="password" id="verifyPassword" [formField]="registerForm.verifyPassword" />
+            <ng-container *ngTemplateOutlet="validationErrors; context: {formField: registerForm.verifyPassword()}" />
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <p class="ion-text-center error">
+            
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <button type="submit" class="app-button solid-button" [disabled]="registerForm().invalid()">
+            Register
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="6" offsetSm="3">
+          <button [routerLink]="['/', 'auth']" type="button" class="app-button outline-button">
+            Return to Login
+          </button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>
+
+<ng-template #validationErrors let-formField="formField">
+    @if (formField.invalid() && formField.touched()) {
+        <div>
+            @for (error of formField.errors(); track error.kind) {
+                <span>{{ error.message }}</span>
+            }
+        </div>
+    }
+</ng-template>
+

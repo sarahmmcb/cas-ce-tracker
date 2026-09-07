@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core'
 import { NgForm, FormsModule } from '@angular/forms'
-import { Router } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 import { IonicModule } from '@ionic/angular'
 
 import { AuthService } from './auth.service'
@@ -10,7 +10,7 @@ import { AuthService } from './auth.service'
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
   standalone: true,
-  imports: [IonicModule, FormsModule],
+  imports: [IonicModule, RouterLink, FormsModule],
 })
 export class AuthPage {
   public email: string

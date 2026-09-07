@@ -45,3 +45,11 @@ export class Credential {
   public longName = ''
   public shortName = ''
 }
+
+export interface CreateUserRequest {
+  firstName: string
+  lastName: string
+  password: string
+  email: string
+  username: string
+}

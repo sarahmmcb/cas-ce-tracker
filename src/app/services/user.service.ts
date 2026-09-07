@@ -1,17 +1,15 @@
-import { Injectable } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 
-import { Credential, User, NationalStandard, Organization } from '../models/user'
+import { Credential, NationalStandard, Organization, CreateUserRequest } from '../models/user'
+import { catchError, Observable, throwError } from 'rxjs'
+import { AuthApiService } from './authApi.service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  // This is hydrated by the auth service
-  //public user: User
-
   private _selectedYear: number
-
-  constructor() {}
+  private authApiService = inject(AuthApiService)
 
   get selectedYear(): number {
     if (!this._selectedYear) {
@@ -23,6 +21,16 @@ export class UserService {
 
   set selectedYear(year: number) {
     this._selectedYear = year
+  }
+
+  public register(createUserRequest: CreateUserRequest): Observable<any> {
+    return this.authApiService
+      .post('user/register', createUserRequest)
+      .pipe(
+        catchError((err) =>
+          throwError(() => new Error('An error occurred, please try again later')),
+        ),
+      )
   }
 
   public fetchCredentials(): Credential[] {
